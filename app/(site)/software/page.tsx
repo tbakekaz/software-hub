@@ -3,6 +3,7 @@ import ClientList from './ClientList';
 import { getDictionary } from '@/lib/i18n/server';
 
 export const dynamic = 'force-dynamic';
+export const runtime = 'edge';
 
 export default async function SoftwarePage() {
   const { dict } = await getDictionary();

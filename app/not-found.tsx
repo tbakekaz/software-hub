@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 export default function NotFound() {
   return (
     <main className="container mx-auto px-4 py-20 text-center space-y-3">

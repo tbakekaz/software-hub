@@ -6,6 +6,7 @@ import { pickLocaleString } from '@/lib/i18n/translate';
 import { RelatedSoftwareCard } from '@/components/RelatedSoftwareCard';
 
 export const dynamic = 'force-dynamic';
+export const runtime = 'edge';
 
 type Props = { params: Promise<{ slug: string }> };
 

@@ -7,6 +7,7 @@ import { MonetizeSlot } from '@/components/MonetizeSlot';
 import { getDictionary } from '@/lib/i18n/server';
 
 export const dynamic = 'force-dynamic';
+export const runtime = 'edge';
 
 export default async function HomePage() {
   const { dict, lang } = await getDictionary();

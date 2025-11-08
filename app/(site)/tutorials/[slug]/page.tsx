@@ -5,6 +5,8 @@ import { useMDXComponents } from '@/mdx-components';
 import { articleSchema } from '@/lib/seo';
 import { MonetizeSlot } from '@/components/MonetizeSlot';
 
+export const runtime = 'edge';
+
 export function generateStaticParams() {
   return getAllTutorials().map((t) => ({ slug: t.slug }));
 }

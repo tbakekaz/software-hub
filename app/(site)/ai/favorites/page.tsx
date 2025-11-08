@@ -3,6 +3,7 @@ import { getDictionary } from '@/lib/i18n/server';
 import FavoritesClient from './FavoritesClient';
 
 export const dynamic = 'force-dynamic';
+export const runtime = 'edge';
 
 export default async function FavoritesPage() {
   const { dict, lang } = await getDictionary();

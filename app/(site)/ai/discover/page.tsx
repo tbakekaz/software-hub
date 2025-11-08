@@ -3,6 +3,7 @@ import { getDictionary } from '@/lib/i18n/server';
 import DiscoverClient from './DiscoverClient';
 
 export const dynamic = 'force-dynamic';
+export const runtime = 'edge';
 
 export default async function DiscoverPage() {
   const { dict, lang } = await getDictionary();

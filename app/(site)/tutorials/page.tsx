@@ -3,6 +3,7 @@ import { getDictionary } from '@/lib/i18n/server';
 import { TutorialCard } from '@/components/TutorialCard';
 
 export const dynamic = 'force-dynamic';
+export const runtime = 'edge';
 
 export default async function TutorialsPage() {
   const { dict, lang } = await getDictionary();
