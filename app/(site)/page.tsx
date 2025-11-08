@@ -10,14 +10,30 @@ export const dynamic = 'force-dynamic';
 export const runtime = 'edge';
 
 export default async function HomePage() {
-  const { dict, lang } = await getDictionary();
-  // 优先显示 soft-a (Adobe Soft)，然后显示其他软件
-  const allSoftware = getAllSoftware();
-  const softA = allSoftware.find((s) => s.slug === 'soft-a');
-  const otherSoftware = allSoftware.filter((s) => s.slug !== 'soft-a');
-  const software = softA ? [softA, ...otherSoftware].slice(0, 3) : allSoftware.slice(0, 3);
-  const tutorials = getAllTutorials().slice(0, 2);
-  const ai = getAllAI().filter((i) => i.isFeatured).slice(0, 6);
+  // 添加错误处理，确保页面始终可以渲染
+  let dict, lang, software, tutorials, ai;
+  
+  try {
+    const result = await getDictionary();
+    dict = result.dict;
+    lang = result.lang;
+    
+    // 优先显示 soft-a (Adobe Soft)，然后显示其他软件
+    const allSoftware = getAllSoftware();
+    const softA = allSoftware.find((s) => s.slug === 'soft-a');
+    const otherSoftware = allSoftware.filter((s) => s.slug !== 'soft-a');
+    software = softA ? [softA, ...otherSoftware].slice(0, 3) : allSoftware.slice(0, 3);
+    tutorials = getAllTutorials().slice(0, 2);
+    ai = getAllAI().filter((i) => i.isFeatured).slice(0, 6);
+  } catch (error) {
+    // 如果任何步骤失败，使用默认值
+    const fallback = await getDictionary();
+    dict = fallback.dict;
+    lang = fallback.lang;
+    software = [];
+    tutorials = [];
+    ai = [];
+  }
   return (
     <main className="container mx-auto px-4 py-12 space-y-12">
       <section className="text-center space-y-5 rounded-2xl border bg-white/60 dark:bg-black/30 backdrop-blur px-4 py-10 shadow-sm">
