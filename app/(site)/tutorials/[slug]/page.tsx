@@ -1,7 +1,6 @@
 import { getAllTutorials, getTutorialBySlug } from '@/lib/content-edge';
 import { notFound } from 'next/navigation';
-import { MDXRemote } from 'next-mdx-remote/rsc';
-import { useMDXComponents } from '@/mdx-components';
+import ReactMarkdown from 'react-markdown';
 import { articleSchema } from '@/lib/seo';
 import { MonetizeSlot } from '@/components/MonetizeSlot';
 
@@ -11,7 +10,6 @@ export default async function TutorialDetail({ params }: { params: Promise<{ slu
   const { slug } = await params;
   const data = getTutorialBySlug(slug);
   if (!data) return notFound();
-  const MDX = (props: any) => <MDXRemote source={data.content} components={useMDXComponents({})} {...props} />;
   const jsonld = articleSchema({
     title: data.meta.title,
     url: `https://example.com/tutorials/${data.meta.slug}`,
@@ -25,7 +23,7 @@ export default async function TutorialDetail({ params }: { params: Promise<{ slu
       {/* 文内首段后广告位（除 MDX 内可用的 MonetizeSlot 外再加一处） */}
       <MonetizeSlot position="in-article" />
       <article className="prose dark:prose-invert max-w-none">
-        <MDX />
+        <ReactMarkdown>{data.content}</ReactMarkdown>
       </article>
     </main>
   );
