@@ -1,4 +1,4 @@
-import { getAllTutorials } from '@/lib/content';
+import { getAllTutorials } from '@/lib/content-edge';
 import { getDictionary } from '@/lib/i18n/server';
 import { TutorialCard } from '@/components/TutorialCard';
 

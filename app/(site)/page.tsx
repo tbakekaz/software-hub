@@ -1,5 +1,5 @@
 import RatesCard from '@/components/RatesCard';
-import { getAllSoftware, getAllTutorials, getAllAI } from '@/lib/content';
+import { getAllSoftware, getAllTutorials, getAllAI } from '@/lib/content-edge';
 import { SoftwareCard } from '@/components/SoftwareCard';
 import { TutorialCard } from '@/components/TutorialCard';
 import { AIItemCard } from '@/components/AIItemCard';

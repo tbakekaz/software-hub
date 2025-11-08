@@ -1,4 +1,4 @@
-import { getAllSoftware } from '@/lib/content';
+import { getAllSoftware } from '@/lib/content-edge';
 import ClientList from './ClientList';
 import { getDictionary } from '@/lib/i18n/server';
 

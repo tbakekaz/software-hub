@@ -1,4 +1,4 @@
-import { getTutorialBySlug } from '@/lib/content';
+import { getTutorialBySlug } from '@/lib/content-edge';
 import { NextResponse } from 'next/server';
 
 export const runtime = 'edge';

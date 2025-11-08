@@ -1,4 +1,4 @@
-import { getSoftware } from '@/lib/content';
+import { getSoftware } from '@/lib/content-edge';
 import { NextResponse } from 'next/server';
 
 export const runtime = 'edge';

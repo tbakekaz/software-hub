@@ -1,4 +1,4 @@
-import { getAllSoftware, getSoftware } from '@/lib/content';
+import { getAllSoftware, getSoftware } from '@/lib/content-edge';
 import { notFound } from 'next/navigation';
 import { softwareSchema } from '@/lib/seo';
 import { getDictionary } from '@/lib/i18n/server';

@@ -1,4 +1,4 @@
-import { getAllAI } from '@/lib/content';
+import { getAllAI } from '@/lib/content-edge';
 import { getDictionary } from '@/lib/i18n/server';
 import DiscoverClient from './DiscoverClient';
 

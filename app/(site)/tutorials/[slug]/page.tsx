@@ -1,4 +1,4 @@
-import { getAllTutorials, getTutorialBySlug } from '@/lib/content';
+import { getAllTutorials, getTutorialBySlug } from '@/lib/content-edge';
 import { notFound } from 'next/navigation';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import { useMDXComponents } from '@/mdx-components';
