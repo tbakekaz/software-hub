@@ -1,8 +1,8 @@
 import { getAllTutorials, getTutorialBySlug } from '@/lib/content-edge';
 import { notFound } from 'next/navigation';
-import ReactMarkdown from 'react-markdown';
 import { articleSchema } from '@/lib/seo';
 import { MonetizeSlot } from '@/components/MonetizeSlot';
+import { MarkdownContent } from '@/components/MarkdownContent';
 
 export const runtime = 'edge';
 
@@ -23,7 +23,7 @@ export default async function TutorialDetail({ params }: { params: Promise<{ slu
       {/* 文内首段后广告位（除 MDX 内可用的 MonetizeSlot 外再加一处） */}
       <MonetizeSlot position="in-article" />
       <article className="prose dark:prose-invert max-w-none">
-        <ReactMarkdown>{data.content}</ReactMarkdown>
+        <MarkdownContent content={data.content} />
       </article>
     </main>
   );
