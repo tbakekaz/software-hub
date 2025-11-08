@@ -10,10 +10,6 @@ export const runtime = 'edge';
 
 type Props = { params: Promise<{ slug: string }> };
 
-export function generateStaticParams() {
-  return getAllSoftware().map((s) => ({ slug: s.slug }));
-}
-
 export default async function SoftwareDetail({ params }: Props) {
   const { slug } = await params;
   const { dict, lang } = await getDictionary();

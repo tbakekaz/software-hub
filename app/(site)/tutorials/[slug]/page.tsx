@@ -7,10 +7,6 @@ import { MonetizeSlot } from '@/components/MonetizeSlot';
 
 export const runtime = 'edge';
 
-export function generateStaticParams() {
-  return getAllTutorials().map((t) => ({ slug: t.slug }));
-}
-
 export default async function TutorialDetail({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const data = getTutorialBySlug(slug);
