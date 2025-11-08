@@ -27,6 +27,9 @@ type Props = {
 };
 
 export function SoftwareDownloadModal({ software, lang, dict, onClose }: Props) {
+  // 使用 Portal 渲染到 body（仅在客户端）
+  const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -34,11 +37,6 @@ export function SoftwareDownloadModal({ software, lang, dict, onClose }: Props) 
     document.addEventListener('keydown', handleEscape);
     return () => document.removeEventListener('keydown', handleEscape);
   }, [onClose]);
-
-  if (!software) return null;
-
-  const name = pickLocaleString(software.name_i18n || software.name, lang);
-  const desc = pickLocaleString(software.description_i18n || software.description, lang);
 
   // 防止背景滚动
   useEffect(() => {
@@ -50,6 +48,30 @@ export function SoftwareDownloadModal({ software, lang, dict, onClose }: Props) 
     }
   }, []);
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // 调试：仅在开发环境显示（可选）
+  useEffect(() => {
+    if (software && process.env.NODE_ENV === 'development') {
+      const groupedByVersion = software.downloads.reduce((acc, d) => {
+        const version = d.version || software.version;
+        if (!acc[version]) acc[version] = [];
+        acc[version].push(d);
+        return acc;
+      }, {} as Record<string, typeof software.downloads>);
+      const versionKeys = Object.keys(groupedByVersion);
+      console.log(`[SoftwareDownloadModal] ${software.name}: ${versionKeys.length} 个版本, ${software.downloads.length} 个下载项`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [software?.slug, software?.downloads.length]);
+
+  if (!software || !mounted) return null;
+
+  const name = pickLocaleString(software.name_i18n || software.name, lang);
+  const desc = pickLocaleString(software.description_i18n || software.description, lang);
+
   // 按版本分组
   const groupedByVersion = software.downloads.reduce((acc, d) => {
     // 确保使用下载项中的 version 字段，如果没有则使用软件顶层 version
@@ -58,15 +80,6 @@ export function SoftwareDownloadModal({ software, lang, dict, onClose }: Props) 
     acc[version].push(d);
     return acc;
   }, {} as Record<string, typeof software.downloads>);
-
-  // 调试：仅在开发环境显示（可选）
-  useEffect(() => {
-    if (process.env.NODE_ENV === 'development') {
-      const versionKeys = Object.keys(groupedByVersion);
-      console.log(`[SoftwareDownloadModal] ${software.name}: ${versionKeys.length} 个版本, ${software.downloads.length} 个下载项`);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [software.slug, software.downloads.length]);
 
   // 获取版本列表，按版本号降序排列
   const versions = Object.keys(groupedByVersion).sort((a, b) => {
@@ -260,15 +273,6 @@ export function SoftwareDownloadModal({ software, lang, dict, onClose }: Props) 
       </div>
     </div>
   );
-
-  // 使用 Portal 渲染到 body（仅在客户端）
-  const [mounted, setMounted] = useState(false);
-  
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
   
   return createPortal(modalContent, document.body);
 }

@@ -30,6 +30,7 @@ type Props = {
 
 export function TutorialModal({ tutorial, content, lang, dict, onClose }: Props) {
   const [software, setSoftware] = useState<Software | null>(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -65,7 +66,11 @@ export function TutorialModal({ tutorial, content, lang, dict, onClose }: Props)
     }
   }, [tutorial?.softwareSlug]);
 
-  if (!tutorial) return null;
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!tutorial || !mounted) return null;
 
   const title = pickLocaleString(tutorial.title_i18n || tutorial.title, lang);
   const summary = pickLocaleString(tutorial.summary_i18n || tutorial.summary, lang);
@@ -200,15 +205,6 @@ export function TutorialModal({ tutorial, content, lang, dict, onClose }: Props)
       </div>
     </div>
   );
-
-  // 使用 Portal 渲染到 body（仅在客户端）
-  const [mounted, setMounted] = useState(false);
-  
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
   
   return createPortal(modalContent, document.body);
 }
