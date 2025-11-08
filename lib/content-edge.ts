@@ -4,16 +4,33 @@
 import type { Software, TutorialMeta, AIItem } from './content';
 
 // 静态导入预生成的数据（在构建时解析，Edge Runtime 支持）
-// 注意：如果文件不存在，构建会失败，这是预期的行为
-import * as generated from './generated/content';
-
-// 使用导入的数据，提供默认值以防万一
-const generatedContent = {
-  allSoftware: generated.allSoftware || [],
-  allTutorials: generated.allTutorials || [],
-  allTutorialsMeta: generated.allTutorialsMeta || [],
-  allAI: generated.allAI || [],
+// 使用 try-catch 包装，以便在导入失败时提供空数据
+let generatedContent: {
+  allSoftware: Software[];
+  allTutorials: Array<{ meta: TutorialMeta; content: string }>;
+  allTutorialsMeta: TutorialMeta[];
+  allAI: AIItem[];
 };
+
+try {
+  // 静态导入（在构建时解析）
+  const generated = require('./generated/content');
+  generatedContent = {
+    allSoftware: generated.allSoftware || [],
+    allTutorials: generated.allTutorials || [],
+    allTutorialsMeta: generated.allTutorialsMeta || [],
+    allAI: generated.allAI || [],
+  };
+} catch (error: any) {
+  // 如果导入失败，使用空数据（不应该发生，因为 prebuild 会生成文件）
+  console.error('[content-edge] Failed to import generated content:', error?.message || error);
+  generatedContent = {
+    allSoftware: [],
+    allTutorials: [],
+    allTutorialsMeta: [],
+    allAI: [],
+  };
+}
 
 export function getAllSoftware(): Software[] {
   return generatedContent.allSoftware || [];
