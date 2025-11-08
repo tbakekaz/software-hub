@@ -1,0 +1,44 @@
+{
+  "slug": "soft-c",
+  "name": "视频下载器",
+  "name_i18n": { "zh": "视频下载器", "en": "Video Downloader", "ru": "Загрузчик видео", "kk": "Бейне жүктегіш" },
+  "version": "2.0.1",
+  "platforms": ["windows", "macos", "android"],
+  "category": "工具",
+  "category_i18n": {
+    "zh": "工具",
+    "en": "Tools",
+    "ru": "Инструменты",
+    "kk": "Құралдар"
+  },
+  "isDomestic": false,
+  "description": "专业的视频下载工具，支持多种视频平台。",
+  "description_i18n": { "zh": "专业的视频下载工具，支持多种视频平台。", "en": "Professional video download tool supporting multiple video platforms.", "ru": "Профессиональный инструмент для загрузки видео с различных платформ.", "kk": "Көптеген бейне платформаларын қолдайтын кәсіби бейне жүктеу құралы." },
+  "homepage": "https://example.com/soft-c",
+  "downloads": [
+    {
+      "platform": "windows",
+      "sources": [
+        { "type": "123pan", "url": "https://www.123865.com/s/0tNcTd-tufoH" },
+        { "type": "r2", "url": "https://your-r2-domain.com/video-downloader-win.exe" }
+      ]
+    },
+    {
+      "platform": "macos",
+      "sources": [
+        { "type": "123pan", "url": "https://www.123865.com/s/0tNcTd-tufoH" },
+        { "type": "r2", "url": "https://your-r2-domain.com/video-downloader-mac.dmg" }
+      ]
+    },
+    {
+      "platform": "android",
+      "sources": [
+        { "type": "123pan", "url": "https://www.123865.com/s/0tNcTd-tufoH" },
+        { "type": "r2", "url": "https://your-r2-domain.com/video-downloader-android.apk" }
+      ]
+    }
+  ],
+  "updatedAt": "2025-10-20"
+}
+
+

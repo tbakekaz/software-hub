@@ -1,0 +1,16 @@
+{
+  "name": "ModelScope",
+  "url": "https://modelscope.cn",
+  "tags": ["model", "open-source"],
+  "category": "模型",
+  "description": "中文AI模型开源社区",
+  "locale": ["zh"],
+  "icon": "📦",
+  "isFeatured": false,
+  "isNew": false,
+  "isInternational": false
+}
+
+
+
+

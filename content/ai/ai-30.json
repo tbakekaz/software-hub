@@ -1,0 +1,15 @@
+{
+  "name": "Runway",
+  "url": "https://runwayml.com",
+  "tags": ["video", "editing"],
+  "category": "视频",
+  "description": "AI video production and editing",
+  "locale": ["en"],
+  "icon": "🎥",
+  "isFeatured": false,
+  "isNew": false,
+  "isInternational": true
+}
+
+
+

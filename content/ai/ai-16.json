@@ -1,0 +1,15 @@
+{
+  "name": "Midjourney",
+  "url": "https://www.midjourney.com",
+  "tags": ["image", "generation"],
+  "category": "图像",
+  "description": "Text-to-image generation",
+  "locale": ["en"],
+  "icon": "🎨",
+  "isFeatured": true,
+  "isNew": false,
+  "isInternational": true
+}
+
+
+

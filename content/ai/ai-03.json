@@ -1,0 +1,15 @@
+{
+  "name": "CodePilot",
+  "name_i18n": { "zh": "CodePilot", "en": "CodePilot", "ru": "CodePilot", "kk": "CodePilot" },
+  "url": "https://codepilot.example.com",
+  "tags": ["code", "assistant"],
+  "category": "开发",
+  "description": "编程辅助与解释",
+  "description_i18n": { "zh": "编程辅助与解释", "en": "Coding assistant and explainer", "ru": "Помощник по коду и объяснения", "kk": "Кодтау көмекшісі" },
+  "locale": ["en", "ru", "zh"],
+  "icon": "🧑‍💻",
+  "isFeatured": true,
+  "isNew": false
+}
+
+

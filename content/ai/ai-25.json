@@ -1,0 +1,15 @@
+{
+  "name": "Replit",
+  "url": "https://replit.com",
+  "tags": ["code", "ide"],
+  "category": "开发",
+  "description": "Online IDE with AI features",
+  "locale": ["en"],
+  "icon": "🧪",
+  "isFeatured": false,
+  "isNew": false,
+  "isInternational": true
+}
+
+
+

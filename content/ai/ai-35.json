@@ -1,0 +1,15 @@
+{
+  "name": "Udio",
+  "url": "https://udio.com",
+  "tags": ["audio", "music"],
+  "category": "音频",
+  "description": "AI music generation platform",
+  "locale": ["en"],
+  "icon": "🎶",
+  "isFeatured": false,
+  "isNew": false,
+  "isInternational": true
+}
+
+
+

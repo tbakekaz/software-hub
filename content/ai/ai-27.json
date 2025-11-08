@@ -1,0 +1,15 @@
+{
+  "name": "DeepL Write",
+  "url": "https://www.deepl.com/write",
+  "tags": ["writing", "grammar"],
+  "category": "办公",
+  "description": "DeepL-assisted writing and style",
+  "locale": ["en", "ru"],
+  "icon": "📝",
+  "isFeatured": false,
+  "isNew": false,
+  "isInternational": true
+}
+
+
+

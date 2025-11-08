@@ -1,0 +1,15 @@
+{
+  "name": "Notion AI",
+  "url": "https://www.notion.so/product/ai",
+  "tags": ["writing", "productivity"],
+  "category": "办公",
+  "description": "AI writing and notes inside Notion",
+  "locale": ["en"],
+  "icon": "🗒️",
+  "isFeatured": false,
+  "isNew": false,
+  "isInternational": true
+}
+
+
+

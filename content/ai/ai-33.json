@@ -1,0 +1,15 @@
+{
+  "name": "HeyGen",
+  "url": "https://www.heygen.com",
+  "tags": ["video", "avatar"],
+  "category": "视频",
+  "description": "AI video generation platform with avatars",
+  "locale": ["en"],
+  "icon": "🎭",
+  "isFeatured": false,
+  "isNew": false,
+  "isInternational": true
+}
+
+
+

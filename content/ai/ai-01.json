@@ -1,0 +1,15 @@
+{
+  "name": "ChatGenius",
+  "name_i18n": { "zh": "ChatGenius", "en": "ChatGenius", "ru": "ChatGenius", "kk": "ChatGenius" },
+  "url": "https://chatgenius.example.com",
+  "tags": ["chat", "nlp"],
+  "category": "对话",
+  "description": "通用对话与知识问答",
+  "description_i18n": { "zh": "通用对话与知识问答", "en": "General chat and QA", "ru": "Общий чат и вопросы-ответы", "kk": "Жалпы чат және СЖ" },
+  "locale": ["en", "ru"],
+  "icon": "💬",
+  "isFeatured": true,
+  "isNew": true
+}
+
+

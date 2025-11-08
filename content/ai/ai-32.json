@@ -1,0 +1,15 @@
+{
+  "name": "D-ID",
+  "url": "https://www.d-id.com",
+  "tags": ["video", "avatar"],
+  "category": "视频",
+  "description": "Create talking avatars from images and scripts",
+  "locale": ["en"],
+  "icon": "👤",
+  "isFeatured": false,
+  "isNew": false,
+  "isInternational": true
+}
+
+
+

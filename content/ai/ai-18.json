@@ -1,0 +1,13 @@
+{
+  "name": "DeepL",
+  "url": "https://www.deepl.com",
+  "tags": ["translate"],
+  "category": "语言",
+  "description": "High quality translation",
+  "locale": ["en", "ru"],
+  "icon": "🌐",
+  "isFeatured": false,
+  "isNew": false,
+  "isInternational": true
+}
+

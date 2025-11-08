@@ -1,0 +1,15 @@
+{
+  "name": "ChatGPT",
+  "url": "https://chat.openai.com",
+  "tags": ["chat", "assistant"],
+  "category": "对话",
+  "description": "OpenAI conversational assistant",
+  "locale": ["en", "ru"],
+  "icon": "💬",
+  "isFeatured": true,
+  "isNew": false,
+  "isInternational": true
+}
+
+
+

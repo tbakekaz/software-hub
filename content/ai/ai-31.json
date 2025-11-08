@@ -1,0 +1,15 @@
+{
+  "name": "Pika",
+  "url": "https://pika.art",
+  "tags": ["video", "generation"],
+  "category": "视频",
+  "description": "Video generation and editing tool",
+  "locale": ["en"],
+  "icon": "🐰",
+  "isFeatured": false,
+  "isNew": false,
+  "isInternational": true
+}
+
+
+

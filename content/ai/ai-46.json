@@ -1,0 +1,16 @@
+{
+  "name": "Kore.ai",
+  "url": "https://kore.ai",
+  "tags": ["model", "enterprise"],
+  "category": "模型",
+  "description": "企业对话式 AI 智能平台",
+  "locale": ["en"],
+  "icon": "🟦",
+  "isFeatured": false,
+  "isNew": false,
+  "isInternational": true
+}
+
+
+
+

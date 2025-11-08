@@ -1,0 +1,109 @@
+{
+  "slug": "adobe-acrobat",
+  "name": "Adobe Acrobat",
+  "name_i18n": { "zh": "Adobe Acrobat", "en": "Adobe Acrobat", "ru": "Adobe Acrobat", "kk": "Adobe Acrobat" },
+  "version": "2025",
+  "platforms": ["windows", "macos"],
+  "category": "办公",
+  "category_i18n": {
+    "zh": "办公",
+    "en": "Office",
+    "ru": "Офис",
+    "kk": "Кеңсе"
+  },
+  "isDomestic": false,
+  "description": "专业 PDF 创建与编辑软件",
+  "description_i18n": {
+    "zh": "专业 PDF 创建与编辑软件",
+    "en": "Professional PDF creation and editing software",
+    "ru": "Профессиональное программное обеспечение для создания и редактирования PDF",
+    "kk": "Кәсіби PDF құру және өңдеу бағдарламасы"
+  },
+  "homepage": "https://www.adobe.com/products/acrobat.html",
+  "downloads": [
+    {
+      "version": "2025",
+      "platform": "windows",
+      "sources": [
+        { "type": "123pan", "url": "https://www.123865.com/s/0tNcTd-sufoH" },
+        { "type": "r2", "url": "https://your-r2-domain.com/acrobat-2025-win.exe" }
+      ]
+    },
+    {
+      "version": "2025",
+      "platform": "macos",
+      "sources": [
+        { "type": "123pan", "url": "https://www.123865.com/s/0tNcTd-cufoH" },
+        { "type": "r2", "url": "https://your-r2-domain.com/acrobat-2025-mac.dmg" }
+      ]
+    },
+    {
+      "version": "2024",
+      "platform": "windows",
+      "sources": [
+        { "type": "123pan", "url": "https://www.123865.com/s/0tNcTd-uufoH" },
+        { "type": "r2", "url": "https://your-r2-domain.com/acrobat-2024-win.exe" }
+      ]
+    },
+    {
+      "version": "2024",
+      "platform": "macos",
+      "sources": [
+        { "type": "123pan", "url": "https://www.123865.com/s/0tNcTd-ZufoH" },
+        { "type": "r2", "url": "https://your-r2-domain.com/acrobat-2024-mac.dmg" }
+      ]
+    },
+    {
+      "version": "2023",
+      "platform": "windows",
+      "sources": [
+        { "type": "123pan", "url": "https://www.123865.com/s/0tNcTd-UufoH" },
+        { "type": "r2", "url": "https://your-r2-domain.com/acrobat-2023-win.exe" }
+      ]
+    },
+    {
+      "version": "2023",
+      "platform": "macos",
+      "sources": [
+        { "type": "123pan", "url": "https://www.123865.com/s/0tNcTd-eufoH" },
+        { "type": "r2", "url": "https://your-r2-domain.com/acrobat-2023-mac.dmg" }
+      ]
+    },
+    {
+      "version": "2022",
+      "platform": "windows",
+      "sources": [
+        { "type": "123pan", "url": "https://www.123865.com/s/0tNcTd-SufoH" },
+        { "type": "r2", "url": "https://your-r2-domain.com/acrobat-2022-win.exe" }
+      ]
+    },
+    {
+      "version": "2022",
+      "platform": "macos",
+      "sources": [
+        { "type": "123pan", "url": "https://www.123865.com/s/0tNcTd-bufoH" },
+        { "type": "r2", "url": "https://your-r2-domain.com/acrobat-2022-mac.dmg" }
+      ]
+    },
+    {
+      "version": "2021",
+      "platform": "windows",
+      "sources": [
+        { "type": "123pan", "url": "https://www.123865.com/s/0tNcTd-lufoH" },
+        { "type": "r2", "url": "https://your-r2-domain.com/acrobat-2021-win.exe" }
+      ]
+    },
+    {
+      "version": "2021",
+      "platform": "macos",
+      "sources": [
+        { "type": "123pan", "url": "https://www.123pan.com/s/xxx-xxxxx" },
+        { "type": "r2", "url": "https://your-r2-domain.com/acrobat-2021-mac.dmg" }
+      ]
+    }
+  ],
+  "updatedAt": "2025-01-01"
+}
+
+
+

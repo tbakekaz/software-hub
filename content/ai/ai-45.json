@@ -1,0 +1,16 @@
+{
+  "name": "阿里云百炼",
+  "url": "https://bailian.console.aliyun.com/",
+  "tags": ["model", "platform"],
+  "category": "模型",
+  "description": "一站式大模型开发平台",
+  "locale": ["zh"],
+  "icon": "🅰️",
+  "isFeatured": false,
+  "isNew": false,
+  "isInternational": false
+}
+
+
+
+

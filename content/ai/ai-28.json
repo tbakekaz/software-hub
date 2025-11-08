@@ -1,0 +1,15 @@
+{
+  "name": "Stability AI",
+  "url": "https://stability.ai",
+  "tags": ["image", "models"],
+  "category": "图像",
+  "description": "Stable Diffusion and creative tools",
+  "locale": ["en"],
+  "icon": "🖌️",
+  "isFeatured": false,
+  "isNew": false,
+  "isInternational": true
+}
+
+
+

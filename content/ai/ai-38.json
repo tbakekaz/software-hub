@@ -1,0 +1,15 @@
+{
+  "name": "Adobe Podcast",
+  "url": "https://podcast.adobe.com",
+  "tags": ["audio", "editing"],
+  "category": "音频",
+  "description": "AI audio recording and editing",
+  "locale": ["en"],
+  "icon": "🎙️",
+  "isFeatured": false,
+  "isNew": false,
+  "isInternational": true
+}
+
+
+

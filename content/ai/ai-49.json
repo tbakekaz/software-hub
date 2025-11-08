@@ -1,0 +1,16 @@
+{
+  "name": "MoonShot AI",
+  "url": "https://moonshot.cn",
+  "tags": ["model", "chat"],
+  "category": "模型",
+  "description": "中国人工智能大语言模型",
+  "locale": ["zh"],
+  "icon": "🌙",
+  "isFeatured": false,
+  "isNew": false,
+  "isInternational": false
+}
+
+
+
+

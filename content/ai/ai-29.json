@@ -1,0 +1,15 @@
+{
+  "name": "Sora 2",
+  "url": "https://openai.com/sora",
+  "tags": ["video", "generation"],
+  "category": "视频",
+  "description": "Text-to-video generation by OpenAI",
+  "locale": ["en"],
+  "icon": "🎬",
+  "isFeatured": true,
+  "isNew": true,
+  "isInternational": true
+}
+
+
+

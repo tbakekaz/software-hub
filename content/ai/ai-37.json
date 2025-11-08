@@ -1,0 +1,15 @@
+{
+  "name": "ElevenLabs",
+  "url": "https://elevenlabs.io",
+  "tags": ["audio", "voice"],
+  "category": "音频",
+  "description": "AI voice synthesis and cloning",
+  "locale": ["en"],
+  "icon": "🗣️",
+  "isFeatured": false,
+  "isNew": false,
+  "isInternational": true
+}
+
+
+

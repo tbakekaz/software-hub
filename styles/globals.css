@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 222.2 84% 4.9%;
+  --primary: 221.2 83.2% 53.3%;
+  --accent: 210 40% 96.1%;
+}
+
+.dark {
+  --background: 222.2 84% 4.9%;
+  --foreground: 210 40% 98%;
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+  --ring: 212.7 26.8% 83.9%;
+  --primary: 217.2 91.2% 59.8%;
+  --accent: 217.2 32.6% 17.5%;
+}
+
+body {
+  @apply bg-background text-foreground;
+  background-image:
+    radial-gradient(60rem 30rem at 20% -10%, rgba(56, 189, 248, 0.15), transparent),
+    radial-gradient(50rem 25rem at 90% -10%, rgba(168, 85, 247, 0.12), transparent);
+  background-attachment: fixed;
+}
+
+
+
+

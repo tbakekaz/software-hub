@@ -1,0 +1,43 @@
+{
+  "slug": "adobe-lightroom",
+  "name": "Adobe Lightroom",
+  "name_i18n": { "zh": "Adobe Lightroom", "en": "Adobe Lightroom", "ru": "Adobe Lightroom", "kk": "Adobe Lightroom" },
+  "version": "2024",
+  "platforms": ["windows", "macos"],
+  "category": "设计",
+  "category_i18n": {
+    "zh": "设计",
+    "en": "Design",
+    "ru": "Дизайн",
+    "kk": "Дизайн"
+  },
+  "isDomestic": false,
+  "description": "专业照片管理与后期处理软件",
+  "description_i18n": {
+    "zh": "专业照片管理与后期处理软件",
+    "en": "Professional photo management and editing software",
+    "ru": "Профессиональное программное обеспечение для управления и редактирования фотографий",
+    "kk": "Кәсіби фотосуреттерді басқару және өңдеу бағдарламасы"
+  },
+  "homepage": "https://www.adobe.com/products/photoshop-lightroom.html",
+  "downloads": [
+    {
+      "platform": "windows",
+      "sources": [
+        { "type": "123pan", "url": "https://www.123pan.com/s/xxx-xxxxx" },
+        { "type": "r2", "url": "https://your-r2-domain.com/lightroom-win.exe" }
+      ]
+    },
+    {
+      "platform": "macos",
+      "sources": [
+        { "type": "123pan", "url": "https://www.123pan.com/s/xxx-xxxxx" },
+        { "type": "r2", "url": "https://your-r2-domain.com/lightroom-mac.dmg" }
+      ]
+    }
+  ],
+  "updatedAt": "2025-01-01"
+}
+
+
+

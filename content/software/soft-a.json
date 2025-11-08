@@ -1,0 +1,37 @@
+{
+  "slug": "soft-a",
+  "name": "Adobe Soft",
+  "name_i18n": { "zh": "Adobe Soft", "en": "Adobe Soft", "ru": "Adobe Soft", "kk": "Adobe Soft" },
+  "version": "1.2.3",
+  "platforms": ["windows", "macos"],
+  "category": "工具",
+  "category_i18n": {
+    "zh": "工具",
+    "en": "Tools",
+    "ru": "Инструменты",
+    "kk": "Құралдар"
+  },
+  "isDomestic": false,
+  "description": "Adobe 软件工具。",
+  "description_i18n": { "zh": "Adobe 软件工具。", "en": "Adobe software tool.", "ru": "Инструмент Adobe.", "kk": "Adobe бағдарламалық құралы." },
+  "homepage": "https://sqp1tcbdlah.feishu.cn/docx/D5modasndoH9bnxuFVscLbgEnih",
+  "downloads": [
+    {
+      "platform": "windows",
+      "sources": [
+        { "type": "123pan", "url": "https://www.123pan.com/s/xxx-xxxxx" },
+        { "type": "r2", "url": "https://your-r2-domain.com/soft-a-win.exe" }
+      ]
+    },
+    {
+      "platform": "macos",
+      "sources": [
+        { "type": "123pan", "url": "https://www.123pan.com/s/xxx-xxxxx" },
+        { "type": "r2", "url": "https://your-r2-domain.com/soft-a-mac.dmg" }
+      ]
+    }
+  ],
+  "updatedAt": "2025-11-01"
+}
+
+

@@ -1,0 +1,16 @@
+{
+  "name": "MiniMax",
+  "url": "https://api.minimax.chat/",
+  "tags": ["model", "api"],
+  "category": "模型",
+  "description": "开发者友好的大模型和AI服务",
+  "locale": ["zh"],
+  "icon": "🟣",
+  "isFeatured": false,
+  "isNew": false,
+  "isInternational": false
+}
+
+
+
+

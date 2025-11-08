@@ -1,0 +1,15 @@
+{
+  "name": "ImageForge",
+  "name_i18n": { "zh": "ImageForge", "en": "ImageForge", "ru": "ImageForge", "kk": "ImageForge" },
+  "url": "https://imageforge.example.com",
+  "tags": ["image", "generation"],
+  "category": "图像",
+  "description": "文本生成图像",
+  "description_i18n": { "zh": "文本生成图像", "en": "Text-to-image", "ru": "Текст-в-изображение", "kk": "Мәтіннен сурет" },
+  "locale": ["en", "zh"],
+  "icon": "🖼️",
+  "isFeatured": false,
+  "isNew": false
+}
+
+

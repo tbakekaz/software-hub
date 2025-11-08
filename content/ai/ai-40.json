@@ -1,0 +1,16 @@
+{
+  "name": "OpenAI",
+  "url": "https://openai.com",
+  "tags": ["model", "chat"],
+  "category": "模型",
+  "description": "全球通用型大模型平台",
+  "locale": ["en"],
+  "icon": "🤖",
+  "isFeatured": true,
+  "isNew": false,
+  "isInternational": true
+}
+
+
+
+

@@ -1,0 +1,13 @@
+{
+  "name": "Suno",
+  "url": "https://suno.ai",
+  "tags": ["audio", "music"],
+  "category": "音频",
+  "description": "AI music creation tool",
+  "locale": ["en"],
+  "icon": "🎵",
+  "isFeatured": true,
+  "isNew": false,
+  "isInternational": true
+}
+

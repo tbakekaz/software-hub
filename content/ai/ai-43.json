@@ -1,0 +1,16 @@
+{
+  "name": "Mistral AI",
+  "url": "https://mistral.ai",
+  "tags": ["model", "open-source"],
+  "category": "模型",
+  "description": "开源 LLM 模型提供方",
+  "locale": ["en"],
+  "icon": "🌪️",
+  "isFeatured": false,
+  "isNew": false,
+  "isInternational": true
+}
+
+
+
+

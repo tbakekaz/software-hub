@@ -1,0 +1,15 @@
+{
+  "name": "OpenRouter",
+  "url": "https://openrouter.ai",
+  "tags": ["models", "api"],
+  "category": "模型",
+  "description": "Unified API gateway for multiple LLMs",
+  "locale": ["en"],
+  "icon": "🛣️",
+  "isFeatured": false,
+  "isNew": false,
+  "isInternational": true
+}
+
+
+

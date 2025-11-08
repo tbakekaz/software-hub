@@ -1,0 +1,15 @@
+{
+  "name": "FakeYou",
+  "url": "https://fakeyou.com",
+  "tags": ["audio", "voice"],
+  "category": "音频",
+  "description": "AI voice generator for creating voiceovers",
+  "locale": ["en"],
+  "icon": "🎭",
+  "isFeatured": false,
+  "isNew": false,
+  "isInternational": true
+}
+
+
+

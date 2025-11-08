@@ -1,0 +1,25 @@
+{
+  "slug": "soft-b",
+  "name": "Soft B",
+  "name_i18n": { "zh": "软甲B", "en": "Soft B", "ru": "Софт B", "kk": "Soft B" },
+  "version": "5.4.0",
+  "platforms": ["android", "ios"],
+  "category": "效率",
+  "category_i18n": {
+    "zh": "效率",
+    "en": "Productivity",
+    "ru": "Продуктивность",
+    "kk": "Өнімділік"
+  },
+  "isDomestic": false,
+  "description": "跨平台效率应用。",
+  "description_i18n": { "zh": "跨平台效率应用。", "en": "Cross-platform productivity app.", "ru": "Кроссплатформенное приложение продуктивности.", "kk": "Көпплатформалы өнімділік қосымшасы." },
+  "homepage": "https://example.com/soft-b",
+  "downloads": [
+    { "platform": "android", "url": "https://play.google.com/store/apps/details?id=softb" },
+    { "platform": "ios", "url": "https://apps.apple.com/app/id123456" }
+  ],
+  "updatedAt": "2025-10-25"
+}
+
+

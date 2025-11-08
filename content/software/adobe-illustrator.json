@@ -1,0 +1,43 @@
+{
+  "slug": "adobe-illustrator",
+  "name": "Adobe Illustrator",
+  "name_i18n": { "zh": "Adobe Illustrator", "en": "Adobe Illustrator", "ru": "Adobe Illustrator", "kk": "Adobe Illustrator" },
+  "version": "2024",
+  "platforms": ["windows", "macos"],
+  "category": "设计",
+  "category_i18n": {
+    "zh": "设计",
+    "en": "Design",
+    "ru": "Дизайн",
+    "kk": "Дизайн"
+  },
+  "isDomestic": false,
+  "description": "专业矢量图形设计软件",
+  "description_i18n": {
+    "zh": "专业矢量图形设计软件",
+    "en": "Professional vector graphics design software",
+    "ru": "Профессиональное программное обеспечение для векторной графики",
+    "kk": "Кәсіби векторлық графика дизайны бағдарламасы"
+  },
+  "homepage": "https://www.adobe.com/products/illustrator.html",
+  "downloads": [
+    {
+      "platform": "windows",
+      "sources": [
+        { "type": "123pan", "url": "https://www.123pan.com/s/xxx-xxxxx" },
+        { "type": "r2", "url": "https://your-r2-domain.com/illustrator-win.exe" }
+      ]
+    },
+    {
+      "platform": "macos",
+      "sources": [
+        { "type": "123pan", "url": "https://www.123pan.com/s/xxx-xxxxx" },
+        { "type": "r2", "url": "https://your-r2-domain.com/illustrator-mac.dmg" }
+      ]
+    }
+  ],
+  "updatedAt": "2025-01-01"
+}
+
+
+

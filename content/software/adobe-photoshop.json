@@ -1,0 +1,59 @@
+{
+  "slug": "adobe-photoshop",
+  "name": "Adobe Photoshop",
+  "name_i18n": { "zh": "Adobe Photoshop", "en": "Adobe Photoshop", "ru": "Adobe Photoshop", "kk": "Adobe Photoshop" },
+  "version": "2024",
+  "platforms": ["windows", "macos"],
+  "category": "设计",
+  "category_i18n": {
+    "zh": "设计",
+    "en": "Design",
+    "ru": "Дизайн",
+    "kk": "Дизайн"
+  },
+  "isDomestic": false,
+  "description": "专业图像编辑与合成软件",
+  "description_i18n": {
+    "zh": "专业图像编辑与合成软件",
+    "en": "Professional image editing and compositing software",
+    "ru": "Профессиональное программное обеспечение для редактирования и композитинга изображений",
+    "kk": "Кәсіби суреттерді өңдеу және композициялау бағдарламасы"
+  },
+  "homepage": "https://www.adobe.com/products/photoshop.html",
+  "downloads": [
+    {
+      "version": "2024",
+      "platform": "windows",
+      "sources": [
+        { "type": "123pan", "url": "https://www.123pan.com/s/xxx-xxxxx" },
+        { "type": "r2", "url": "https://your-r2-domain.com/photoshop-2024-win.exe" }
+      ]
+    },
+    {
+      "version": "2024",
+      "platform": "macos",
+      "sources": [
+        { "type": "123pan", "url": "https://www.123pan.com/s/xxx-xxxxx" },
+        { "type": "r2", "url": "https://your-r2-domain.com/photoshop-2024-mac.dmg" }
+      ]
+    },
+    {
+      "version": "2023",
+      "platform": "windows",
+      "sources": [
+        { "type": "123pan", "url": "https://www.123pan.com/s/xxx-xxxxx" },
+        { "type": "r2", "url": "https://your-r2-domain.com/photoshop-2023-win.exe" }
+      ]
+    },
+    {
+      "version": "2023",
+      "platform": "macos",
+      "sources": [
+        { "type": "123pan", "url": "https://www.123pan.com/s/xxx-xxxxx" },
+        { "type": "r2", "url": "https://your-r2-domain.com/photoshop-2023-mac.dmg" }
+      ]
+    }
+  ],
+  "updatedAt": "2025-01-01"
+}
+

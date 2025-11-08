@@ -1,0 +1,15 @@
+{
+  "name": "Grammarly",
+  "url": "https://www.grammarly.com",
+  "tags": ["writing", "grammar"],
+  "category": "办公",
+  "description": "Writing assistant and grammar checker",
+  "locale": ["en"],
+  "icon": "✍️",
+  "isFeatured": false,
+  "isNew": false,
+  "isInternational": true
+}
+
+
+

@@ -1,0 +1,43 @@
+{
+  "slug": "adobe-after-effects",
+  "name": "Adobe After Effects",
+  "name_i18n": { "zh": "Adobe After Effects", "en": "Adobe After Effects", "ru": "Adobe After Effects", "kk": "Adobe After Effects" },
+  "version": "2024",
+  "platforms": ["windows", "macos"],
+  "category": "视频",
+  "category_i18n": {
+    "zh": "视频",
+    "en": "Video",
+    "ru": "Видео",
+    "kk": "Бейне"
+  },
+  "isDomestic": false,
+  "description": "专业视频特效与动画制作软件",
+  "description_i18n": {
+    "zh": "专业视频特效与动画制作软件",
+    "en": "Professional motion graphics and visual effects software",
+    "ru": "Профессиональное программное обеспечение для моушн-графики и визуальных эффектов",
+    "kk": "Кәсіби қозғалыс графикасы және визуалды эффекттер бағдарламасы"
+  },
+  "homepage": "https://www.adobe.com/products/aftereffects.html",
+  "downloads": [
+    {
+      "platform": "windows",
+      "sources": [
+        { "type": "123pan", "url": "https://www.123pan.com/s/xxx-xxxxx" },
+        { "type": "r2", "url": "https://your-r2-domain.com/after-effects-win.exe" }
+      ]
+    },
+    {
+      "platform": "macos",
+      "sources": [
+        { "type": "123pan", "url": "https://www.123pan.com/s/xxx-xxxxx" },
+        { "type": "r2", "url": "https://your-r2-domain.com/after-effects-mac.dmg" }
+      ]
+    }
+  ],
+  "updatedAt": "2025-01-01"
+}
+
+
+

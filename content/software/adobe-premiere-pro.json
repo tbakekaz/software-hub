@@ -1,0 +1,43 @@
+{
+  "slug": "adobe-premiere-pro",
+  "name": "Adobe Premiere Pro",
+  "name_i18n": { "zh": "Adobe Premiere Pro", "en": "Adobe Premiere Pro", "ru": "Adobe Premiere Pro", "kk": "Adobe Premiere Pro" },
+  "version": "2024",
+  "platforms": ["windows", "macos"],
+  "category": "视频",
+  "category_i18n": {
+    "zh": "视频",
+    "en": "Video",
+    "ru": "Видео",
+    "kk": "Бейне"
+  },
+  "isDomestic": false,
+  "description": "专业视频剪辑软件",
+  "description_i18n": {
+    "zh": "专业视频剪辑软件",
+    "en": "Professional video editing software",
+    "ru": "Профессиональное программное обеспечение для редактирования видео",
+    "kk": "Кәсіби бейне өңдеу бағдарламасы"
+  },
+  "homepage": "https://www.adobe.com/products/premiere.html",
+  "downloads": [
+    {
+      "platform": "windows",
+      "sources": [
+        { "type": "123pan", "url": "https://www.123pan.com/s/xxx-xxxxx" },
+        { "type": "r2", "url": "https://your-r2-domain.com/premiere-win.exe" }
+      ]
+    },
+    {
+      "platform": "macos",
+      "sources": [
+        { "type": "123pan", "url": "https://www.123pan.com/s/xxx-xxxxx" },
+        { "type": "r2", "url": "https://your-r2-domain.com/premiere-mac.dmg" }
+      ]
+    }
+  ],
+  "updatedAt": "2025-01-01"
+}
+
+
+

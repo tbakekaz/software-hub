@@ -1,0 +1,16 @@
+{
+  "name": "Claude 3.7 Sonnet",
+  "url": "https://claude.ai",
+  "tags": ["model", "chat"],
+  "category": "模型",
+  "description": "Anthropic 高性能通用模型",
+  "locale": ["en"],
+  "icon": "🧠",
+  "isFeatured": true,
+  "isNew": false,
+  "isInternational": true
+}
+
+
+
+

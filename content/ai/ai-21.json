@@ -1,0 +1,15 @@
+{
+  "name": "GitHub Copilot",
+  "url": "https://github.com/features/copilot",
+  "tags": ["code", "assistant"],
+  "category": "开发",
+  "description": "AI pair programmer",
+  "locale": ["en"],
+  "icon": "👨‍💻",
+  "isFeatured": true,
+  "isNew": false,
+  "isInternational": true
+}
+
+
+

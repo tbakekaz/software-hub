@@ -1,0 +1,15 @@
+{
+  "name": "Stable Audio",
+  "url": "https://stability.ai/stable-audio",
+  "tags": ["audio", "music"],
+  "category": "音频",
+  "description": "Generate music and sound effects from text",
+  "locale": ["en"],
+  "icon": "🎼",
+  "isFeatured": false,
+  "isNew": false,
+  "isInternational": true
+}
+
+
+

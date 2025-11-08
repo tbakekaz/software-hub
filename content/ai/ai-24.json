@@ -1,0 +1,15 @@
+{
+  "name": "Poe",
+  "url": "https://poe.com",
+  "tags": ["chat", "bots"],
+  "category": "对话",
+  "description": "Multi-bot chat platform",
+  "locale": ["en"],
+  "icon": "💬",
+  "isFeatured": false,
+  "isNew": false,
+  "isInternational": true
+}
+
+
+

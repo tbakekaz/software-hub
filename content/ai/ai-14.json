@@ -1,0 +1,15 @@
+{
+  "name": "Gemini",
+  "url": "https://gemini.google.com",
+  "tags": ["chat", "search"],
+  "category": "对话",
+  "description": "Google AI assistant",
+  "locale": ["en"],
+  "icon": "🌐",
+  "isFeatured": true,
+  "isNew": false,
+  "isInternational": true
+}
+
+
+

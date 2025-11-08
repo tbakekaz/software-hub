@@ -1,0 +1,15 @@
+{
+  "name": "Claude",
+  "url": "https://claude.ai",
+  "tags": ["chat", "writing"],
+  "category": "对话",
+  "description": "Anthropic conversational AI",
+  "locale": ["en"],
+  "icon": "🤖",
+  "isFeatured": true,
+  "isNew": false,
+  "isInternational": true
+}
+
+
+

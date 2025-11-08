@@ -1,0 +1,15 @@
+{
+  "name": "Perplexity",
+  "url": "https://www.perplexity.ai",
+  "tags": ["search", "chat"],
+  "category": "搜索",
+  "description": "Answer engine with web citations",
+  "locale": ["en"],
+  "icon": "🔎",
+  "isFeatured": false,
+  "isNew": false,
+  "isInternational": true
+}
+
+
+

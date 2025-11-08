@@ -1,0 +1,15 @@
+{
+  "name": "Hugging Face",
+  "url": "https://huggingface.co",
+  "tags": ["models", "community"],
+  "category": "模型",
+  "description": "AI models, datasets and community",
+  "locale": ["en"],
+  "icon": "🤗",
+  "isFeatured": false,
+  "isNew": false,
+  "isInternational": true
+}
+
+
+
