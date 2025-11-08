@@ -3,13 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import matter from 'gray-matter';
 
-// 检测是否在 Edge Runtime 中运行
-// 在 Edge Runtime 中，fs 模块不可用
-const isEdgeRuntime = 
-  typeof EdgeRuntime !== 'undefined' ||
-  (typeof process !== 'undefined' && process.env?.NEXT_RUNTIME === 'edge');
-
-// 在 Edge Runtime 中，尝试导入预生成的数据
+// 尝试导入预生成的数据（在构建时生成）
 let generatedContent: {
   allSoftware?: any[];
   allTutorials?: Array<{ meta: any; content: string }>;
@@ -17,20 +11,24 @@ let generatedContent: {
   allAI?: any[];
 } = {};
 
-// 在非 Edge Runtime 中，尝试使用 require（Node.js 环境）
-if (!isEdgeRuntime) {
-  try {
-    const generated = require('./generated/content');
-    generatedContent = {
-      allSoftware: generated.allSoftware,
-      allTutorials: generated.allTutorials,
-      allTutorialsMeta: generated.allTutorialsMeta,
-      allAI: generated.allAI,
-    };
-  } catch {
-    // 如果文件不存在（开发环境），generatedContent 保持为空对象
-  }
+try {
+  // 尝试导入预生成的数据（在构建时可用）
+  const generated = require('./generated/content');
+  generatedContent = {
+    allSoftware: generated.allSoftware,
+    allTutorials: generated.allTutorials,
+    allTutorialsMeta: generated.allTutorialsMeta,
+    allAI: generated.allAI,
+  };
+} catch {
+  // 如果文件不存在（开发环境或首次构建），generatedContent 保持为空对象
 }
+
+// 检测是否在 Edge Runtime 中运行
+// 在 Edge Runtime 中，fs 模块不可用
+const isEdgeRuntime = 
+  typeof EdgeRuntime !== 'undefined' ||
+  (typeof process !== 'undefined' && process.env?.NEXT_RUNTIME === 'edge');
 
 const root = process.cwd();
 
