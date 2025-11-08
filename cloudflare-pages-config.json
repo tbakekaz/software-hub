@@ -1,0 +1,16 @@
+{
+  "build": {
+    "command": "npm install && npm run build && npm run pages:build",
+    "output_directory": ".vercel/output/static",
+    "root_directory": "/"
+  },
+  "compatibility_flags": {
+    "production": ["nodejs_compat"],
+    "preview": ["nodejs_compat"]
+  },
+  "environment_variables": {
+    "NODE_VERSION": "18",
+    "NODE_ENV": "production"
+  }
+}
+

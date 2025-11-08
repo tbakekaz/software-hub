@@ -9,5 +9,13 @@ compatibility_flags = ["nodejs_compat"]
 
 [env.production.vars]
 NODE_ENV = "production"
+NODE_VERSION = "18"
+
+[env.preview]
+compatibility_flags = ["nodejs_compat"]
+
+[env.preview.vars]
+NODE_ENV = "production"
+NODE_VERSION = "18"
 
 

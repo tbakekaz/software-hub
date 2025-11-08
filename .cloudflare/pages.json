@@ -1,0 +1,7 @@
+{
+  "compatibility_flags": {
+    "production": ["nodejs_compat"],
+    "preview": ["nodejs_compat"]
+  }
+}
+
