@@ -3,25 +3,17 @@
 
 import type { Software, TutorialMeta, AIItem } from './content';
 
-// 导入预生成的数据
-let generatedContent: {
-  allSoftware?: Software[];
-  allTutorials?: Array<{ meta: TutorialMeta; content: string }>;
-  allTutorialsMeta?: TutorialMeta[];
-  allAI?: AIItem[];
-} = {};
+// 静态导入预生成的数据（在构建时解析，Edge Runtime 支持）
+// 注意：如果文件不存在，构建会失败，这是预期的行为
+import * as generated from './generated/content';
 
-try {
-  const generated = require('./generated/content');
-  generatedContent = {
-    allSoftware: generated.allSoftware,
-    allTutorials: generated.allTutorials,
-    allTutorialsMeta: generated.allTutorialsMeta,
-    allAI: generated.allAI,
-  };
-} catch {
-  // 如果文件不存在，返回空数据
-}
+// 使用导入的数据，提供默认值以防万一
+const generatedContent = {
+  allSoftware: generated.allSoftware || [],
+  allTutorials: generated.allTutorials || [],
+  allTutorialsMeta: generated.allTutorialsMeta || [],
+  allAI: generated.allAI || [],
+};
 
 export function getAllSoftware(): Software[] {
   return generatedContent.allSoftware || [];
