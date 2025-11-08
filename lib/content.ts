@@ -27,7 +27,7 @@ try {
 // 检测是否在 Edge Runtime 中运行
 // 在 Edge Runtime 中，fs 模块不可用
 const isEdgeRuntime = 
-  typeof EdgeRuntime !== 'undefined' ||
+  (typeof globalThis !== 'undefined' && 'EdgeRuntime' in globalThis) ||
   (typeof process !== 'undefined' && process.env?.NEXT_RUNTIME === 'edge');
 
 const root = process.cwd();
