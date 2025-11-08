@@ -166,6 +166,7 @@ export type AIItem = {
   icon: string;
   isFeatured?: boolean;
   isNew?: boolean;
+  isInternational?: boolean;
 };
 
 export function getAllAI(): AIItem[] {
