@@ -5,13 +5,19 @@ import { TutorialCard } from '@/components/TutorialCard';
 import { AIItemCard } from '@/components/AIItemCard';
 import { MonetizeSlot } from '@/components/MonetizeSlot';
 import { getDictionary } from '@/lib/i18n/server';
+import type { Software, TutorialMeta, AIItem } from '@/lib/content';
+import type { Lang } from '@/lib/i18n';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'edge';
 
 export default async function HomePage() {
   // 添加错误处理，确保页面始终可以渲染
-  let dict, lang, software, tutorials, ai;
+  let dict: Awaited<ReturnType<typeof getDictionary>>['dict'];
+  let lang: Lang;
+  let software: Software[];
+  let tutorials: TutorialMeta[];
+  let ai: AIItem[];
   
   try {
     const result = await getDictionary();
