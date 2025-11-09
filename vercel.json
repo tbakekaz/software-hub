@@ -2,6 +2,7 @@
   "buildCommand": "pnpm build",
   "installCommand": "pnpm install",
   "framework": "nextjs",
-  "nodeVersion": "20.x"
+  "nodeVersion": "20.x",
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD ."
 }
 
