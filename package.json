@@ -42,7 +42,8 @@
     "wrangler": "^4.46.0"
   },
   "engines": {
-    "node": ">=18.18.0",
+    "node": ">=20.16.0",
     "pnpm": ">=8"
-  }
+  },
+  "packageManager": "pnpm@10.11.1"
 }
