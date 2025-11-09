@@ -1,24 +1,38 @@
-// 临时移除 CSS 导入，测试是否是 CSS 导致的问题
-// import '../styles/globals.css';
+import '../styles/globals.css';
 import type { Metadata } from 'next';
+import { siteConfig } from '@/config/site';
+import { getCurrentLang } from '@/lib/i18n/server';
 
-// 完全最小化的 layout，不依赖任何外部模块
 export const metadata: Metadata = {
   title: {
-    default: 'Software Hub',
-    template: '%s | Software Hub'
+    default: siteConfig.name,
+    template: `%s | ${siteConfig.name}`
   },
-  description: '常用软件集合、AI 导航与 KZT 汇率。',
+  description: siteConfig.description,
+  openGraph: {
+    title: siteConfig.name,
+    description: siteConfig.description,
+    url: siteConfig.url,
+    siteName: siteConfig.name,
+    locale: 'zh_CN',
+    type: 'website'
+  }
 };
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'edge';
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  // 完全移除所有可能出错的代码，包括 CSS 和 className
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  // 添加错误处理，确保 layout 始终可以渲染
+  let lang: string = 'zh';
+  try {
+    lang = await getCurrentLang();
+  } catch (error) {
+    // 如果获取语言失败，使用默认值
+  }
   return (
-    <html lang="zh" suppressHydrationWarning>
-      <body style={{ margin: 0, padding: 0 }}>
+    <html lang={lang} suppressHydrationWarning>
+      <body className="min-h-screen bg-background text-foreground">
         {children}
       </body>
     </html>
