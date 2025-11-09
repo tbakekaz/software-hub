@@ -4,8 +4,14 @@ import PricingClient from './PricingClient';
 export const runtime = 'edge';
 
 export default async function PricingPage() {
-  const { dict } = await getDictionary();
-  return <PricingClient labels={dict.pricing} />;
+  try {
+    const { dict } = await getDictionary();
+    return <PricingClient labels={dict.pricing} />;
+  } catch (error: any) {
+    console.error('[PricingPage] Error:', error);
+    const fallback = await getDictionary();
+    return <PricingClient labels={fallback.dict.pricing} />;
+  }
 }
 
 
