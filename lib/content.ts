@@ -1,34 +1,20 @@
 // 在 Edge Runtime 中使用预生成的数据，在开发环境使用文件系统
+// 注意：在 Edge Runtime 中，应该使用 lib/content-edge.ts 而不是此文件
+// 此文件主要用于类型导出和开发环境的文件系统访问
+
 import fs from 'node:fs';
 import path from 'node:path';
 import matter from 'gray-matter';
-
-// 尝试导入预生成的数据（在构建时生成）
-let generatedContent: {
-  allSoftware?: any[];
-  allTutorials?: Array<{ meta: any; content: string }>;
-  allTutorialsMeta?: any[];
-  allAI?: any[];
-} = {};
-
-try {
-  // 尝试导入预生成的数据（在构建时可用）
-  const generated = require('./generated/content');
-  generatedContent = {
-    allSoftware: generated.allSoftware,
-    allTutorials: generated.allTutorials,
-    allTutorialsMeta: generated.allTutorialsMeta,
-    allAI: generated.allAI,
-  };
-} catch {
-  // 如果文件不存在（开发环境或首次构建），generatedContent 保持为空对象
-}
 
 // 检测是否在 Edge Runtime 中运行
 // 在 Edge Runtime 中，fs 模块不可用
 const isEdgeRuntime = 
   (typeof globalThis !== 'undefined' && 'EdgeRuntime' in globalThis) ||
   (typeof process !== 'undefined' && process.env?.NEXT_RUNTIME === 'edge');
+
+// 注意：不再在顶层尝试导入生成的内容
+// 在 Edge Runtime 中，应该使用 lib/content-edge.ts
+// 在开发环境中，直接使用文件系统即可
 
 const root = process.cwd();
 
@@ -64,21 +50,13 @@ export type Software = {
 };
 
 export function getAllSoftware(): Software[] {
-  // 在 Edge Runtime 中，必须使用预生成数据
+  // 在 Edge Runtime 中，不应该使用此函数
+  // 应该使用 lib/content-edge.ts 中的函数
   if (isEdgeRuntime) {
-    // 在 Edge Runtime 中，使用动态导入（异步，但 Next.js 会处理）
-    // 注意：这需要在构建时确保文件存在
-    if (generatedContent.allSoftware) {
-      return generatedContent.allSoftware as Software[];
-    }
-    // 如果数据未加载，返回空数组（不应该发生，因为构建时会生成）
+    // 返回空数组，因为 Edge Runtime 应该使用 content-edge.ts
     return [];
   }
-  // 在 Node.js 环境中，优先使用预生成数据（如果存在）
-  if (generatedContent.allSoftware && generatedContent.allSoftware.length > 0) {
-    return generatedContent.allSoftware as Software[];
-  }
-  // 否则使用文件系统（开发环境）
+  // 在 Node.js 环境中，使用文件系统（开发环境）
   const dir = path.join(root, 'content/software');
   const files = fs.readdirSync(dir).filter((f) => f.endsWith('.json'));
   return files
@@ -88,11 +66,9 @@ export function getAllSoftware(): Software[] {
 
 export function getSoftware(slug: string): Software | null {
   if (isEdgeRuntime) {
-    const all = getAllSoftware();
-    return all.find((s) => s.slug === slug) || null;
-  }
-  if (generatedContent.allSoftware && generatedContent.allSoftware.length > 0) {
-    return (generatedContent.allSoftware as Software[]).find((s) => s.slug === slug) || null;
+    // 在 Edge Runtime 中，不应该使用此函数
+    // 应该使用 lib/content-edge.ts 中的函数
+    return null;
   }
   const p = path.join(root, 'content/software', `${slug}.json`);
   if (!fs.existsSync(p)) return null;
@@ -112,13 +88,9 @@ export type TutorialMeta = {
 
 export function getAllTutorials(): TutorialMeta[] {
   if (isEdgeRuntime) {
-    if (generatedContent.allTutorialsMeta) {
-      return generatedContent.allTutorialsMeta as TutorialMeta[];
-    }
+    // 在 Edge Runtime 中，不应该使用此函数
+    // 应该使用 lib/content-edge.ts 中的函数
     return [];
-  }
-  if (generatedContent.allTutorialsMeta && generatedContent.allTutorialsMeta.length > 0) {
-    return generatedContent.allTutorialsMeta as TutorialMeta[];
   }
   const dir = path.join(root, 'content/tutorials');
   const files = fs.readdirSync(dir).filter((f) => f.endsWith('.mdx'));
@@ -133,19 +105,9 @@ export function getAllTutorials(): TutorialMeta[] {
 
 export function getTutorialBySlug(slug: string) {
   if (isEdgeRuntime) {
-    if (generatedContent.allTutorials) {
-      const tutorials = generatedContent.allTutorials as Array<{ meta: TutorialMeta; content: string }>;
-      const tutorial = tutorials.find((t) => t.meta.slug === slug);
-      if (!tutorial) return null;
-      return { content: tutorial.content, meta: tutorial.meta as TutorialMeta };
-    }
+    // 在 Edge Runtime 中，不应该使用此函数
+    // 应该使用 lib/content-edge.ts 中的函数
     return null;
-  }
-  if (generatedContent.allTutorials && generatedContent.allTutorials.length > 0) {
-    const tutorials = generatedContent.allTutorials as Array<{ meta: TutorialMeta; content: string }>;
-    const tutorial = tutorials.find((t) => t.meta.slug === slug);
-    if (!tutorial) return null;
-    return { content: tutorial.content, meta: tutorial.meta as TutorialMeta };
   }
   const p = path.join(root, 'content/tutorials', `${slug}.mdx`);
   if (!fs.existsSync(p)) return null;
@@ -171,13 +133,9 @@ export type AIItem = {
 
 export function getAllAI(): AIItem[] {
   if (isEdgeRuntime) {
-    if (generatedContent.allAI) {
-      return generatedContent.allAI as AIItem[];
-    }
+    // 在 Edge Runtime 中，不应该使用此函数
+    // 应该使用 lib/content-edge.ts 中的函数
     return [];
-  }
-  if (generatedContent.allAI && generatedContent.allAI.length > 0) {
-    return generatedContent.allAI as AIItem[];
   }
   const dir = path.join(root, 'content/ai');
   const files = fs.readdirSync(dir).filter((f) => f.endsWith('.json'));
