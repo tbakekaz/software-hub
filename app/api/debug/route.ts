@@ -44,13 +44,21 @@ export async function GET() {
       tests.tests.cookies = `error: ${error.message}`;
     }
 
-    return Response.json(tests, { status: 200 });
+    const body = JSON.stringify(tests);
+    return new Response(body, {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
   } catch (error: any) {
-    return Response.json({
+    const body = JSON.stringify({
       error: error.message,
       stack: error.stack,
       timestamp: new Date().toISOString(),
-    }, { status: 500 });
+    });
+    return new Response(body, {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 }
 

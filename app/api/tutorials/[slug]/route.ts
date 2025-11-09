@@ -1,5 +1,4 @@
 import { getTutorialBySlug } from '@/lib/content-edge';
-import { NextResponse } from 'next/server';
 
 export const runtime = 'edge';
 
@@ -12,16 +11,27 @@ export async function GET(
     const data = getTutorialBySlug(slug);
     
     if (!data) {
-      return NextResponse.json({ error: 'Tutorial not found' }, { status: 404 });
+      const body = JSON.stringify({ error: 'Tutorial not found' });
+      return new Response(body, {
+        status: 404,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
-    return NextResponse.json({ content: data.content });
+    const body = JSON.stringify({ content: data.content });
+    return new Response(body, {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    });
   } catch (error: any) {
-    console.error('[API] Error fetching tutorial:', error);
-    return NextResponse.json(
-      { error: 'Internal server error', message: error?.message || 'Unknown error' },
-      { status: 500 }
-    );
+    const body = JSON.stringify({
+      error: 'Internal server error',
+      message: error?.message || 'Unknown error'
+    });
+    return new Response(body, {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 }
 

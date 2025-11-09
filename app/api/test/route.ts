@@ -2,18 +2,19 @@
 export const runtime = 'edge';
 
 export async function GET() {
-  try {
-    return Response.json({
-      success: true,
-      timestamp: new Date().toISOString(),
-      runtime: 'edge',
-      message: '✅ 基本 API 功能正常'
-    }, { status: 200 });
-  } catch (error: any) {
-    return Response.json({
-      error: error.message,
-      timestamp: new Date().toISOString(),
-    }, { status: 500 });
-  }
+  // 直接返回 Response，不使用 Response.json，避免可能的动态 import
+  const body = JSON.stringify({
+    success: true,
+    timestamp: new Date().toISOString(),
+    runtime: 'edge',
+    message: '✅ 基本 API 功能正常'
+  });
+  
+  return new Response(body, {
+    status: 200,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 }
 
