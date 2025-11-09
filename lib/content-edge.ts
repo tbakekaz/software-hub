@@ -1,7 +1,8 @@
 // Edge Runtime 专用的内容加载器（不使用文件系统）
 // 此文件仅用于 Edge Runtime，从预生成的数据读取
 
-import type { Software, TutorialMeta, AIItem } from './content';
+// 注意：不导入 lib/content.ts 的类型，因为它包含 Node.js 模块导入
+// 直接从生成的 content.ts 导入类型定义
 
 // 使用静态 ES6 import（在构建时解析，Edge Runtime 完全支持）
 // 如果文件不存在，构建会失败，这是预期的行为
@@ -11,6 +12,55 @@ import {
   allTutorialsMeta as _allTutorialsMeta,
   allAI as _allAI,
 } from './generated/content';
+
+// 定义类型（避免导入 lib/content.ts）
+export type Software = {
+  slug: string;
+  name: string;
+  name_i18n?: { zh?: string; kk?: string; ru?: string; en?: string };
+  version: string;
+  platforms: string[];
+  category: string;
+  category_i18n?: { zh?: string; kk?: string; ru?: string; en?: string };
+  isDomestic: boolean;
+  description: string;
+  description_i18n?: { zh?: string; kk?: string; ru?: string; en?: string };
+  homepage: string;
+  downloads: {
+    platform: string;
+    version?: string;
+    url?: string;
+    mirrorUrls?: string[];
+    sources?: Array<{ type: '123pan' | 'r2' | 'other'; url: string; label?: string }>;
+  }[];
+  updatedAt: string;
+};
+
+export type TutorialMeta = {
+  title: string;
+  title_i18n?: { zh?: string; kk?: string; ru?: string; en?: string };
+  slug: string;
+  date: string;
+  softwareSlug: string;
+  summary?: string;
+  summary_i18n?: { zh?: string; kk?: string; ru?: string; en?: string };
+  tags?: string[];
+};
+
+export type AIItem = {
+  name: string;
+  name_i18n?: { zh?: string; kk?: string; ru?: string; en?: string };
+  url: string;
+  tags: string[];
+  category: string;
+  description: string;
+  description_i18n?: { zh?: string; kk?: string; ru?: string; en?: string };
+  locale: string[];
+  icon: string;
+  isFeatured?: boolean;
+  isNew?: boolean;
+  isInternational?: boolean;
+};
 
 // 使用导入的数据，提供默认值以防万一
 const generatedContent = {
