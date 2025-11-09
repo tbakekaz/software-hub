@@ -1,38 +1,23 @@
-import '../styles/globals.css';
+// 临时移除 CSS 和 getCurrentLang，测试是否是它们导致的问题
+// import '../styles/globals.css';
 import type { Metadata } from 'next';
-import { siteConfig } from '@/config/site';
-import { getCurrentLang } from '@/lib/i18n/server';
 
 export const metadata: Metadata = {
   title: {
-    default: siteConfig.name,
-    template: `%s | ${siteConfig.name}`
+    default: 'Software Hub',
+    template: '%s | Software Hub'
   },
-  description: siteConfig.description,
-  openGraph: {
-    title: siteConfig.name,
-    description: siteConfig.description,
-    url: siteConfig.url,
-    siteName: siteConfig.name,
-    locale: 'zh_CN',
-    type: 'website'
-  }
+  description: '常用软件集合、AI 导航与 KZT 汇率。',
 };
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'edge';
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  // 添加错误处理，确保 layout 始终可以渲染
-  let lang: string = 'zh';
-  try {
-    lang = await getCurrentLang();
-  } catch (error) {
-    // 如果获取语言失败，使用默认值
-  }
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  // 完全移除 getCurrentLang 调用，使用固定语言
   return (
-    <html lang={lang} suppressHydrationWarning>
-      <body className="min-h-screen bg-background text-foreground">
+    <html lang="zh" suppressHydrationWarning>
+      <body style={{ margin: 0, padding: 0 }}>
         {children}
       </body>
     </html>
