@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { pickLocaleString } from '@/lib/i18n/translate';
 import { SoftwareDownloadModal } from '@/components/SoftwareDownloadModal';
 import type { Lang } from '@/lib/i18n';
-import type { Software } from '@/lib/content';
+import type { Software } from '@/lib/content-edge';
 
 type Props = {
   item: Software;

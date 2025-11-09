@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { getAffiliateUrl } from '@/lib/affiliate';
-import type { DownloadSource } from '@/lib/content';
+import type { DownloadSource } from '@/lib/content-edge';
 
 type DownloadItem = {
   platform: string;

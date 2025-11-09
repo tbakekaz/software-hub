@@ -5,7 +5,7 @@ import { TutorialCard } from '@/components/TutorialCard';
 import { AIItemCard } from '@/components/AIItemCard';
 import { MonetizeSlot } from '@/components/MonetizeSlot';
 import { getDictionary } from '@/lib/i18n/server';
-import type { Software, TutorialMeta, AIItem } from '@/lib/content';
+import type { Software, TutorialMeta, AIItem } from '@/lib/content-edge';
 import type { Lang } from '@/lib/i18n';
 
 export const dynamic = 'force-dynamic';

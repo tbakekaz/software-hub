@@ -14,6 +14,12 @@ import {
 } from './generated/content';
 
 // 定义类型（避免导入 lib/content.ts）
+export type DownloadSource = {
+  type: '123pan' | 'r2' | 'other';
+  url: string;
+  label?: string;
+};
+
 export type Software = {
   slug: string;
   name: string;

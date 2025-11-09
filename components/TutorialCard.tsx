@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { TutorialModal } from '@/components/TutorialModal';
 import { pickLocaleString } from '@/lib/i18n/translate';
-import type { TutorialMeta } from '@/lib/content';
+import type { TutorialMeta } from '@/lib/content-edge';
 import type { Lang } from '@/lib/i18n';
 
 type Props = {

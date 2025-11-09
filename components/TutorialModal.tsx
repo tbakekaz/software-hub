@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { getAffiliateUrl } from '@/lib/affiliate';
 import { pickLocaleString } from '@/lib/i18n/translate';
-import type { TutorialMeta, DownloadSource, Software } from '@/lib/content';
+import type { TutorialMeta, Software, DownloadSource } from '@/lib/content-edge';
 import type { Lang } from '@/lib/i18n';
 
 type Props = {
