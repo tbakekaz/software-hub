@@ -1,9 +1,9 @@
+// 备份原始 layout
 import '../styles/globals.css';
 import type { Metadata } from 'next';
+import { ThemeProvider } from 'next-themes';
 import { siteConfig } from '@/config/site';
-// 临时移除 ThemeProvider 和 GA，测试是否是它们导致的问题
-// import { ThemeProvider } from 'next-themes';
-// import GA from '@/components/GA';
+import GA from '@/components/GA';
 import { getCurrentLang } from '@/lib/i18n/server';
 
 export const metadata: Metadata = {
@@ -37,12 +37,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang={lang} suppressHydrationWarning>
       <body className="min-h-screen bg-background text-foreground">
-        {/* 临时移除 ThemeProvider 和 GA，测试是否是它们导致的问题 */}
-        {/* <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <GA />
-        </ThemeProvider> */}
-        {children}
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
 }
+
