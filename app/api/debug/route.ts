@@ -1,13 +1,13 @@
 // 诊断 API，用于捕获运行时错误
-// 注意：完全移除所有可能触发动态 import 的模块
+// Vercel 支持所有功能，可以正常测试
 export const runtime = 'edge';
 
-// 只导入 content-edge，不导入 cookies 或 i18n（它们可能触发动态 import）
 import { getAllSoftware } from '@/lib/content-edge';
+import { getCurrentLang } from '@/lib/i18n/server';
+import { cookies } from 'next/headers';
 
 export async function GET() {
   try {
-    // 测试基本功能
     const tests = {
       timestamp: new Date().toISOString(),
       runtime: 'edge',
@@ -15,18 +15,30 @@ export async function GET() {
       tests: {
         basic: 'success',
         contentEdge: 'not tested',
-        // 暂时移除 cookies 和 i18n 测试，因为它们可能触发动态 import
-        i18n: 'skipped (may trigger async_hooks)',
-        cookies: 'skipped (may trigger async_hooks)',
+        i18n: 'not tested',
+        cookies: 'not tested',
       }
     };
 
-    // 只测试 content-edge（不依赖 cookies）
     try {
       const software = getAllSoftware();
       tests.tests.contentEdge = `success (${software.length} items)`;
     } catch (error: any) {
       tests.tests.contentEdge = `error: ${error.message}`;
+    }
+
+    try {
+      const lang = await getCurrentLang();
+      tests.tests.i18n = `success (${lang})`;
+    } catch (error: any) {
+      tests.tests.i18n = `error: ${error.message}`;
+    }
+
+    try {
+      const cookieStore = await cookies();
+      tests.tests.cookies = 'success';
+    } catch (error: any) {
+      tests.tests.cookies = `error: ${error.message}`;
     }
 
     const body = JSON.stringify(tests);

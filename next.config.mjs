@@ -4,22 +4,22 @@ const nextConfig = {
     remotePatterns: [
       { protocol: 'https', hostname: '**' }
     ],
-    // Cloudflare Pages 需要禁用图片优化
-    unoptimized: true
+    // Vercel 支持图片优化，不需要禁用
+    // unoptimized: true
   },
   pageExtensions: ['ts', 'tsx', 'mdx'],
-  webpack: (config, { isServer }) => {
-    // 为 Edge Runtime 配置 webpack
-    if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-        path: false,
-        crypto: false,
-      };
-    }
-    return config;
-  },
+  // Vercel 不需要特殊的 webpack 配置
+  // webpack: (config, { isServer }) => {
+  //   if (!isServer) {
+  //     config.resolve.fallback = {
+  //       ...config.resolve.fallback,
+  //       fs: false,
+  //       path: false,
+  //       crypto: false,
+  //     };
+  //   }
+  //   return config;
+  // },
 };
 
 export default nextConfig;
