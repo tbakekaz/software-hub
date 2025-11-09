@@ -1,46 +1,23 @@
 import '../styles/globals.css';
 import type { Metadata } from 'next';
-import { siteConfig } from '@/config/site';
-// 临时移除 ThemeProvider 和 GA，测试是否是它们导致的问题
-// import { ThemeProvider } from 'next-themes';
-// import GA from '@/components/GA';
-import { getCurrentLang } from '@/lib/i18n/server';
 
+// 完全最小化的 layout，不依赖任何外部模块
 export const metadata: Metadata = {
   title: {
-    default: siteConfig.name,
-    template: `%s | ${siteConfig.name}`
+    default: 'Software Hub',
+    template: '%s | Software Hub'
   },
-  description: siteConfig.description,
-  openGraph: {
-    title: siteConfig.name,
-    description: siteConfig.description,
-    url: siteConfig.url,
-    siteName: siteConfig.name,
-    locale: 'zh_CN',
-    type: 'website'
-  }
+  description: '常用软件集合、AI 导航与 KZT 汇率。',
 };
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'edge';
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  // 添加错误处理，确保 layout 始终可以渲染
-  let lang: string = 'zh';
-  try {
-    lang = await getCurrentLang();
-  } catch (error) {
-    // 如果获取语言失败，使用默认值
-    // 不输出错误日志，避免在生产环境中产生噪音
-  }
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  // 完全移除所有可能出错的代码
   return (
-    <html lang={lang} suppressHydrationWarning>
+    <html lang="zh" suppressHydrationWarning>
       <body className="min-h-screen bg-background text-foreground">
-        {/* 临时移除 ThemeProvider 和 GA，测试是否是它们导致的问题 */}
-        {/* <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <GA />
-        </ThemeProvider> */}
         {children}
       </body>
     </html>
