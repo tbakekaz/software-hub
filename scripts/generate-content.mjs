@@ -59,17 +59,18 @@ if (!fs.existsSync(outputDir)) {
 }
 
 // 生成 TypeScript 文件
+// 注意：不导入 lib/content.ts 的类型，因为它包含 Node.js 模块导入
+// 使用 any 类型，或者让 TypeScript 推断类型
 const tsContent = `// 此文件由 scripts/generate-content.mjs 自动生成，请勿手动编辑
+// 注意：不导入 lib/content.ts 的类型，避免触发 Node.js 模块加载
 
-import type { Software, TutorialMeta, AIItem } from '../content';
+export const allSoftware = ${JSON.stringify(allSoftware, null, 2)} as const;
 
-export const allSoftware: Software[] = ${JSON.stringify(allSoftware, null, 2)};
+export const allTutorials = ${JSON.stringify(allTutorials, null, 2)} as const;
 
-export const allTutorials: Array<{ meta: TutorialMeta; content: string }> = ${JSON.stringify(allTutorials, null, 2)};
+export const allTutorialsMeta = ${JSON.stringify(tutorialsMeta, null, 2)} as const;
 
-export const allTutorialsMeta: TutorialMeta[] = ${JSON.stringify(tutorialsMeta, null, 2)};
-
-export const allAI: AIItem[] = ${JSON.stringify(allAI, null, 2)};
+export const allAI = ${JSON.stringify(allAI, null, 2)} as const;
 `;
 
 fs.writeFileSync(

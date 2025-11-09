@@ -63,11 +63,12 @@ export type AIItem = {
 };
 
 // 使用导入的数据，提供默认值以防万一
+// 注意：生成的 content.ts 现在使用 as const，所以类型会被正确推断
 const generatedContent = {
-  allSoftware: _allSoftware || [],
-  allTutorials: _allTutorials || [],
-  allTutorialsMeta: _allTutorialsMeta || [],
-  allAI: _allAI || [],
+  allSoftware: (_allSoftware as any) || [],
+  allTutorials: (_allTutorials as any) || [],
+  allTutorialsMeta: (_allTutorialsMeta as any) || [],
+  allAI: (_allAI as any) || [],
 };
 
 export function getAllSoftware(): Software[] {
@@ -85,7 +86,7 @@ export function getAllTutorials(): TutorialMeta[] {
 
 export function getTutorialBySlug(slug: string) {
   const tutorials = generatedContent.allTutorials || [];
-  const tutorial = tutorials.find((t) => t.meta.slug === slug);
+  const tutorial = tutorials.find((t: any) => t.meta?.slug === slug);
   if (!tutorial) return null;
   return { content: tutorial.content, meta: tutorial.meta as TutorialMeta };
 }
