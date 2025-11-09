@@ -22,9 +22,17 @@ export const metadata: Metadata = {
 };
 
 export const dynamic = 'force-dynamic';
+export const runtime = 'edge';
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const lang = await getCurrentLang();
+  // 添加错误处理，确保 layout 始终可以渲染
+  let lang: string = 'zh';
+  try {
+    lang = await getCurrentLang();
+  } catch (error) {
+    // 如果获取语言失败，使用默认值
+    // 不输出错误日志，避免在生产环境中产生噪音
+  }
   return (
     <html lang={lang} suppressHydrationWarning>
       <body className="min-h-screen bg-background text-foreground">
@@ -36,4 +44,3 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     </html>
   );
 }
-
