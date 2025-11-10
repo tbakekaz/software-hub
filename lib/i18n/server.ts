@@ -23,6 +23,7 @@ export async function getDictionary() {
     return { lang, dict } as const;
   } catch (error) {
     // 如果获取字典失败，使用中文作为回退
+    console.error('Failed to get dictionary:', error);
     return { lang: 'zh' as Lang, dict: t('zh') } as const;
   }
 }

@@ -66,42 +66,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 语言学习入口 - 显眼位置 */}
-      <section className="rounded-2xl border-2 border-primary/30 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent p-6 md:p-8 shadow-lg">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex-1 text-center md:text-left">
-            <h2 className="text-2xl md:text-3xl font-bold mb-2">🌍 {dict.nav.languages || '学习语言'}</h2>
-            <p className="text-muted-foreground mb-4">
-              {dict.languages?.subtitle || '精选视频、文档、音频学习材料，支持一键翻译，让学习更轻松'}
-            </p>
-            <Link
-              href="/languages"
-              className="inline-flex items-center px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity font-semibold text-lg"
-            >
-              开始学习 →
-            </Link>
-          </div>
-          <div className="flex gap-2">
-            <div className="px-4 py-2 rounded-lg bg-background/80 border text-center">
-              <div className="text-2xl mb-1">🇬🇧</div>
-              <div className="text-xs font-medium">英语</div>
-            </div>
-            <div className="px-4 py-2 rounded-lg bg-background/80 border text-center">
-              <div className="text-2xl mb-1">🇨🇳</div>
-              <div className="text-xs font-medium">中文</div>
-            </div>
-            <div className="px-4 py-2 rounded-lg bg-background/80 border text-center">
-              <div className="text-2xl mb-1">🇰🇿</div>
-              <div className="text-xs font-medium">哈萨克语</div>
-            </div>
-            <div className="px-4 py-2 rounded-lg bg-background/80 border text-center">
-              <div className="text-2xl mb-1">🇷🇺</div>
-              <div className="text-xs font-medium">俄语</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <section className="grid md:grid-cols-2 gap-6 items-start">
         <div>
           <h2 className="font-semibold mb-3 text-sky-600 dark:text-sky-400">{dict.section.recommendedSoftware}</h2>
@@ -115,6 +79,42 @@ export default async function HomePage() {
           <h2 className="font-semibold mb-3 text-fuchsia-600 dark:text-fuchsia-400">{dict.rates.title}</h2>
           {/* 服务端 + ISR */}
           <RatesCard />
+        </div>
+      </section>
+
+      {/* 语言学习入口 - 放在汇率窗口上面 */}
+      <section className="rounded-2xl border-2 border-primary/30 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent p-6 md:p-8 shadow-lg">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex-1 text-center md:text-left">
+            <h2 className="text-2xl md:text-3xl font-bold mb-2">🌍 {dict.nav.languages || '学习语言'}</h2>
+            <p className="text-muted-foreground mb-4">
+              {dict.languages?.subtitle || '精选视频、文档、音频学习材料，支持一键翻译，让学习更轻松'}
+            </p>
+            <Link
+              href="/languages"
+              className="inline-flex items-center px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity font-semibold text-lg"
+            >
+              {lang === 'zh' ? '开始学习' : lang === 'kk' ? 'Үйренуді бастау' : lang === 'ru' ? 'Начать обучение' : 'Start Learning'} →
+            </Link>
+          </div>
+          <div className="flex gap-2">
+            <div className="px-4 py-2 rounded-lg bg-background/80 border text-center">
+              <div className="text-2xl mb-1">🇬🇧</div>
+              <div className="text-xs font-medium">{dict.languages?.targetLanguage?.english || '英语'}</div>
+            </div>
+            <div className="px-4 py-2 rounded-lg bg-background/80 border text-center">
+              <div className="text-2xl mb-1">🇨🇳</div>
+              <div className="text-xs font-medium">{dict.languages?.targetLanguage?.chinese || '中文'}</div>
+            </div>
+            <div className="px-4 py-2 rounded-lg bg-background/80 border text-center">
+              <div className="text-2xl mb-1">🇰🇿</div>
+              <div className="text-xs font-medium">{dict.languages?.targetLanguage?.kazakh || '哈萨克语'}</div>
+            </div>
+            <div className="px-4 py-2 rounded-lg bg-background/80 border text-center">
+              <div className="text-2xl mb-1">🇷🇺</div>
+              <div className="text-xs font-medium">{dict.languages?.targetLanguage?.russian || '俄语'}</div>
+            </div>
+          </div>
         </div>
       </section>
 
