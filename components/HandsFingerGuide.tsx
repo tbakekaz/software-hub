@@ -64,7 +64,7 @@ export function HandsFingerGuide({ currentFinger, lang = 'zh' }: HandsFingerGuid
               </div>
               
               {/* 无名指 */}
-              <div className={`w-7 h-22 rounded-t-lg transition-all flex items-start justify-center pt-1 ${
+              <div className={`w-7 h-[88px] rounded-t-lg transition-all flex items-start justify-center pt-1 ${
                 getFingerColor('ring-l', currentFinger === 'ring-l')
               } ${currentFinger === 'ring-l' ? 'ring-2 ring-green-500 scale-110 z-10 shadow-lg' : ''}`}>
                 <div className="text-[10px] font-bold">
@@ -82,7 +82,7 @@ export function HandsFingerGuide({ currentFinger, lang = 'zh' }: HandsFingerGuid
               </div>
               
               {/* 食指 */}
-              <div className={`w-7 h-22 rounded-t-lg transition-all flex items-start justify-center pt-1 ${
+              <div className={`w-7 h-[88px] rounded-t-lg transition-all flex items-start justify-center pt-1 ${
                 getFingerColor('index-l', currentFinger === 'index-l')
               } ${currentFinger === 'index-l' ? 'ring-2 ring-red-500 scale-110 z-10 shadow-lg' : ''}`}>
                 <div className="text-[10px] font-bold">
@@ -114,7 +114,7 @@ export function HandsFingerGuide({ currentFinger, lang = 'zh' }: HandsFingerGuid
             {/* 手指 - 从左到右：食指、中指、无名指、小指 */}
             <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex gap-1">
               {/* 食指 */}
-              <div className={`w-7 h-22 rounded-t-lg transition-all flex items-start justify-center pt-1 ${
+              <div className={`w-7 h-[88px] rounded-t-lg transition-all flex items-start justify-center pt-1 ${
                 getFingerColor('index-r', currentFinger === 'index-r')
               } ${currentFinger === 'index-r' ? 'ring-2 ring-red-500 scale-110 z-10 shadow-lg' : ''}`}>
                 <div className="text-[10px] font-bold">
@@ -132,7 +132,7 @@ export function HandsFingerGuide({ currentFinger, lang = 'zh' }: HandsFingerGuid
               </div>
               
               {/* 无名指 */}
-              <div className={`w-7 h-22 rounded-t-lg transition-all flex items-start justify-center pt-1 ${
+              <div className={`w-7 h-[88px] rounded-t-lg transition-all flex items-start justify-center pt-1 ${
                 getFingerColor('ring-r', currentFinger === 'ring-r')
               } ${currentFinger === 'ring-r' ? 'ring-2 ring-green-500 scale-110 z-10 shadow-lg' : ''}`}>
                 <div className="text-[10px] font-bold">
