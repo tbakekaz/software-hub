@@ -67,22 +67,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="grid md:grid-cols-2 gap-6 items-start">
-        <div>
-          <h2 className="font-semibold mb-3 text-sky-600 dark:text-sky-400">{dict.section.recommendedSoftware}</h2>
-          <div className="grid gap-3">
-            {software.map((s) => (
-              <SoftwareCard key={s.slug} item={s} lang={lang} />
-            ))}
-          </div>
-        </div>
-        <div>
-          <h2 className="font-semibold mb-3 text-fuchsia-600 dark:text-fuchsia-400">{dict.rates.title}</h2>
-          {/* 服务端 + ISR */}
-          <RatesCard />
-        </div>
-      </section>
-
       {/* 语言学习入口 - 放在汇率窗口上面 */}
       <section className="rounded-2xl border-2 border-primary/30 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent p-6 md:p-8 shadow-lg">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
@@ -116,6 +100,22 @@ export default async function HomePage() {
               <div className="text-xs font-medium">{dict.languages?.targetLanguage?.russian || '俄语'}</div>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="grid md:grid-cols-2 gap-6 items-start">
+        <div>
+          <h2 className="font-semibold mb-3 text-sky-600 dark:text-sky-400">{dict.section.recommendedSoftware}</h2>
+          <div className="grid gap-3">
+            {software.map((s) => (
+              <SoftwareCard key={s.slug} item={s} lang={lang} />
+            ))}
+          </div>
+        </div>
+        <div>
+          <h2 className="font-semibold mb-3 text-fuchsia-600 dark:text-fuchsia-400">{dict.rates.title}</h2>
+          {/* 服务端 + ISR */}
+          <RatesCard />
         </div>
       </section>
 

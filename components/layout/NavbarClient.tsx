@@ -104,6 +104,7 @@ export function NavbarClient({
 
         {/* 桌面端导航 */}
         <nav className="hidden md:flex items-center gap-4 text-sm">
+          <GlobalTranslator />
           <form onSubmit={handleSearch} className="relative">
             <Input
               type="search"
@@ -119,7 +120,6 @@ export function NavbarClient({
             </Link>
           ))}
           <LanguageSwitcher />
-          <GlobalTranslator />
           <AuthButton labels={dict.auth} />
         </nav>
 
@@ -163,8 +163,8 @@ export function NavbarClient({
             </Link>
           ))}
           <div className="flex items-center gap-2 pt-2">
-            <LanguageSwitcher />
             <GlobalTranslator />
+            <LanguageSwitcher />
             <AuthButton labels={dict.auth} />
           </div>
         </div>
