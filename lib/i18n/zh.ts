@@ -1,5 +1,5 @@
 const zh = {
-  nav: { software: '软件', tutorials: '教程', ai: 'AI 导航', about: '关于', discover: '发现', search: '搜索', searchPlaceholder: '搜索软件、教程、AI 工具...', languages: '学习语言' },
+  nav: { software: '软件', tutorials: '教程', typing: '打字练习', ai: 'AI 导航', about: '关于', discover: '发现', search: '搜索', searchPlaceholder: '搜索软件、教程、AI 工具...', languages: '学习语言' },
   home: { title: '常用软件集合 · AI 导航 · KZT 汇率', subtitle: '精选常用软件与 AI 工具，附安装教程与镜像下载。' },
   rates: { 
     title: '哈萨克斯坦汇率', 

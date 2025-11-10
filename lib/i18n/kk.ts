@@ -1,5 +1,5 @@
 const kk = {
-  nav: { software: 'Бағдарлама', tutorials: 'Нұсқаулар', ai: 'AI Каталог', about: 'Біз туралы', discover: 'Табу', search: 'Іздеу', searchPlaceholder: 'Софт, нұсқаулар, AI құралдарын іздеу...', languages: 'Тіл үйрену' },
+  nav: { software: 'Бағдарлама', tutorials: 'Нұсқаулар', typing: 'Теру жаттығуы', ai: 'AI Каталог', about: 'Біз туралы', discover: 'Табу', search: 'Іздеу', searchPlaceholder: 'Софт, нұсқаулар, AI құралдарын іздеу...', languages: 'Тіл үйрену' },
   home: { title: 'Бағдарламалар · AI каталог · KZT бағамы', subtitle: 'Танымал софт пен AI құралдары, орнату нұсқаулығымен.' },
   rates: { 
     title: 'Қазақстан теңге бағамы', 
