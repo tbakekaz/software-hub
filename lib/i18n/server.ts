@@ -1,9 +1,11 @@
 // Vercel 支持 cookies()，可以正常使用
 import { cookies } from 'next/headers';
+import { headers } from 'next/headers';
 import { t, type Lang } from './index';
 
 export async function getCurrentLang(): Promise<Lang> {
   try {
+    // 从 cookie 读取语言（middleware 会根据 URL 路径自动设置）
     const cookieStore = await cookies();
     const c = cookieStore.get('lang')?.value as Lang | undefined;
     if (c === 'zh' || c === 'kk' || c === 'ru' || c === 'en') {
