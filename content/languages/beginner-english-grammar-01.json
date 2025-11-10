@@ -1,0 +1,73 @@
+{
+  "slug": "beginner-english-grammar-01",
+  "title": "基础英语语法：现在时态",
+  "title_i18n": {
+    "zh": "基础英语语法：现在时态",
+    "en": "Basic English Grammar: Present Tense",
+    "kk": "Негізгі ағылшын грамматикасы: Нақты уақыт",
+    "ru": "Базовая английская грамматика: Настоящее время"
+  },
+  "targetLanguage": "english",
+  "category": "grammar",
+  "level": "beginner",
+  "description": "学习英语现在时态的基本用法，包括一般现在时、现在进行时等",
+  "description_i18n": {
+    "zh": "学习英语现在时态的基本用法，包括一般现在时、现在进行时等",
+    "en": "Learn the basic usage of present tense in English, including simple present and present continuous",
+    "kk": "Ағылшын тіліндегі нақты уақыттың негізгі қолданысын үйрену",
+    "ru": "Изучите основное использование настоящего времени в английском языке"
+  },
+  "thumbnail": "https://via.placeholder.com/400x300?text=Grammar",
+  "resources": [
+    {
+      "type": "video",
+      "title": "教学视频：现在时态详解",
+      "title_i18n": {
+        "zh": "教学视频：现在时态详解",
+        "en": "Teaching Video: Present Tense Explained",
+        "kk": "Оқу бейнесі: Нақты уақыттың түсіндірмесі",
+        "ru": "Обучающее видео: Настоящее время объяснено"
+      },
+      "url": "https://example.com/videos/grammar-present-tense.mp4",
+      "duration": "15:30",
+      "format": "mp4"
+    },
+    {
+      "type": "document",
+      "title": "语法笔记 PDF",
+      "title_i18n": {
+        "zh": "语法笔记 PDF",
+        "en": "Grammar Notes PDF",
+        "kk": "Грамматика жазбалары PDF",
+        "ru": "Грамматические заметки PDF"
+      },
+      "url": "https://example.com/docs/grammar-present-tense.pdf",
+      "size": "2.5 MB",
+      "format": "pdf"
+    },
+    {
+      "type": "audio",
+      "title": "听力练习音频",
+      "title_i18n": {
+        "zh": "听力练习音频",
+        "en": "Listening Practice Audio",
+        "kk": "Тыңдау жаттығуы аудио",
+        "ru": "Аудио для практики аудирования"
+      },
+      "url": "https://example.com/audio/grammar-present-tense.mp3",
+      "duration": "10:20",
+      "format": "mp3"
+    }
+  ],
+  "tags": ["语法", "现在时", "基础"],
+  "tags_i18n": {
+    "zh": ["语法", "现在时", "基础"],
+    "en": ["Grammar", "Present Tense", "Basic"],
+    "kk": ["Грамматика", "Нақты уақыт", "Негізгі"],
+    "ru": ["Грамматика", "Настоящее время", "Базовый"]
+  },
+  "date": "2025-01-15",
+  "isFeatured": true,
+  "isFree": true
+}
+

@@ -1,0 +1,73 @@
+{
+  "slug": "intermediate-english-listening-01",
+  "title": "中级英语听力：日常对话",
+  "title_i18n": {
+    "zh": "中级英语听力：日常对话",
+    "en": "Intermediate English Listening: Daily Conversations",
+    "kk": "Орта деңгейлі ағылшын тыңдау: Күнделікті әңгімелер",
+    "ru": "Средний уровень английского: Повседневные разговоры"
+  },
+  "targetLanguage": "english",
+  "category": "listening",
+  "level": "intermediate",
+  "description": "通过真实场景的日常对话练习，提高英语听力理解能力",
+  "description_i18n": {
+    "zh": "通过真实场景的日常对话练习，提高英语听力理解能力",
+    "en": "Improve English listening comprehension through daily conversation practice in real scenarios",
+    "kk": "Нақты сценарийлердегі күнделікті әңгімелер арқылы ағылшын тіліндегі тыңдау түсіну қабілетін дамыту",
+    "ru": "Улучшите понимание английского языка на слух через практику повседневных разговоров"
+  },
+  "thumbnail": "https://via.placeholder.com/400x300?text=Listening",
+  "resources": [
+    {
+      "type": "audio",
+      "title": "对话音频 1：餐厅点餐",
+      "title_i18n": {
+        "zh": "对话音频 1：餐厅点餐",
+        "en": "Conversation Audio 1: Ordering at Restaurant",
+        "kk": "Әңгіме аудио 1: Ресторанда тапсырыс беру",
+        "ru": "Аудио разговора 1: Заказ в ресторане"
+      },
+      "url": "https://example.com/audio/listening-restaurant.mp3",
+      "duration": "5:30",
+      "format": "mp3"
+    },
+    {
+      "type": "audio",
+      "title": "对话音频 2：购物",
+      "title_i18n": {
+        "zh": "对话音频 2：购物",
+        "en": "Conversation Audio 2: Shopping",
+        "kk": "Әңгіме аудио 2: Сатып алу",
+        "ru": "Аудио разговора 2: Покупки"
+      },
+      "url": "https://example.com/audio/listening-shopping.mp3",
+      "duration": "6:15",
+      "format": "mp3"
+    },
+    {
+      "type": "document",
+      "title": "听力文本和答案",
+      "title_i18n": {
+        "zh": "听力文本和答案",
+        "en": "Listening Scripts and Answers",
+        "kk": "Тыңдау мәтіні және жауаптары",
+        "ru": "Тексты для аудирования и ответы"
+      },
+      "url": "https://example.com/docs/listening-scripts.pdf",
+      "size": "1.2 MB",
+      "format": "pdf"
+    }
+  ],
+  "tags": ["听力", "对话", "中级"],
+  "tags_i18n": {
+    "zh": ["听力", "对话", "中级"],
+    "en": ["Listening", "Conversation", "Intermediate"],
+    "kk": ["Тыңдау", "Әңгіме", "Орта"],
+    "ru": ["Аудирование", "Разговор", "Средний"]
+  },
+  "date": "2025-01-20",
+  "isFeatured": true,
+  "isFree": true
+}
+

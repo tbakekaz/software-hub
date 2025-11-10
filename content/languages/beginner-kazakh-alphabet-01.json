@@ -1,0 +1,73 @@
+{
+  "slug": "beginner-kazakh-alphabet-01",
+  "title": "基础哈萨克语：字母学习",
+  "title_i18n": {
+    "zh": "基础哈萨克语：字母学习",
+    "en": "Basic Kazakh: Alphabet Learning",
+    "kk": "Негізгі қазақ: Әліпби үйрену",
+    "ru": "Базовый казахский: Изучение алфавита"
+  },
+  "targetLanguage": "kazakh",
+  "category": "grammar",
+  "level": "beginner",
+  "description": "学习哈萨克语字母表，包括42个字母的发音和书写",
+  "description_i18n": {
+    "zh": "学习哈萨克语字母表，包括42个字母的发音和书写",
+    "en": "Learn the Kazakh alphabet, including pronunciation and writing of 42 letters",
+    "kk": "Қазақ әліпбиін үйрену, соның ішінде 42 әріптің айтылуы мен жазылуы",
+    "ru": "Изучите казахский алфавит, включая произношение и написание 42 букв"
+  },
+  "thumbnail": "https://via.placeholder.com/400x300?text=Kazakh+Alphabet",
+  "resources": [
+    {
+      "type": "video",
+      "title": "字母教学视频",
+      "title_i18n": {
+        "zh": "字母教学视频",
+        "en": "Alphabet Teaching Video",
+        "kk": "Әліпби оқу бейнесі",
+        "ru": "Обучающее видео по алфавиту"
+      },
+      "url": "https://example.com/videos/kazakh-alphabet.mp4",
+      "duration": "25:00",
+      "format": "mp4"
+    },
+    {
+      "type": "document",
+      "title": "字母表 PDF",
+      "title_i18n": {
+        "zh": "字母表 PDF",
+        "en": "Alphabet Chart PDF",
+        "kk": "Әліпби кестесі PDF",
+        "ru": "Таблица алфавита PDF"
+      },
+      "url": "https://example.com/docs/kazakh-alphabet.pdf",
+      "size": "2.1 MB",
+      "format": "pdf"
+    },
+    {
+      "type": "audio",
+      "title": "字母发音音频",
+      "title_i18n": {
+        "zh": "字母发音音频",
+        "en": "Alphabet Pronunciation Audio",
+        "kk": "Әліпби айтылуы аудио",
+        "ru": "Аудио произношения алфавита"
+      },
+      "url": "https://example.com/audio/kazakh-alphabet.mp3",
+      "duration": "12:00",
+      "format": "mp3"
+    }
+  ],
+  "tags": ["字母", "基础", "哈萨克语"],
+  "tags_i18n": {
+    "zh": ["字母", "基础", "哈萨克语"],
+    "en": ["Alphabet", "Basic", "Kazakh"],
+    "kk": ["Әліпби", "Негізгі", "Қазақ"],
+    "ru": ["Алфавит", "Базовый", "Казахский"]
+  },
+  "date": "2025-01-28",
+  "isFeatured": true,
+  "isFree": true
+}
+

@@ -1,0 +1,60 @@
+{
+  "slug": "beginner-chinese-pinyin-01",
+  "title": "基础中文：拼音学习",
+  "title_i18n": {
+    "zh": "基础中文：拼音学习",
+    "en": "Basic Chinese: Pinyin Learning",
+    "kk": "Негізгі қытай: Пиньинь үйрену",
+    "ru": "Базовый китайский: Изучение пиньиня"
+  },
+  "targetLanguage": "chinese",
+  "category": "grammar",
+  "level": "beginner",
+  "description": "学习中文拼音基础，包括声母、韵母和声调",
+  "description_i18n": {
+    "zh": "学习中文拼音基础，包括声母、韵母和声调",
+    "en": "Learn basic Chinese pinyin, including initials, finals, and tones",
+    "kk": "Қытай пиньинының негіздерін үйрену, соның ішінде бастапқы дыбыстар, соңғы дыбыстар және тондар",
+    "ru": "Изучите основы китайского пиньиня, включая инициали, финали и тоны"
+  },
+  "thumbnail": "https://via.placeholder.com/400x300?text=Pinyin",
+  "resources": [
+    {
+      "type": "video",
+      "title": "拼音教学视频",
+      "title_i18n": {
+        "zh": "拼音教学视频",
+        "en": "Pinyin Teaching Video",
+        "kk": "Пиньинь оқу бейнесі",
+        "ru": "Обучающее видео по пиньиню"
+      },
+      "url": "https://example.com/videos/pinyin.mp4",
+      "duration": "20:00",
+      "format": "mp4"
+    },
+    {
+      "type": "document",
+      "title": "拼音表 PDF",
+      "title_i18n": {
+        "zh": "拼音表 PDF",
+        "en": "Pinyin Chart PDF",
+        "kk": "Пиньинь кестесі PDF",
+        "ru": "Таблица пиньиня PDF"
+      },
+      "url": "https://example.com/docs/pinyin-chart.pdf",
+      "size": "1.8 MB",
+      "format": "pdf"
+    }
+  ],
+  "tags": ["拼音", "基础", "中文"],
+  "tags_i18n": {
+    "zh": ["拼音", "基础", "中文"],
+    "en": ["Pinyin", "Basic", "Chinese"],
+    "kk": ["Пиньинь", "Негізгі", "Қытай"],
+    "ru": ["Пиньинь", "Базовый", "Китайский"]
+  },
+  "date": "2025-01-25",
+  "isFeatured": true,
+  "isFree": true
+}
+

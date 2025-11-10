@@ -1,0 +1,60 @@
+{
+  "slug": "beginner-russian-alphabet-01",
+  "title": "基础俄语：字母学习",
+  "title_i18n": {
+    "zh": "基础俄语：字母学习",
+    "en": "Basic Russian: Alphabet Learning",
+    "kk": "Негізгі орыс: Әліпби үйрену",
+    "ru": "Базовый русский: Изучение алфавита"
+  },
+  "targetLanguage": "russian",
+  "category": "grammar",
+  "level": "beginner",
+  "description": "学习俄语字母表，包括33个字母的发音和书写",
+  "description_i18n": {
+    "zh": "学习俄语字母表，包括33个字母的发音和书写",
+    "en": "Learn the Russian alphabet, including pronunciation and writing of 33 letters",
+    "kk": "Орыс әліпбиін үйрену, соның ішінде 33 әріптің айтылуы мен жазылуы",
+    "ru": "Изучите русский алфавит, включая произношение и написание 33 букв"
+  },
+  "thumbnail": "https://via.placeholder.com/400x300?text=Russian+Alphabet",
+  "resources": [
+    {
+      "type": "video",
+      "title": "字母教学视频",
+      "title_i18n": {
+        "zh": "字母教学视频",
+        "en": "Alphabet Teaching Video",
+        "kk": "Әліпби оқу бейнесі",
+        "ru": "Обучающее видео по алфавиту"
+      },
+      "url": "https://example.com/videos/russian-alphabet.mp4",
+      "duration": "22:00",
+      "format": "mp4"
+    },
+    {
+      "type": "document",
+      "title": "字母表 PDF",
+      "title_i18n": {
+        "zh": "字母表 PDF",
+        "en": "Alphabet Chart PDF",
+        "kk": "Әліпби кестесі PDF",
+        "ru": "Таблица алфавита PDF"
+      },
+      "url": "https://example.com/docs/russian-alphabet.pdf",
+      "size": "1.9 MB",
+      "format": "pdf"
+    }
+  ],
+  "tags": ["字母", "基础", "俄语"],
+  "tags_i18n": {
+    "zh": ["字母", "基础", "俄语"],
+    "en": ["Alphabet", "Basic", "Russian"],
+    "kk": ["Әліпби", "Негізгі", "Орыс"],
+    "ru": ["Алфавит", "Базовый", "Русский"]
+  },
+  "date": "2025-01-30",
+  "isFeatured": true,
+  "isFree": true
+}
+
