@@ -68,11 +68,10 @@ export function NavbarClient({
     { href: '/software', label: navDict.software || '软件' },
     { href: '/tutorials', label: navDict.tutorials || '教程' },
     {
-      href: 'https://www.typingstudy.com/kk/',
+      href: '/typing',
       label: navDict.typing || '打字练习',
       className:
         'px-3 h-8 inline-flex items-center gap-1 rounded-full text-sm border transition-colors bg-gradient-to-r from-amber-500/10 to-orange-500/10 hover:from-amber-500/20 hover:to-orange-500/20 border-amber-500/30 text-amber-600 dark:text-amber-400 font-medium',
-      external: true
     },
     {
       href: '/ai',
@@ -114,10 +113,11 @@ export function NavbarClient({
             />
           </form>
           {navLinks.map((item) => {
-            const linkProps = item.external
+            const isExternal = (item as any).external === true;
+            const linkProps = isExternal
               ? { href: item.href, target: '_blank', rel: 'noopener noreferrer' }
               : { href: item.href };
-            return item.external ? (
+            return isExternal ? (
               <a key={item.href} {...linkProps} className={clsx('hover:text-primary transition-colors', item.className)}>
                 {item.label}
               </a>
@@ -166,7 +166,8 @@ export function NavbarClient({
             />
           </form>
           {navLinks.map((item) => {
-            if (item.external) {
+            const isExternal = (item as any).external === true;
+            if (isExternal) {
               return (
                 <a
                   key={item.href}
