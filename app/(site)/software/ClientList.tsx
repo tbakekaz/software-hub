@@ -19,8 +19,10 @@ type Props = {
 };
 
 export default function ClientList({ initialItems, manifest, dict, lang }: Props) {
+  const categories = useMemo(() => ['all', ...(manifest.categories || [])], [manifest.categories]);
   const [items, setItems] = useState<ReadonlyArray<Software>>(initialItems);
   const [query, setQuery] = useState('');
+  const [activeCategory, setActiveCategory] = useState<string>('all');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const loadedPages = useRef(new Set<number>([0]));
@@ -64,16 +66,31 @@ export default function ClientList({ initialItems, manifest, dict, lang }: Props
     void loadAllRemaining();
   }, [query, loadAllRemaining]);
 
+  useEffect(() => {
+    if (activeCategory === 'all') return;
+    void loadAllRemaining();
+  }, [activeCategory, loadAllRemaining]);
+
   const filtered = useMemo(() => {
-    if (!query.trim()) return items;
+    const byCategory = activeCategory === 'all'
+      ? items
+      : items.filter((software) => {
+          const name = software.category?.toLowerCase() || '';
+          const localized = typeof software.category_i18n === 'object'
+            ? Object.values(software.category_i18n).join(' ').toLowerCase()
+            : '';
+          return name.includes(activeCategory.toLowerCase()) || localized.includes(activeCategory.toLowerCase());
+        });
+
+    if (!query.trim()) return byCategory;
     const keyword = query.trim();
-    return items.filter((software) =>
+    return byCategory.filter((software) =>
       textIncludes(
         [software.name, software.description, software.category, software.platforms?.join(' ') || ''].join(' '),
         keyword,
       ),
     );
-  }, [items, query]);
+  }, [items, query, activeCategory]);
 
   const hasMore = loadedPages.current.size < manifest.pageCount;
 
@@ -88,6 +105,22 @@ export default function ClientList({ initialItems, manifest, dict, lang }: Props
           <SearchInput onChange={setQuery} placeholder={dict.search.softwarePlaceholder} />
         </div>
         <div className="text-sm text-muted-foreground">{loadedLabel}</div>
+      </div>
+
+      <div className="flex flex-wrap gap-2 text-sm" aria-label="软件分类筛选">
+        {categories.map((cate) => (
+          <button
+            key={cate}
+            type="button"
+            onClick={() => setActiveCategory(cate)}
+            className={
+              'rounded-full border px-3 py-1 transition ' +
+              (activeCategory === cate ? 'bg-foreground text-background' : 'bg-background hover:bg-accent hover:text-accent-foreground')
+            }
+          >
+            {cate === 'all' ? '全部' : cate}
+          </button>
+        ))}
       </div>
 
       {error ? (

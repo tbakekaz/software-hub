@@ -5,7 +5,8 @@ import type { Metadata } from 'next';
 import { siteConfig } from '@/config/site';
 
 export const dynamic = 'force-dynamic';
-export const runtime = 'edge';
+// 移除 edge runtime 以启用静态生成/ISR
+// export const runtime = 'edge';
 
 export const metadata: Metadata = {
   title: `软件列表 - ${siteConfig.name}`,

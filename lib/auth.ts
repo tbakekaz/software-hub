@@ -4,6 +4,7 @@ export type User = {
   name: string;
   email?: string;
   plan: 'free' | 'pro';
+  password?: string; // 密码（可选，用于修改密码功能）
 };
 
 const KEY = 'auth_user';

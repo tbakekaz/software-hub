@@ -1,4 +1,5 @@
-export const runtime = 'edge';
+// 静态页面，移除 edge runtime 以启用静态生成
+// export const runtime = 'edge';
 
 export default function SponsorPage() {
   return (

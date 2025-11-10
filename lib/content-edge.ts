@@ -111,3 +111,51 @@ export function getAllAI(): AIItem[] {
   return allAI as unknown as AIItem[];
 }
 
+export function getSoftwareCategories(): string[] {
+  return (softwareManifest.categories || []).slice();
+}
+
+export async function getSoftwareByCategory(category: string): Promise<Software[]> {
+  if (!category) return getAllSoftware();
+  const lower = category.toLowerCase();
+  const all = await getAllSoftware();
+  return all.filter((item) => {
+    const name = item.category?.toLowerCase() || '';
+    const localized = typeof item.category_i18n === 'object'
+      ? Object.values(item.category_i18n).join(' ').toLowerCase()
+      : '';
+    return name.includes(lower) || localized.includes(lower);
+  });
+}
+
+export async function getRecentSoftware(limit = 6): Promise<Software[]> {
+  const all = await getAllSoftware();
+  const sorted = [...all].sort((a, b) => {
+    const getTime = (value?: string) => {
+      const t = value ? Date.parse(value) : NaN;
+      return Number.isFinite(t) ? t : 0;
+    };
+    return getTime(b.updatedAt) - getTime(a.updatedAt);
+  });
+  return sorted.slice(0, limit);
+}
+
+export function getSoftwareTags(): string[] {
+  const set = new Set<string>();
+  const cache = softwareCache;
+  if (cache) {
+    cache.forEach((item) => {
+      item.downloads?.forEach((download) => {
+        download.sources?.forEach((source) => {
+          if (source.label) set.add(source.label);
+        });
+      });
+    });
+  }
+  return [...set];
+}
+
+export function getSoftwareManifest() {
+  return softwareManifest;
+}
+

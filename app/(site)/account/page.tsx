@@ -4,7 +4,8 @@ import { siteConfig } from '@/config/site';
 import AccountClient from './AccountClient';
 
 export const dynamic = 'force-dynamic';
-export const runtime = 'edge';
+// 移除 edge runtime 以避免 React forwardRef 相关问题
+// export const runtime = 'edge';
 
 export const metadata: Metadata = {
   title: `会员中心 - ${siteConfig.name}`,

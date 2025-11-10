@@ -6,7 +6,8 @@ import { MarkdownContent } from '@/components/MarkdownContent';
 import type { Metadata } from 'next';
 import { siteConfig } from '@/config/site';
 
-export const runtime = 'edge';
+// 移除 edge runtime 以启用静态生成
+// export const runtime = 'edge';
 
 interface PageProps {
   params: Promise<{ slug: string }>;

@@ -49,7 +49,8 @@ export const metadata: Metadata = {
 };
 
 export const dynamic = 'force-dynamic';
-export const runtime = 'edge';
+// 移除 edge runtime 以避免模块导入问题
+// export const runtime = 'edge';
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   let lang: string = 'zh';

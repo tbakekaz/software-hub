@@ -1,18 +1,36 @@
 "use client";
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { getUser, setUser, type User } from '@/lib/auth';
 import { CardBase, CardHeader, CardBody, CardBadge } from '@/components/CardBase';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
 import { ProBadge } from '@/components/ProBadge';
 
-export default function AccountClient({ dict }: { dict: any }) {
+export default function AccountClient({ dict = {} }: { dict?: any }) {
   const [user, setLocal] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showPasswordForm, setShowPasswordForm] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [passwordSuccess, setPasswordSuccess] = useState(false);
+  const passwordTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
-    setLocal(getUser());
-    setLoading(false);
+    if (typeof window !== 'undefined') {
+      setLocal(getUser());
+      setLoading(false);
+    }
+    
+    // 清理定时器
+    return () => {
+      if (passwordTimerRef.current) {
+        clearTimeout(passwordTimerRef.current);
+        passwordTimerRef.current = null;
+      }
+    };
   }, []);
 
   const handleUpgrade = () => {
@@ -25,6 +43,66 @@ export default function AccountClient({ dict }: { dict: any }) {
       u.plan = 'pro';
       setUser(u);
       setLocal(u);
+    }
+  };
+
+  const handleChangePassword = () => {
+    // 重置错误和成功消息
+    setPasswordError('');
+    setPasswordSuccess(false);
+
+    // 验证输入
+    if (!newPassword) {
+      setPasswordError('请输入新密码');
+      return;
+    }
+
+    if (newPassword.length < 6) {
+      setPasswordError('密码长度至少为 6 位');
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      setPasswordError('两次输入的密码不一致');
+      return;
+    }
+
+    // 验证当前密码（如果已设置）
+    const u = getUser();
+    if (!u) {
+      setPasswordError('用户信息不存在');
+      return;
+    }
+
+    if (u.password && u.password !== currentPassword) {
+      setPasswordError('当前密码不正确');
+      return;
+    }
+
+    // 更新密码
+    u.password = newPassword;
+    setUser(u);
+    setLocal(u);
+
+    // 清除之前的定时器
+    if (passwordTimerRef.current) {
+      clearTimeout(passwordTimerRef.current);
+      passwordTimerRef.current = null;
+    }
+
+    // 显示成功消息
+    setPasswordSuccess(true);
+    setCurrentPassword('');
+    setNewPassword('');
+    setConfirmPassword('');
+
+    // 3秒后隐藏表单
+    if (typeof window !== 'undefined') {
+      passwordTimerRef.current = window.setTimeout(() => {
+        setShowPasswordForm(false);
+        setPasswordSuccess(false);
+        passwordTimerRef.current = null;
+      }, 3000);
     }
   };
 
@@ -126,6 +204,104 @@ export default function AccountClient({ dict }: { dict: any }) {
           </CardBody>
         </CardBase>
       )}
+
+      {/* 修改密码卡片 */}
+      <CardBase>
+        <CardHeader className="flex flex-col gap-2">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold">修改密码</h2>
+            {!showPasswordForm && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setShowPasswordForm(true);
+                  setPasswordError('');
+                  setPasswordSuccess(false);
+                }}
+              >
+                修改密码
+              </Button>
+            )}
+          </div>
+        </CardHeader>
+        {showPasswordForm && (
+          <CardBody className="space-y-4">
+            {passwordSuccess && (
+              <div className="p-3 rounded-lg bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400 text-sm">
+                ✓ 密码修改成功！
+              </div>
+            )}
+            {passwordError && (
+              <div className="p-3 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 text-sm">
+                {passwordError}
+              </div>
+            )}
+            <div className="space-y-3">
+              {user.password && (
+                <div className="space-y-2">
+                  <label className="text-sm text-muted-foreground">当前密码</label>
+                  <Input
+                    type="password"
+                    value={currentPassword}
+                    onChange={(e) => setCurrentPassword(e.target.value)}
+                    placeholder="请输入当前密码"
+                    className="w-full"
+                  />
+                </div>
+              )}
+              <div className="space-y-2">
+                <label className="text-sm text-muted-foreground">新密码</label>
+                <Input
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="请输入新密码（至少6位）"
+                  className="w-full"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="text-sm text-muted-foreground">确认新密码</label>
+                <Input
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="请再次输入新密码"
+                  className="w-full"
+                />
+              </div>
+            </div>
+            <div className="flex gap-2 pt-2">
+              <Button
+                onClick={handleChangePassword}
+                className="flex-1"
+              >
+                确认修改
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setShowPasswordForm(false);
+                  setCurrentPassword('');
+                  setNewPassword('');
+                  setConfirmPassword('');
+                  setPasswordError('');
+                  setPasswordSuccess(false);
+                }}
+              >
+                取消
+              </Button>
+            </div>
+          </CardBody>
+        )}
+        {!showPasswordForm && (
+          <CardBody>
+            <p className="text-sm text-muted-foreground">
+              {user.password ? '已设置密码' : '尚未设置密码，建议设置密码以保护账户安全'}
+            </p>
+          </CardBody>
+        )}
+      </CardBase>
     </main>
   );
 }
