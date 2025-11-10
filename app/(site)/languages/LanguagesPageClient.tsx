@@ -32,11 +32,6 @@ export function LanguagesPageClient({ resources, dict, lang }: Props) {
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
   const [recentLearning, setRecentLearning] = useState<LanguageResource | null>(null);
 
-  // 获取第一个目标语言作为默认
-  const firstTargetLang = Object.keys(resources)[0] || 'english';
-  // 默认选择第一个语言
-  const currentTargetLang = selectedTargetLang || firstTargetLang;
-
   const targetLanguageLabels = dict?.targetLanguage || {};
 
   // 获取最近学习记录
