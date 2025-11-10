@@ -5,7 +5,6 @@ import { useRouter, usePathname } from 'next/navigation';
 import { clsx } from 'clsx';
 import { Input } from '@/components/ui/input';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
-import { GlobalTranslator } from '@/components/GlobalTranslator';
 import AuthButton from '@/components/AuthButton';
 
 export function NavbarClient({
@@ -69,12 +68,6 @@ export function NavbarClient({
     { href: '/software', label: navDict.software || '软件' },
     { href: '/tutorials', label: navDict.tutorials || '教程' },
     {
-      href: '/languages',
-      label: navDict.languages || '学习语言',
-      className:
-        'px-3 h-8 inline-flex items-center gap-1 rounded-full text-sm border transition-colors bg-gradient-to-r from-emerald-500/10 to-blue-500/10 hover:from-emerald-500/20 hover:to-blue-500/20 border-emerald-500/30 text-emerald-600 dark:text-emerald-400 font-medium'
-    },
-    {
       href: '/ai',
       label: navDict.ai || 'AI 导航',
       className:
@@ -104,7 +97,6 @@ export function NavbarClient({
 
         {/* 桌面端导航 */}
         <nav className="hidden md:flex items-center gap-4 text-sm">
-          <GlobalTranslator />
           <form onSubmit={handleSearch} className="relative">
             <Input
               type="search"
@@ -163,7 +155,6 @@ export function NavbarClient({
             </Link>
           ))}
           <div className="flex items-center gap-2 pt-2">
-            <GlobalTranslator />
             <LanguageSwitcher />
             <AuthButton labels={dict.auth} />
           </div>
