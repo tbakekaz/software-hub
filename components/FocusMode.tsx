@@ -2,15 +2,19 @@
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
+import type { Lang } from '@/lib/i18n';
+import { t } from '@/lib/i18n';
 
 export type FocusDuration = 5 | 15 | 30; // 分钟
 
 interface FocusModeProps {
   onComplete?: (duration: FocusDuration, actualTime: number) => void;
   onClose?: () => void;
+  lang?: Lang;
 }
 
-export function FocusMode({ onComplete, onClose }: FocusModeProps) {
+export function FocusMode({ onComplete, onClose, lang = 'zh' }: FocusModeProps) {
+  const dict = t(lang).focusMode || {};
   const [duration, setDuration] = useState<FocusDuration>(15);
   const [isActive, setIsActive] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
@@ -183,21 +187,21 @@ export function FocusMode({ onComplete, onClose }: FocusModeProps) {
       <div className="fixed bottom-6 right-6 z-50">
         <div className="bg-background/95 backdrop-blur-lg rounded-lg p-4 shadow-2xl border-2 border-primary/30 min-w-[200px]">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-semibold">🎯 专注中</span>
+            <span className="text-sm font-semibold">🎯 {dict.focusing || '专注中'}</span>
             <div className="flex gap-1">
               <button
                 onClick={() => setIsMinimized(false)}
                 className="p-1 hover:bg-muted rounded transition-colors"
-                title="展开"
-                aria-label="展开"
+                title={dict.expand || '展开'}
+                aria-label={dict.expand || '展开'}
               >
                 ⬆️
               </button>
               <button
                 onClick={onClose}
                 className="p-1 hover:bg-muted rounded transition-colors"
-                title="关闭"
-                aria-label="关闭"
+                title={dict.close || '关闭'}
+                aria-label={dict.close || '关闭'}
               >
                 ✕
               </button>
@@ -206,7 +210,7 @@ export function FocusMode({ onComplete, onClose }: FocusModeProps) {
           <div className="text-center">
             <div className="text-3xl font-bold mb-1">{formatTime(timeLeft)}</div>
             <div className="text-xs text-muted-foreground mb-2">
-              {isPaused ? '已暂停' : '专注中...'}
+              {isPaused ? (dict.paused || '已暂停') : (dict.focusingStatus || '专注中...')}
             </div>
             <div className="w-full bg-muted rounded-full h-1.5 mb-2">
               <div
@@ -219,13 +223,13 @@ export function FocusMode({ onComplete, onClose }: FocusModeProps) {
                 onClick={handlePause}
                 className="flex-1 px-3 py-1.5 text-xs rounded border hover:bg-muted transition-colors"
               >
-                {isPaused ? '▶️ 继续' : '⏸️ 暂停'}
+                {isPaused ? `▶️ ${dict.resume || '继续'}` : `⏸️ ${dict.pause || '暂停'}`}
               </button>
               <button
                 onClick={handleStop}
                 className="flex-1 px-3 py-1.5 text-xs rounded border border-red-500 text-red-600 hover:bg-red-50 transition-colors"
               >
-                ⏹️ 停止
+                ⏹️ {dict.stop || '停止'}
               </button>
             </div>
           </div>
@@ -252,14 +256,14 @@ export function FocusMode({ onComplete, onClose }: FocusModeProps) {
       >
         {/* 关闭和最小化按钮 */}
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold">🎯 专注学习</h2>
+          <h2 className="text-xl font-bold">🎯 {dict.title || '专注学习'}</h2>
           <div className="flex gap-2">
             {isActive && (
               <button
                 onClick={() => setIsMinimized(true)}
                 className="p-2 hover:bg-muted rounded-lg transition-colors"
-                title="最小化"
-                aria-label="最小化"
+                title={dict.minimize || '最小化'}
+                aria-label={dict.minimize || '最小化'}
               >
                 ➖
               </button>
@@ -268,8 +272,8 @@ export function FocusMode({ onComplete, onClose }: FocusModeProps) {
               <button
                 onClick={onClose}
                 className="p-2 hover:bg-muted rounded-lg transition-colors"
-                title="关闭"
-                aria-label="关闭"
+                title={dict.close || '关闭'}
+                aria-label={dict.close || '关闭'}
               >
                 ✕
               </button>
@@ -279,27 +283,30 @@ export function FocusMode({ onComplete, onClose }: FocusModeProps) {
 
         {/* 时间选择（未开始时） */}
         {!isActive && (
-          <div className="grid grid-cols-3 gap-3 mb-4">
-            {([5, 15, 30] as FocusDuration[]).map((mins) => (
-              <button
-                key={mins}
-                onClick={() => {
-                  setDuration(mins);
-                  setTimeLeft(mins * 60);
-                }}
-                className={`
-                  px-4 py-3 rounded-lg border-2 transition-all text-sm
-                  ${duration === mins
-                    ? 'border-primary bg-primary/10 text-primary font-bold'
-                    : 'border-border hover:border-primary/50 hover:bg-muted'
-                  }
-                `}
-              >
-                <div className="text-xl font-bold">{mins}</div>
-                <div className="text-xs text-muted-foreground">分钟</div>
-              </button>
-            ))}
-          </div>
+          <>
+            <p className="text-sm text-muted-foreground mb-3 text-center">{dict.subtitle || '选择专注时长，开始高效学习'}</p>
+            <div className="grid grid-cols-3 gap-3 mb-4">
+              {([5, 15, 30] as FocusDuration[]).map((mins) => (
+                <button
+                  key={mins}
+                  onClick={() => {
+                    setDuration(mins);
+                    setTimeLeft(mins * 60);
+                  }}
+                  className={`
+                    px-4 py-3 rounded-lg border-2 transition-all text-sm
+                    ${duration === mins
+                      ? 'border-primary bg-primary/10 text-primary font-bold'
+                      : 'border-border hover:border-primary/50 hover:bg-muted'
+                    }
+                  `}
+                >
+                  <div className="text-xl font-bold">{mins}</div>
+                  <div className="text-xs text-muted-foreground">{dict.minutes || '分钟'}</div>
+                </button>
+              ))}
+            </div>
+          </>
         )}
 
         {/* 倒计时显示 */}
@@ -336,7 +343,7 @@ export function FocusMode({ onComplete, onClose }: FocusModeProps) {
                 <div className="text-3xl font-bold mb-1">{formatTime(timeLeft)}</div>
                 {isActive && (
                   <div className="text-xs text-muted-foreground">
-                    {isPaused ? '已暂停' : '专注中...'}
+                    {isPaused ? (dict.paused || '已暂停') : (dict.focusingStatus || '专注中...')}
                   </div>
                 )}
               </div>
@@ -352,7 +359,7 @@ export function FocusMode({ onComplete, onClose }: FocusModeProps) {
               size="lg"
               className="w-full bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90"
             >
-              ▶️ 开始专注
+              ▶️ {dict.start || '开始专注'}
             </Button>
           ) : (
             <>
@@ -361,14 +368,14 @@ export function FocusMode({ onComplete, onClose }: FocusModeProps) {
                 variant="outline"
                 className="flex-1"
               >
-                {isPaused ? '▶️ 继续' : '⏸️ 暂停'}
+                {isPaused ? `▶️ ${dict.resume || '继续'}` : `⏸️ ${dict.pause || '暂停'}`}
               </Button>
               <Button
                 onClick={handleStop}
                 variant="outline"
                 className="flex-1 border-red-500 text-red-600 hover:bg-red-50"
               >
-                ⏹️ 停止
+                ⏹️ {dict.stop || '停止'}
               </Button>
             </>
           )}
@@ -377,14 +384,14 @@ export function FocusMode({ onComplete, onClose }: FocusModeProps) {
         {/* 提示信息 */}
         {isActive && !isPaused && (
           <div className="mt-4 text-center text-xs text-muted-foreground">
-            💡 可最小化到角落继续学习
+            💡 {dict.tip || '可最小化到角落继续学习'}
           </div>
         )}
 
         {/* 统计信息（暂停时显示） */}
         {isPaused && actualTimeSpent > 0 && (
           <div className="mt-4 p-3 bg-muted/50 rounded-lg text-center">
-            <div className="text-xs text-muted-foreground mb-1">已专注时长</div>
+            <div className="text-xs text-muted-foreground mb-1">{dict.timeSpent || '已专注时长'}</div>
             <div className="text-xl font-bold">{formatTime(actualTimeSpent)}</div>
           </div>
         )}

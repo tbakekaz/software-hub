@@ -96,7 +96,7 @@ export function LanguagesPageClient({ resources, dict, lang }: Props) {
           <div className="bg-gradient-to-r from-primary/10 to-primary/5 border-2 border-primary/30 rounded-lg p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground mb-1">继续学习</p>
+                <p className="text-sm text-muted-foreground mb-1">{dict?.continueLearning || '继续学习'}</p>
                 <h3 className="font-semibold">{pickLocaleString(recentLearning.title_i18n || recentLearning.title, lang)}</h3>
                 <div className="mt-2 w-full bg-muted rounded-full h-2">
                   <div className="bg-primary h-2 rounded-full" style={{ width: '45%' }}></div>
@@ -106,7 +106,7 @@ export function LanguagesPageClient({ resources, dict, lang }: Props) {
                 href={`/languages/${recentLearning.slug}`}
                 className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90"
               >
-                继续 →
+                {lang === 'zh' ? '继续' : lang === 'kk' ? 'Жалғастыру' : lang === 'ru' ? 'Продолжить' : 'Continue'} →
               </a>
             </div>
           </div>
@@ -116,7 +116,7 @@ export function LanguagesPageClient({ resources, dict, lang }: Props) {
         <div className="flex flex-wrap items-center gap-3 p-4 bg-muted/50 rounded-lg">
           <input
             type="text"
-            placeholder="搜索课程..."
+            placeholder={dict?.searchPlaceholder || '搜索课程...'}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="flex-1 min-w-[200px] px-4 py-2 border rounded-lg bg-background"
@@ -127,10 +127,10 @@ export function LanguagesPageClient({ resources, dict, lang }: Props) {
             onChange={(e) => setLevelFilter(e.target.value || null)}
             className="px-4 py-2 border rounded-lg bg-background"
           >
-            <option value="">全部难度</option>
-            <option value="beginner">初级</option>
-            <option value="intermediate">中级</option>
-            <option value="advanced">高级</option>
+            <option value="">{dict?.level?.all || '全部难度'}</option>
+            <option value="beginner">{dict?.level?.beginner || '初级'}</option>
+            <option value="intermediate">{dict?.level?.intermediate || '中级'}</option>
+            <option value="advanced">{dict?.level?.advanced || '高级'}</option>
           </select>
 
           <select
@@ -138,20 +138,20 @@ export function LanguagesPageClient({ resources, dict, lang }: Props) {
             onChange={(e) => setCategoryFilter(e.target.value || null)}
             className="px-4 py-2 border rounded-lg bg-background"
           >
-            <option value="">全部分类</option>
-            <option value="grammar">语法</option>
-            <option value="vocabulary">词汇</option>
-            <option value="listening">听力</option>
-            <option value="speaking">口语</option>
-            <option value="reading">阅读</option>
-            <option value="writing">写作</option>
-            <option value="course">课程</option>
+            <option value="">{dict?.category?.all || '全部分类'}</option>
+            <option value="grammar">{dict?.category?.grammar || '语法'}</option>
+            <option value="vocabulary">{dict?.category?.vocabulary || '词汇'}</option>
+            <option value="listening">{dict?.category?.listening || '听力'}</option>
+            <option value="speaking">{dict?.category?.speaking || '口语'}</option>
+            <option value="reading">{dict?.category?.reading || '阅读'}</option>
+            <option value="writing">{dict?.category?.writing || '写作'}</option>
+            <option value="course">{dict?.category?.course || '课程'}</option>
           </select>
         </div>
         
         {/* 目标语言选择器 */}
         <div className="flex items-center gap-3 flex-wrap">
-          <span className="text-sm font-medium">选择要学习的语言：</span>
+          <span className="text-sm font-medium">{dict?.selectLanguage || '选择要学习的语言：'}</span>
           {Object.keys(resources).map((targetLang) => (
             <button
               key={targetLang}
@@ -181,9 +181,9 @@ export function LanguagesPageClient({ resources, dict, lang }: Props) {
               <h2 className="text-2xl font-semibold">
                 {selectedTargetLang
                   ? targetLanguageLabels[selectedTargetLang] || selectedTargetLang
-                  : '所有课程'}
+                  : (dict?.allCourses || '所有课程')}
                 <span className="text-base font-normal text-muted-foreground ml-2">
-                  ({filteredResources.length} 个)
+                  ({filteredResources.length} {lang === 'zh' ? '个' : lang === 'kk' ? 'дана' : lang === 'ru' ? 'шт' : ''})
                 </span>
               </h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -194,7 +194,7 @@ export function LanguagesPageClient({ resources, dict, lang }: Props) {
             </section>
           ) : (
             <div className="text-center py-12 text-muted-foreground">
-              <p>没有找到匹配的课程</p>
+              <p>{dict?.noMatches || '没有找到匹配的课程'}</p>
             </div>
           )}
         </>

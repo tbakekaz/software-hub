@@ -67,7 +67,7 @@ export function LanguageResourceDetailClient({ resource, lang, dict }: Props) {
   // 完成课程
   const handleComplete = () => {
     if (!checkAllResourcesCompleted()) {
-      alert('请先完成所有学习资源');
+      alert(dict.languages?.pleaseCompleteAll || '请先完成所有学习资源');
       return;
     }
 
@@ -235,7 +235,7 @@ export function LanguageResourceDetailClient({ resource, lang, dict }: Props) {
                                 : 'hover:bg-muted'
                             }`}
                           >
-                            {isCompleted ? '✅ 已完成' : '标记完成'}
+                            {isCompleted ? `✅ ${dict.languages?.completed || '已完成'}` : (dict.languages?.markComplete || '标记完成')}
                           </button>
                         </div>
                       </div>
@@ -259,9 +259,9 @@ export function LanguageResourceDetailClient({ resource, lang, dict }: Props) {
           }`}
         >
           {checkAllResourcesCompleted() ? (
-            '✅ 完成课程'
+            `✅ ${dict.languages?.completeCourse || '完成课程'}`
           ) : (
-            `完成所有资源 (${completedResources.size}/${resource.resources.length})`
+            `${dict.languages?.completeAllResources || '完成所有资源'} (${completedResources.size}/${resource.resources.length})`
           )}
         </button>
       </div>

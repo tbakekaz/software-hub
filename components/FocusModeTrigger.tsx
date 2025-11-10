@@ -1,9 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FocusMode, type FocusDuration } from './FocusMode';
 import { Button } from '@/components/ui/button';
 import { saveFocusSession } from '@/lib/focus-stats';
+import type { Lang } from '@/lib/i18n';
+import { t } from '@/lib/i18n';
 
 interface FocusModeTriggerProps {
   className?: string;
@@ -12,6 +14,22 @@ interface FocusModeTriggerProps {
 
 export function FocusModeTrigger({ className, variant = 'button' }: FocusModeTriggerProps) {
   const [showFocusMode, setShowFocusMode] = useState(false);
+  const [lang, setLang] = useState<Lang>('zh');
+
+  useEffect(() => {
+    // 从 cookie 读取语言
+    if (typeof window !== 'undefined') {
+      const cookieLang = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('lang='))
+        ?.split('=')[1] as Lang | undefined;
+      if (cookieLang === 'zh' || cookieLang === 'kk' || cookieLang === 'ru' || cookieLang === 'en') {
+        setLang(cookieLang);
+      }
+    }
+  }, []);
+
+  const dict = t(lang).focusMode || {};
 
   const handleComplete = (duration: FocusDuration, actualTime: number) => {
     // 保存专注会话记录
@@ -24,7 +42,8 @@ export function FocusModeTrigger({ className, variant = 'button' }: FocusModeTri
 
     // 显示完成提示
     setTimeout(() => {
-      alert(`🎉 恭喜完成 ${duration} 分钟专注学习！\n实际专注时长：${Math.floor(actualTime / 60)} 分钟`);
+      const minutes = Math.floor(actualTime / 60);
+      alert(`🎉 ${dict.completed || '恭喜完成专注学习！'} ${duration} ${dict.minutes || '分钟'}\n${dict.actualTime || '实际专注时长'}: ${minutes} ${dict.minutes || '分钟'}`);
       setShowFocusMode(false);
     }, 2000);
   };
@@ -43,6 +62,7 @@ export function FocusModeTrigger({ className, variant = 'button' }: FocusModeTri
           <FocusMode
             onComplete={handleComplete}
             onClose={() => setShowFocusMode(false)}
+            lang={lang}
           />
         )}
       </>
@@ -56,12 +76,13 @@ export function FocusModeTrigger({ className, variant = 'button' }: FocusModeTri
         className={className}
         variant="outline"
       >
-        🎯 专注学习
+        🎯 {dict.title || '专注学习'}
       </Button>
       {showFocusMode && (
         <FocusMode
           onComplete={handleComplete}
           onClose={() => setShowFocusMode(false)}
+          lang={lang}
         />
       )}
     </>
