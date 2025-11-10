@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { LanguageResourceCard } from '@/components/LanguageResourceCard';
-import { LanguageTranslator } from '@/components/LanguageTranslator';
 import { FocusModeTrigger } from '@/components/FocusModeTrigger';
 import { getLearningStats } from '@/lib/learning-progress';
 import { pickLocaleString } from '@/lib/i18n/translate';
@@ -28,7 +27,6 @@ interface Props {
 
 export function LanguagesPageClient({ resources, dict, lang }: Props) {
   const [selectedTargetLang, setSelectedTargetLang] = useState<string | null>(null);
-  const [isTranslating, setIsTranslating] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [levelFilter, setLevelFilter] = useState<string | null>(null);
   const [categoryFilter, setCategoryFilter] = useState<string | null>(null);
@@ -174,15 +172,6 @@ export function LanguagesPageClient({ resources, dict, lang }: Props) {
           ))}
         </div>
 
-        {/* 翻译功能 - 默认显示第一个语言 */}
-        {currentTargetLang && (
-          <div className="sticky top-20 z-30 -mx-4 px-4 py-3 bg-background/95 backdrop-blur border-b shadow-sm">
-            <LanguageTranslator
-              targetLanguage={currentTargetLang as 'english' | 'chinese' | 'kazakh' | 'russian' | 'other'}
-              onTranslate={setIsTranslating}
-            />
-          </div>
-        )}
       </header>
 
       {Object.keys(resources).length === 0 ? (
