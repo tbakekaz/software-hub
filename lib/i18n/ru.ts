@@ -1,5 +1,5 @@
 const ru = {
-  nav: { software: 'Софт', tutorials: 'Гайды', ai: 'AI Навигатор', about: 'О нас', discover: 'Обзор', search: 'Поиск', searchPlaceholder: 'Поиск софта, гайдов, AI инструментов...' },
+  nav: { software: 'Софт', tutorials: 'Гайды', ai: 'AI Навигатор', about: 'О нас', discover: 'Обзор', search: 'Поиск', searchPlaceholder: 'Поиск софта, гайдов, AI инструментов...', english: 'Изучение английского' },
   home: { title: 'Подборка софта · AI навигатор · KZT курс', subtitle: 'Лучшие инструменты и инструкции по установке.' },
   rates: { 
     title: 'Курс тенге', 

@@ -70,6 +70,30 @@ export type AIItem = {
   isInternational?: boolean;
 };
 
+export type EnglishResource = {
+  slug: string;
+  title: string;
+  title_i18n?: { zh?: string; kk?: string; ru?: string; en?: string };
+  category: 'grammar' | 'vocabulary' | 'listening' | 'speaking' | 'reading' | 'writing' | 'course';
+  level: 'beginner' | 'intermediate' | 'advanced';
+  description: string;
+  description_i18n?: { zh?: string; kk?: string; ru?: string; en?: string };
+  thumbnail?: string;
+  resources: {
+    type: 'video' | 'document' | 'audio' | 'pdf' | 'link';
+    title: string;
+    url: string;
+    size?: string;
+    duration?: string;
+    format?: string;
+  }[];
+  tags?: string[];
+  date: string;
+  updatedAt?: string;
+  isFeatured?: boolean;
+  isFree?: boolean;
+};
+
 let softwareCache: Software[] | null = null;
 
 export { softwareManifest };
@@ -109,6 +133,20 @@ export function getTutorialBySlug(slug: string) {
 
 export function getAllAI(): AIItem[] {
   return allAI as unknown as AIItem[];
+}
+
+export function getAllEnglish(): EnglishResource[] {
+  try {
+    const { allEnglish } = require('./generated/english');
+    return allEnglish as unknown as EnglishResource[];
+  } catch {
+    return [];
+  }
+}
+
+export function getEnglishBySlug(slug: string): EnglishResource | null {
+  const all = getAllEnglish();
+  return all.find((item) => item.slug === slug) || null;
 }
 
 export function getSoftwareCategories(): string[] {

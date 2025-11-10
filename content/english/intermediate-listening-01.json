@@ -1,0 +1,48 @@
+{
+  "slug": "intermediate-listening-01",
+  "title": "中级听力：日常对话",
+  "title_i18n": {
+    "zh": "中级听力：日常对话",
+    "en": "Intermediate Listening: Daily Conversations",
+    "kk": "Орта деңгейлі тыңдау: Күнделікті әңгімелер",
+    "ru": "Средний уровень: Повседневные разговоры"
+  },
+  "category": "listening",
+  "level": "intermediate",
+  "description": "通过真实场景的日常对话练习，提高英语听力理解能力",
+  "description_i18n": {
+    "zh": "通过真实场景的日常对话练习，提高英语听力理解能力",
+    "en": "Improve English listening comprehension through daily conversation practice in real scenarios",
+    "kk": "Нақты сценарийлердегі күнделікті әңгімелер арқылы ағылшын тіліндегі тыңдау түсіну қабілетін дамыту",
+    "ru": "Улучшите понимание английского языка на слух через практику повседневных разговоров в реальных сценариях"
+  },
+  "thumbnail": "https://via.placeholder.com/400x300?text=Listening",
+  "resources": [
+    {
+      "type": "audio",
+      "title": "对话音频 1：餐厅点餐",
+      "url": "https://example.com/audio/listening-restaurant.mp3",
+      "duration": "5:30",
+      "format": "mp3"
+    },
+    {
+      "type": "audio",
+      "title": "对话音频 2：购物",
+      "url": "https://example.com/audio/listening-shopping.mp3",
+      "duration": "6:15",
+      "format": "mp3"
+    },
+    {
+      "type": "document",
+      "title": "听力文本和答案",
+      "url": "https://example.com/docs/listening-scripts.pdf",
+      "size": "1.2 MB",
+      "format": "pdf"
+    }
+  ],
+  "tags": ["听力", "对话", "中级"],
+  "date": "2025-01-20",
+  "isFeatured": true,
+  "isFree": true
+}
+

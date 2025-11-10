@@ -11,6 +11,7 @@ const OUTPUT_ROOT = path.join(root, 'lib/generated');
 const SOFTWARE_SOURCE = path.join(root, 'content/software');
 const TUTORIALS_SOURCE = path.join(root, 'content/tutorials');
 const AI_SOURCE = path.join(root, 'content/ai');
+const ENGLISH_SOURCE = path.join(root, 'content/english');
 const SOFTWARE_PAGE_SIZE = 12;
 
 function ensureDir(dir) {
@@ -135,7 +136,29 @@ writeFile(
   `// 此文件由 scripts/generate-content.mjs 自动生成，请勿手动编辑\nexport const allAI = ${JSON.stringify(allAI)} as const;\n`
 );
 
+// 英语学习资源
+let allEnglish = [];
+if (fs.existsSync(ENGLISH_SOURCE)) {
+  allEnglish = fs
+    .readdirSync(ENGLISH_SOURCE)
+    .filter((f) => f.endsWith('.json'))
+    .map((file) => JSON.parse(fs.readFileSync(path.join(ENGLISH_SOURCE, file), 'utf8')))
+    .sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')));
+  
+  writeFile(
+    path.join(OUTPUT_ROOT, 'english.ts'),
+    `// 此文件由 scripts/generate-content.mjs 自动生成，请勿手动编辑\nexport const allEnglish = ${JSON.stringify(allEnglish)} as const;\n`
+  );
+} else {
+  // 如果目录不存在，创建空数组
+  writeFile(
+    path.join(OUTPUT_ROOT, 'english.ts'),
+    `// 此文件由 scripts/generate-content.mjs 自动生成，请勿手动编辑\nexport const allEnglish = [] as const;\n`
+  );
+}
+
 console.log('✅ 内容数据已生成：');
 console.log(`   - ${allSoftware.length} 个软件，分页 ${softwarePages.length} 页，每页 ${SOFTWARE_PAGE_SIZE} 条`);
 console.log(`   - ${allTutorials.length} 个教程`);
 console.log(`   - ${allAI.length} 个 AI 项目`);
+console.log(`   - ${allEnglish.length} 个英语学习资源`);

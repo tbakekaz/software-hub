@@ -1,5 +1,5 @@
 const en = {
-  nav: { software: 'Software', tutorials: 'Tutorials', ai: 'AI Directory', about: 'About', discover: 'Discover', search: 'Search', searchPlaceholder: 'Search software, tutorials, AI tools...' },
+  nav: { software: 'Software', tutorials: 'Tutorials', ai: 'AI Directory', about: 'About', discover: 'Discover', search: 'Search', searchPlaceholder: 'Search software, tutorials, AI tools...', english: 'English Learning' },
   home: { title: 'Software Hub · AI Directory · KZT Rates', subtitle: 'Curated tools with install guides and mirrors.' },
   rates: { 
     title: 'KZT Exchange Rates', 

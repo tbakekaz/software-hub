@@ -1,0 +1,48 @@
+{
+  "slug": "beginner-grammar-01",
+  "title": "基础语法：现在时态",
+  "title_i18n": {
+    "zh": "基础语法：现在时态",
+    "en": "Basic Grammar: Present Tense",
+    "kk": "Негізгі грамматика: Нақты уақыт",
+    "ru": "Базовая грамматика: Настоящее время"
+  },
+  "category": "grammar",
+  "level": "beginner",
+  "description": "学习英语现在时态的基本用法，包括一般现在时、现在进行时等",
+  "description_i18n": {
+    "zh": "学习英语现在时态的基本用法，包括一般现在时、现在进行时等",
+    "en": "Learn the basic usage of present tense in English, including simple present and present continuous",
+    "kk": "Ағылшын тіліндегі нақты уақыттың негізгі қолданысын үйрену, соның ішінде жай нақты уақыт және жалғасып жатқан нақты уақыт",
+    "ru": "Изучите основное использование настоящего времени в английском языке, включая простое настоящее время и настоящее продолженное время"
+  },
+  "thumbnail": "https://via.placeholder.com/400x300?text=Grammar",
+  "resources": [
+    {
+      "type": "video",
+      "title": "教学视频：现在时态详解",
+      "url": "https://example.com/videos/grammar-present-tense.mp4",
+      "duration": "15:30",
+      "format": "mp4"
+    },
+    {
+      "type": "document",
+      "title": "语法笔记 PDF",
+      "url": "https://example.com/docs/grammar-present-tense.pdf",
+      "size": "2.5 MB",
+      "format": "pdf"
+    },
+    {
+      "type": "audio",
+      "title": "听力练习音频",
+      "url": "https://example.com/audio/grammar-present-tense.mp3",
+      "duration": "10:20",
+      "format": "mp3"
+    }
+  ],
+  "tags": ["语法", "现在时", "基础"],
+  "date": "2025-01-15",
+  "isFeatured": true,
+  "isFree": true
+}
+
