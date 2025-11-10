@@ -6,6 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { ProBadge } from '@/components/ProBadge';
+import { LevelProgress } from '@/components/LevelProgress';
+import { FocusStats } from '@/components/FocusStats';
+import { getLearningStats } from '@/lib/learning-progress';
 
 export default function AccountClient({ dict = {} }: { dict?: any }) {
   const [user, setLocal] = useState<User | null>(null);
@@ -17,12 +20,21 @@ export default function AccountClient({ dict = {} }: { dict?: any }) {
   const [passwordError, setPasswordError] = useState('');
   const [passwordSuccess, setPasswordSuccess] = useState(false);
   const passwordTimerRef = useRef<number | null>(null);
+  const [learningStats, setLearningStats] = useState(getLearningStats());
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       setLocal(getUser());
       setLoading(false);
+      setLearningStats(getLearningStats());
     }
+    
+    // 定期更新学习统计
+    const interval = setInterval(() => {
+      if (typeof window !== 'undefined') {
+        setLearningStats(getLearningStats());
+      }
+    }, 60000); // 每分钟更新一次
     
     // 清理定时器
     return () => {
@@ -30,6 +42,7 @@ export default function AccountClient({ dict = {} }: { dict?: any }) {
         clearTimeout(passwordTimerRef.current);
         passwordTimerRef.current = null;
       }
+      clearInterval(interval);
     };
   }, []);
 
@@ -204,6 +217,34 @@ export default function AccountClient({ dict = {} }: { dict?: any }) {
           </CardBody>
         </CardBase>
       )}
+
+      {/* 学习统计 */}
+      <CardBase>
+        <CardHeader>
+          <h2 className="text-lg font-semibold">📚 学习统计</h2>
+        </CardHeader>
+        <CardBody>
+          <LevelProgress experience={learningStats.experience} />
+          
+          <div className="grid grid-cols-3 gap-4 mt-4">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-primary">{learningStats.totalStars}</div>
+              <div className="text-sm text-muted-foreground">总星星</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-primary">{learningStats.totalCourses}</div>
+              <div className="text-sm text-muted-foreground">完成课程</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-primary">{Math.floor(learningStats.totalTimeSpent / 60)}</div>
+              <div className="text-sm text-muted-foreground">学习小时</div>
+            </div>
+          </div>
+        </CardBody>
+      </CardBase>
+
+      {/* 专注统计 */}
+      <FocusStats />
 
       {/* 修改密码卡片 */}
       <CardBase>

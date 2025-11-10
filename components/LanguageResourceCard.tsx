@@ -1,7 +1,12 @@
+'use client';
+
 import Link from 'next/link';
 import { pickLocaleString } from '@/lib/i18n/translate';
 import type { LanguageResource } from '@/lib/content-edge';
 import type { Lang } from '@/lib/i18n';
+import { getCourseCompletion } from '@/lib/learning-progress';
+import { StarRating } from './StarRating';
+import { useEffect, useState } from 'react';
 
 interface Props {
   resource: LanguageResource;
@@ -19,6 +24,14 @@ interface Props {
 export function LanguageResourceCard({ resource, lang, dict }: Props) {
   const title = pickLocaleString(resource.title_i18n || resource.title, lang);
   const description = pickLocaleString(resource.description_i18n || resource.description, lang);
+  const [stars, setStars] = useState<0 | 1 | 2 | 3>(0);
+  
+  useEffect(() => {
+    const completion = getCourseCompletion(resource.slug);
+    if (completion) {
+      setStars(completion.stars);
+    }
+  }, [resource.slug]);
   
   const resourceCount = resource.resources.length;
   const hasVideo = resource.resources.some(r => r.type === 'video');
@@ -56,11 +69,18 @@ export function LanguageResourceCard({ resource, lang, dict }: Props) {
       <h3 className="font-semibold text-lg mb-2">{title}</h3>
       <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{description}</p>
       
-      <div className="flex items-center gap-3 text-xs text-muted-foreground">
-        {hasVideo && <span>🎥 {dict?.resourceType?.video || '视频'}</span>}
-        {hasAudio && <span>🎵 {dict?.resourceType?.audio || '音频'}</span>}
-        {hasDocument && <span>📄 {dict?.resourceType?.document || '文档'}</span>}
-        <span>{resourceCount} {dict?.resources || '个资源'}</span>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3 text-xs text-muted-foreground">
+          {hasVideo && <span>🎥 {dict?.resourceType?.video || '视频'}</span>}
+          {hasAudio && <span>🎵 {dict?.resourceType?.audio || '音频'}</span>}
+          {hasDocument && <span>📄 {dict?.resourceType?.document || '文档'}</span>}
+          <span>{resourceCount} {dict?.resources || '个资源'}</span>
+        </div>
+        {stars > 0 && (
+          <div className="mt-2">
+            <StarRating stars={stars} size="sm" />
+          </div>
+        )}
       </div>
     </Link>
   );

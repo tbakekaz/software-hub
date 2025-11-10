@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { getDictionary } from '@/lib/i18n/server';
 import { pickLocaleString } from '@/lib/i18n/translate';
 import { LanguageTranslator } from '@/components/LanguageTranslator';
+import { LanguageResourceDetailClient } from './LanguageResourceDetailClient';
 import type { Metadata } from 'next';
 import { siteConfig } from '@/config/site';
 
@@ -84,37 +85,7 @@ export default async function LanguageResourceDetailPage({ params }: PageProps) 
         )}
       </header>
 
-      <div className="space-y-4">
-        <h2 className="text-xl font-semibold">{dict.languages?.learningResources || '学习资源'}</h2>
-        <div className="grid gap-4">
-          {resource.resources.map((res, idx) => {
-            const resTitle = pickLocaleString(res.title_i18n || res.title, lang);
-            return (
-              <div key={idx} className="border rounded-lg p-4 hover:border-primary transition-colors">
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="font-medium">{resTitle}</h3>
-                  <span className="px-2 py-1 text-xs rounded bg-muted capitalize">
-                    {resourceTypeLabels[res.type as keyof typeof resourceTypeLabels] || res.type}
-                  </span>
-                </div>
-                <div className="flex items-center gap-4 text-sm text-muted-foreground mb-3">
-                  {res.duration && <span>⏱️ {res.duration}</span>}
-                  {res.size && <span>📦 {res.size}</span>}
-                  {res.format && <span>📄 {res.format.toUpperCase()}</span>}
-                </div>
-                <a
-                  href={res.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity"
-                >
-                  {dict.languages?.viewDownload || '查看/下载'} →
-                </a>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+      <LanguageResourceDetailClient resource={resource} lang={lang} dict={dict} />
     </main>
   );
 }
