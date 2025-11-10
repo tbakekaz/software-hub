@@ -9,9 +9,11 @@ import AuthButton from '@/components/AuthButton';
 
 export function NavbarClient({
   dict,
+  lang,
   searchPlaceholder
 }: {
   dict: any;
+  lang?: string;
   searchPlaceholder?: string;
 }) {
   const router = useRouter();

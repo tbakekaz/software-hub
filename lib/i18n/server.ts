@@ -1,5 +1,5 @@
 // Vercel 支持 cookies()，可以正常使用
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { t, type Lang } from './index';
 
 export async function getCurrentLang(): Promise<Lang> {
@@ -11,7 +11,16 @@ export async function getCurrentLang(): Promise<Lang> {
       return c;
     }
   } catch (error) {
-    // 如果 cookies() 失败，使用默认语言
+    // 如果 cookies() 失败，尝试从 headers 读取（middleware 设置的）
+    try {
+      const headersList = await headers();
+      const langHeader = headersList.get('x-lang') as Lang | undefined;
+      if (langHeader === 'zh' || langHeader === 'kk' || langHeader === 'ru' || langHeader === 'en') {
+        return langHeader;
+      }
+    } catch {
+      // 忽略错误
+    }
   }
   return 'zh';
 }

@@ -2,6 +2,10 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { MonetizeSlot } from '@/components/MonetizeSlot';
 
+// 禁用缓存，确保语言切换时布局能正确更新
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen flex flex-col">
