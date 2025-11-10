@@ -14,6 +14,7 @@ export function FocusMode({ onComplete, onClose }: FocusModeProps) {
   const [duration, setDuration] = useState<FocusDuration>(15);
   const [isActive, setIsActive] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
   const [timeLeft, setTimeLeft] = useState(duration * 60); // 秒
   const [startTime, setStartTime] = useState<number | null>(null);
   const [actualTimeSpent, setActualTimeSpent] = useState(0); // 实际学习时长（秒）
@@ -176,29 +177,109 @@ export function FocusMode({ onComplete, onClose }: FocusModeProps) {
     }
   }, [duration, isActive]);
 
-  return (
-    <div className="fixed inset-0 z-50 bg-gradient-to-br from-blue-900 via-purple-900 to-pink-900 flex items-center justify-center">
-      <div className="bg-background/95 backdrop-blur-lg rounded-2xl p-8 max-w-2xl w-full mx-4 shadow-2xl border-2 border-primary/30">
-        {/* 关闭按钮 */}
-        {!isActive && (
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 p-2 hover:bg-muted rounded-lg transition-colors"
-            aria-label="关闭"
-          >
-            ✕
-          </button>
-        )}
+  // 如果最小化且正在运行，显示紧凑模式
+  if (isMinimized && isActive) {
+    return (
+      <div className="fixed bottom-6 right-6 z-50">
+        <div className="bg-background/95 backdrop-blur-lg rounded-lg p-4 shadow-2xl border-2 border-primary/30 min-w-[200px]">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-sm font-semibold">🎯 专注中</span>
+            <div className="flex gap-1">
+              <button
+                onClick={() => setIsMinimized(false)}
+                className="p-1 hover:bg-muted rounded transition-colors"
+                title="展开"
+                aria-label="展开"
+              >
+                ⬆️
+              </button>
+              <button
+                onClick={onClose}
+                className="p-1 hover:bg-muted rounded transition-colors"
+                title="关闭"
+                aria-label="关闭"
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl font-bold mb-1">{formatTime(timeLeft)}</div>
+            <div className="text-xs text-muted-foreground mb-2">
+              {isPaused ? '已暂停' : '专注中...'}
+            </div>
+            <div className="w-full bg-muted rounded-full h-1.5 mb-2">
+              <div
+                className="bg-primary h-1.5 rounded-full transition-all"
+                style={{ width: `${progress}%` }}
+              ></div>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={handlePause}
+                className="flex-1 px-3 py-1.5 text-xs rounded border hover:bg-muted transition-colors"
+              >
+                {isPaused ? '▶️ 继续' : '⏸️ 暂停'}
+              </button>
+              <button
+                onClick={handleStop}
+                className="flex-1 px-3 py-1.5 text-xs rounded border border-red-500 text-red-600 hover:bg-red-50 transition-colors"
+              >
+                ⏹️ 停止
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-        {/* 标题 */}
-        <div className="text-center mb-6">
-          <h2 className="text-3xl font-bold mb-2">🎯 专注学习模式</h2>
-          <p className="text-muted-foreground">选择专注时长，开始高效学习</p>
+  // 完整模式（未开始或展开状态）
+  return (
+    <div className="fixed inset-0 z-50 flex items-end justify-end p-4 pointer-events-none">
+      {/* 半透明背景（未开始时显示） */}
+      {!isActive && (
+        <div 
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm pointer-events-auto"
+          onClick={onClose}
+        />
+      )}
+      
+      {/* 专注模式窗口 */}
+      <div 
+        className="bg-background/95 backdrop-blur-lg rounded-2xl p-6 shadow-2xl border-2 border-primary/30 w-full max-w-sm pointer-events-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* 关闭和最小化按钮 */}
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xl font-bold">🎯 专注学习</h2>
+          <div className="flex gap-2">
+            {isActive && (
+              <button
+                onClick={() => setIsMinimized(true)}
+                className="p-2 hover:bg-muted rounded-lg transition-colors"
+                title="最小化"
+                aria-label="最小化"
+              >
+                ➖
+              </button>
+            )}
+            {!isActive && (
+              <button
+                onClick={onClose}
+                className="p-2 hover:bg-muted rounded-lg transition-colors"
+                title="关闭"
+                aria-label="关闭"
+              >
+                ✕
+              </button>
+            )}
+          </div>
         </div>
 
-        {/* 时间选择（未开始时显示） */}
+        {/* 时间选择（未开始时） */}
         {!isActive && (
-          <div className="grid grid-cols-3 gap-4 mb-6">
+          <div className="grid grid-cols-3 gap-3 mb-4">
             {([5, 15, 30] as FocusDuration[]).map((mins) => (
               <button
                 key={mins}
@@ -207,43 +288,43 @@ export function FocusMode({ onComplete, onClose }: FocusModeProps) {
                   setTimeLeft(mins * 60);
                 }}
                 className={`
-                  px-6 py-4 rounded-lg border-2 transition-all
+                  px-4 py-3 rounded-lg border-2 transition-all text-sm
                   ${duration === mins
-                    ? 'border-primary bg-primary/10 text-primary font-bold scale-105'
+                    ? 'border-primary bg-primary/10 text-primary font-bold'
                     : 'border-border hover:border-primary/50 hover:bg-muted'
                   }
                 `}
               >
-                <div className="text-2xl font-bold">{mins}</div>
-                <div className="text-sm text-muted-foreground">分钟</div>
+                <div className="text-xl font-bold">{mins}</div>
+                <div className="text-xs text-muted-foreground">分钟</div>
               </button>
             ))}
           </div>
         )}
 
         {/* 倒计时显示 */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-4">
           <div className="relative inline-block">
-            {/* 圆形进度条 */}
-            <svg className="w-64 h-64 transform -rotate-90" viewBox="0 0 100 100">
+            {/* 较小的圆形进度条 */}
+            <svg className="w-32 h-32 transform -rotate-90" viewBox="0 0 100 100">
               <circle
                 cx="50"
                 cy="50"
-                r="45"
+                r="40"
                 stroke="currentColor"
-                strokeWidth="8"
+                strokeWidth="6"
                 fill="none"
                 className="text-muted"
               />
               <circle
                 cx="50"
                 cy="50"
-                r="45"
+                r="40"
                 stroke="currentColor"
-                strokeWidth="8"
+                strokeWidth="6"
                 fill="none"
-                strokeDasharray={`${2 * Math.PI * 45}`}
-                strokeDashoffset={`${2 * Math.PI * 45 * (1 - progress / 100)}`}
+                strokeDasharray={`${2 * Math.PI * 40}`}
+                strokeDashoffset={`${2 * Math.PI * 40 * (1 - progress / 100)}`}
                 className="text-primary transition-all duration-1000"
                 strokeLinecap="round"
               />
@@ -252,9 +333,9 @@ export function FocusMode({ onComplete, onClose }: FocusModeProps) {
             {/* 时间文字 */}
             <div className="absolute inset-0 flex items-center justify-center">
               <div>
-                <div className="text-5xl font-bold mb-2">{formatTime(timeLeft)}</div>
+                <div className="text-3xl font-bold mb-1">{formatTime(timeLeft)}</div>
                 {isActive && (
-                  <div className="text-sm text-muted-foreground">
+                  <div className="text-xs text-muted-foreground">
                     {isPaused ? '已暂停' : '专注中...'}
                   </div>
                 )}
@@ -264,12 +345,12 @@ export function FocusMode({ onComplete, onClose }: FocusModeProps) {
         </div>
 
         {/* 控制按钮 */}
-        <div className="flex items-center justify-center gap-4">
+        <div className="flex items-center justify-center gap-2">
           {!isActive ? (
             <Button
               onClick={handleStart}
               size="lg"
-              className="px-8 py-6 text-lg font-bold bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90"
+              className="w-full bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90"
             >
               ▶️ 开始专注
             </Button>
@@ -277,17 +358,15 @@ export function FocusMode({ onComplete, onClose }: FocusModeProps) {
             <>
               <Button
                 onClick={handlePause}
-                size="lg"
                 variant="outline"
-                className="px-6 py-4"
+                className="flex-1"
               >
                 {isPaused ? '▶️ 继续' : '⏸️ 暂停'}
               </Button>
               <Button
                 onClick={handleStop}
-                size="lg"
                 variant="outline"
-                className="px-6 py-4 border-red-500 text-red-600 hover:bg-red-50"
+                className="flex-1 border-red-500 text-red-600 hover:bg-red-50"
               >
                 ⏹️ 停止
               </Button>
@@ -297,16 +376,16 @@ export function FocusMode({ onComplete, onClose }: FocusModeProps) {
 
         {/* 提示信息 */}
         {isActive && !isPaused && (
-          <div className="mt-6 text-center text-sm text-muted-foreground">
-            💡 提示：切换标签页会自动暂停，保持专注！
+          <div className="mt-4 text-center text-xs text-muted-foreground">
+            💡 可最小化到角落继续学习
           </div>
         )}
 
         {/* 统计信息（暂停时显示） */}
         {isPaused && actualTimeSpent > 0 && (
-          <div className="mt-6 p-4 bg-muted/50 rounded-lg text-center">
-            <div className="text-sm text-muted-foreground mb-1">已专注时长</div>
-            <div className="text-2xl font-bold">{formatTime(actualTimeSpent)}</div>
+          <div className="mt-4 p-3 bg-muted/50 rounded-lg text-center">
+            <div className="text-xs text-muted-foreground mb-1">已专注时长</div>
+            <div className="text-xl font-bold">{formatTime(actualTimeSpent)}</div>
           </div>
         )}
       </div>
