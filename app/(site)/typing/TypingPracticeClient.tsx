@@ -6,6 +6,8 @@ import { CardBase, CardHeader, CardBody } from '@/components/CardBase';
 import type { Lang } from '@/lib/i18n';
 import { getTypingCourses, type TypingCourse, type TypingLesson } from '@/lib/typing-content';
 import { saveTypingProgress, getTypingStats, type TypingStats } from '@/lib/typing-progress';
+import { checkAchievements, unlockAchievement, getUnlockedAchievements, type TypingAchievement } from '@/lib/typing-achievements';
+import { pickLocaleString } from '@/lib/i18n/translate';
 
 interface Props {
   dict?: {
@@ -54,6 +56,8 @@ export function TypingPracticeClient({ dict, lang }: Props) {
   const [errors, setErrors] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [stats, setStats] = useState<TypingStats | null>(null);
+  const [newAchievements, setNewAchievements] = useState<TypingAchievement[]>([]);
+  const [unlockedAchievements, setUnlockedAchievements] = useState<string[]>([]);
   
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -68,9 +72,10 @@ export function TypingPracticeClient({ dict, lang }: Props) {
     }
   }, [selectedLanguage, selectedDifficulty, selectedCourse]);
 
-  // 加载统计数据
+  // 加载统计数据和成就
   useEffect(() => {
     setStats(getTypingStats(selectedLanguage));
+    setUnlockedAchievements(getUnlockedAchievements());
   }, [selectedLanguage]);
 
   // 计算统计信息
@@ -143,7 +148,27 @@ export function TypingPracticeClient({ dict, lang }: Props) {
           lessonId: currentLesson?.id || '',
           completedAt: new Date().toISOString(),
         });
-        setStats(getTypingStats(selectedLanguage));
+        
+        const updatedStats = getTypingStats(selectedLanguage);
+        setStats(updatedStats);
+        
+        // 检查成就
+        const achievements = checkAchievements(
+          {
+            wpm: finalStats.wpm,
+            accuracy: finalStats.accuracy,
+            lessonsCompleted: updatedStats.lessonsCompleted,
+            totalTime: updatedStats.totalTime,
+            language: selectedLanguage,
+          },
+          unlockedAchievements
+        );
+        
+        if (achievements.length > 0) {
+          achievements.forEach(ach => unlockAchievement(ach.id));
+          setNewAchievements(achievements);
+          setUnlockedAchievements(getUnlockedAchievements());
+        }
       }
     }
   };
@@ -157,6 +182,7 @@ export function TypingPracticeClient({ dict, lang }: Props) {
     setErrors(0);
     setCurrentIndex(0);
     setDisplayStats({ wpm: 0, accuracy: 100, time: 0 });
+    setNewAchievements([]);
     if (inputRef.current) {
       inputRef.current.focus();
     }
@@ -405,13 +431,43 @@ export function TypingPracticeClient({ dict, lang }: Props) {
 
               {/* 完成提示 */}
               {isCompleted && (
-                <div className="p-4 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded-lg text-center">
-                  <p className="text-lg font-semibold text-green-700 dark:text-green-400">
-                    🎉 {dict?.congratulations || '恭喜完成！'}
-                  </p>
-                  <p className="text-sm text-muted-foreground mt-2">
-                    {dict?.wpm || 'WPM'}: {displayStats.wpm} | {dict?.accuracy || '准确率'}: {displayStats.accuracy}% | {dict?.errors || '错误'}: {errors}
-                  </p>
+                <div className="space-y-3">
+                  <div className="p-4 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded-lg text-center">
+                    <p className="text-lg font-semibold text-green-700 dark:text-green-400">
+                      🎉 {dict?.congratulations || '恭喜完成！'}
+                    </p>
+                    <p className="text-sm text-muted-foreground mt-2">
+                      {dict?.wpm || 'WPM'}: {displayStats.wpm} | {dict?.accuracy || '准确率'}: {displayStats.accuracy}% | {dict?.errors || '错误'}: {errors}
+                    </p>
+                  </div>
+                  
+                  {/* 新成就提示 */}
+                  {newAchievements.length > 0 && (
+                    <div className="p-4 bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-950/20 dark:to-orange-950/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+                      <p className="text-sm font-semibold mb-2">🏆 {dict?.achievements || '新成就解锁！'}</p>
+                      <div className="space-y-2">
+                        {newAchievements.map((ach) => (
+                          <div key={ach.id} className="flex items-center gap-2 p-2 bg-background/50 rounded">
+                            <span className="text-2xl">{ach.icon}</span>
+                            <div className="flex-1">
+                              <p className="font-medium">{pickLocaleString(ach.name_i18n || ach.name, lang)}</p>
+                              <p className="text-xs text-muted-foreground">
+                                {pickLocaleString(ach.description_i18n || ach.description, lang)}
+                              </p>
+                            </div>
+                            <span className={`text-xs px-2 py-1 rounded ${
+                              ach.rarity === 'legendary' ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300' :
+                              ach.rarity === 'epic' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300' :
+                              ach.rarity === 'rare' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300' :
+                              'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300'
+                            }`}>
+                              {ach.rarity === 'legendary' ? '传说' : ach.rarity === 'epic' ? '史诗' : ach.rarity === 'rare' ? '稀有' : '普通'}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </CardBody>
