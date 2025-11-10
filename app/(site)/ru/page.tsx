@@ -1,4 +1,3 @@
-import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import Link from 'next/link';
 
 export const metadata = {
@@ -17,10 +16,6 @@ export const metadata = {
 export default function RuPage() {
   return (
     <main className="container mx-auto px-4 py-10 space-y-12">
-      <div className="flex justify-end">
-        <LanguageSwitcher />
-      </div>
-
       <section className="text-center space-y-4">
         <h1 className="text-4xl font-bold">Центр ресурсов по ИИ и софту для Центральной Азии</h1>
         <p className="text-lg text-muted-foreground">
