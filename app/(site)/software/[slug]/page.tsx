@@ -9,11 +9,20 @@ import { getRelatedSoftware } from '@/lib/recommendations';
 import { softwareSchema, breadcrumbSchema, faqSchema, howToSchema, reviewSchema } from '@/lib/seo';
 import { RelatedSoftwareCard } from '@/components/RelatedSoftwareCard';
 
-export const dynamic = 'force-dynamic';
-export const runtime = 'edge';
+export const revalidate = 3600;
 
 interface PageProps {
   params: Promise<{ slug: string }>;
+}
+
+export async function generateStaticParams() {
+  try {
+    const all = await getAllSoftware();
+    return (all || []).map((s: { slug: string }) => ({ slug: s.slug }));
+  } catch (e) {
+    console.warn('[SoftwareDetail] generateStaticParams fallback', e);
+    return [];
+  }
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
@@ -29,7 +38,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `${title} - ${siteConfig.name}`,
     description,
-    keywords: [title, data.category, ...(data.platforms || [])].filter(Boolean).join(', '),
+    keywords: [title, data.category, ...(data.platforms || [])].filter(Boolean) as string[],
     openGraph: {
       title: `${title} - ${siteConfig.name}`,
       description,
@@ -114,7 +123,7 @@ export default async function SoftwareDetail({ params }: PageProps) {
       ratingValue: 4.8,
       reviewCount: 128,
       author: dict.software.reviewAuthor || 'Software Hub 团队',
-      reviewBody: dict.software.reviewSummary || `${title} 在 ${currentSoftware.platforms.join(', ')} 上拥有稳定表现。`,
+      reviewBody: dict.software.reviewSummary || `${title} 在 ${(currentSoftware.platforms || []).join(', ') || '各主流平台'} 上拥有稳定表现。`,
     }),
   ];
 
@@ -130,7 +139,7 @@ export default async function SoftwareDetail({ params }: PageProps) {
         <p className="max-w-3xl text-muted-foreground leading-relaxed">{description}</p>
         <div className="flex flex-wrap gap-2 text-sm text-muted-foreground/80">
           {currentSoftware.category && <span className="px-2 py-1 rounded border border-border/60">{currentSoftware.category}</span>}
-          {currentSoftware.platforms.map((platform) => (
+          {(currentSoftware.platforms || []).map((platform) => (
             <span key={platform} className="px-2 py-1 rounded border border-border/60">
               {platform}
             </span>
@@ -142,18 +151,18 @@ export default async function SoftwareDetail({ params }: PageProps) {
         <h2 className="text-xl font-semibold">{dict.software.downloadSection || '下载地址'}</h2>
         <div className="grid gap-3 md:grid-cols-2">
           {currentSoftware.downloads.map((entry) => (
-            <article key={`${entry.platform}-${entry.version || 'latest'}`} className="rounded-xl border border-border/60 p-4 space-y-2">
+            <article key={`${entry.platform || 'unknown'}-${entry.version || currentSoftware.version || 'latest'}`} className="rounded-xl border border-border/60 p-4 space-y-2">
               <div className="flex items-center justify-between">
                 <div className="font-medium">{entry.platform}</div>
                 <span className="text-xs text-muted-foreground">{entry.version || currentSoftware.version}</span>
               </div>
               <div className="text-sm text-muted-foreground">
                 {entry.sources?.map((source) => (
-                  <a key={source.url} href={source.url} target="_blank" rel="noopener" className="block text-primary hover:underline">
+                  <a key={source.url} href={source.url} target="_blank" rel="noopener noreferrer nofollow" className="block text-primary hover:underline">
                     {source.label || dict.software.downloadFrom || '下载'}
                   </a>
                 )) || (entry.url ? (
-                  <a href={entry.url} target="_blank" rel="noopener" className="block text-primary hover:underline">
+                  <a href={entry.url} target="_blank" rel="noopener noreferrer nofollow" className="block text-primary hover:underline">
                     {dict.software.download || '下载'}
                   </a>
                 ) : (
@@ -183,5 +192,3 @@ export default async function SoftwareDetail({ params }: PageProps) {
     </main>
   );
 }
-
-
