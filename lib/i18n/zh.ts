@@ -1,5 +1,5 @@
 const zh = {
-  nav: { software: '软件', tutorials: '教程', ai: 'AI 导航', about: '关于', discover: '发现', search: '搜索', searchPlaceholder: '搜索软件、教程、AI 工具...', english: '英语学习' },
+  nav: { software: '软件', tutorials: '教程', ai: 'AI 导航', about: '关于', discover: '发现', search: '搜索', searchPlaceholder: '搜索软件、教程、AI 工具...', languages: '学习语言' },
   home: { title: '常用软件集合 · AI 导航 · KZT 汇率', subtitle: '精选常用软件与 AI 工具，附安装教程与镜像下载。' },
   rates: { 
     title: '哈萨克斯坦汇率', 
@@ -97,6 +97,44 @@ const zh = {
     note: '不接真实支付，点击即视为升级成功。',
     nickname: '昵称',
     pay: { title: '支付方式（示意）', kaspi: 'Kaspi', card: '银行卡', crypto: '加密货币' },
+  },
+  languages: {
+    title: '学习语言',
+    subtitle: '精选视频、文档、音频学习材料',
+    empty: '暂无语言学习资源',
+    emptyHint: '请在 content/languages/ 目录添加 JSON 文件',
+    targetLanguage: {
+      english: '英语',
+      chinese: '中文',
+      kazakh: '哈萨克语',
+      russian: '俄语',
+      other: '其他',
+    },
+    category: {
+      grammar: '语法',
+      vocabulary: '词汇',
+      listening: '听力',
+      speaking: '口语',
+      reading: '阅读',
+      writing: '写作',
+      course: '课程',
+    },
+    level: {
+      beginner: '初级',
+      intermediate: '中级',
+      advanced: '高级',
+    },
+    resourceType: {
+      video: '视频',
+      document: '文档',
+      audio: '音频',
+      pdf: 'PDF',
+      link: '链接',
+    },
+    free: '免费',
+    resources: '个资源',
+    viewDownload: '查看/下载',
+    learningResources: '学习资源',
   },
 };
 

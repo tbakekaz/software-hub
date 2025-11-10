@@ -69,7 +69,7 @@ export function NavbarClient({
         'px-3 h-8 inline-flex items-center gap-1 rounded-full text-sm border transition-colors bg-gradient-to-r from-sky-500/10 to-fuchsia-500/10 hover:from-sky-500/20 hover:to-fuchsia-500/20 border-border text-foreground/80'
     },
     { href: '/ai/discover', label: dict.nav.discover },
-    { href: '/english', label: dict.nav.english || '英语学习' },
+    { href: '/languages', label: dict.nav.languages || '学习语言' },
     { href: '/about', label: dict.nav.about }
   ];
 

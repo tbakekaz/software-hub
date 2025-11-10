@@ -1,5 +1,5 @@
 const ru = {
-  nav: { software: 'Софт', tutorials: 'Гайды', ai: 'AI Навигатор', about: 'О нас', discover: 'Обзор', search: 'Поиск', searchPlaceholder: 'Поиск софта, гайдов, AI инструментов...', english: 'Изучение английского' },
+  nav: { software: 'Софт', tutorials: 'Гайды', ai: 'AI Навигатор', about: 'О нас', discover: 'Обзор', search: 'Поиск', searchPlaceholder: 'Поиск софта, гайдов, AI инструментов...', languages: 'Изучение языков' },
   home: { title: 'Подборка софта · AI навигатор · KZT курс', subtitle: 'Лучшие инструменты и инструкции по установке.' },
   rates: { 
     title: 'Курс тенге', 
@@ -97,6 +97,44 @@ const ru = {
     note: 'Оплаты нет, клик лишь локально обновит статус.',
     nickname: 'Имя',
     pay: { title: 'Способы оплаты (демо)', kaspi: 'Kaspi', card: 'Банковская карта', crypto: 'Крипто' },
+  },
+  languages: {
+    title: 'Изучение языков',
+    subtitle: 'Отобранные видео, документы и аудио материалы для обучения',
+    empty: 'Нет ресурсов для изучения языков',
+    emptyHint: 'Добавьте JSON файлы в директорию content/languages/',
+    targetLanguage: {
+      english: 'Английский',
+      chinese: 'Китайский',
+      kazakh: 'Казахский',
+      russian: 'Русский',
+      other: 'Другое',
+    },
+    category: {
+      grammar: 'Грамматика',
+      vocabulary: 'Словарь',
+      listening: 'Аудирование',
+      speaking: 'Разговорная речь',
+      reading: 'Чтение',
+      writing: 'Письмо',
+      course: 'Курс',
+    },
+    level: {
+      beginner: 'Начальный',
+      intermediate: 'Средний',
+      advanced: 'Продвинутый',
+    },
+    resourceType: {
+      video: 'Видео',
+      document: 'Документ',
+      audio: 'Аудио',
+      pdf: 'PDF',
+      link: 'Ссылка',
+    },
+    free: 'Бесплатно',
+    resources: 'ресурсов',
+    viewDownload: 'Просмотр/Скачать',
+    learningResources: 'Учебные ресурсы',
   },
 };
 

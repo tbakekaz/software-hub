@@ -70,10 +70,11 @@ export type AIItem = {
   isInternational?: boolean;
 };
 
-export type EnglishResource = {
+export type LanguageResource = {
   slug: string;
   title: string;
   title_i18n?: { zh?: string; kk?: string; ru?: string; en?: string };
+  targetLanguage: 'english' | 'chinese' | 'kazakh' | 'russian' | 'other';
   category: 'grammar' | 'vocabulary' | 'listening' | 'speaking' | 'reading' | 'writing' | 'course';
   level: 'beginner' | 'intermediate' | 'advanced';
   description: string;
@@ -82,12 +83,14 @@ export type EnglishResource = {
   resources: {
     type: 'video' | 'document' | 'audio' | 'pdf' | 'link';
     title: string;
+    title_i18n?: { zh?: string; kk?: string; ru?: string; en?: string };
     url: string;
     size?: string;
     duration?: string;
     format?: string;
   }[];
   tags?: string[];
+  tags_i18n?: { zh?: string[]; kk?: string[]; ru?: string[]; en?: string[] };
   date: string;
   updatedAt?: string;
   isFeatured?: boolean;
@@ -135,18 +138,23 @@ export function getAllAI(): AIItem[] {
   return allAI as unknown as AIItem[];
 }
 
-export function getAllEnglish(): EnglishResource[] {
+export function getAllLanguageResources(): LanguageResource[] {
   try {
-    const { allEnglish } = require('./generated/english');
-    return allEnglish as unknown as EnglishResource[];
+    const { allLanguageResources } = require('./generated/languages');
+    return allLanguageResources as unknown as LanguageResource[];
   } catch {
     return [];
   }
 }
 
-export function getEnglishBySlug(slug: string): EnglishResource | null {
-  const all = getAllEnglish();
+export function getLanguageResourceBySlug(slug: string): LanguageResource | null {
+  const all = getAllLanguageResources();
   return all.find((item) => item.slug === slug) || null;
+}
+
+export function getLanguageResourcesByTarget(targetLanguage: string): LanguageResource[] {
+  const all = getAllLanguageResources();
+  return all.filter((item) => item.targetLanguage === targetLanguage);
 }
 
 export function getSoftwareCategories(): string[] {

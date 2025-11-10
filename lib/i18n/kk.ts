@@ -1,5 +1,5 @@
 const kk = {
-  nav: { software: 'Бағдарлама', tutorials: 'Нұсқаулар', ai: 'AI Каталог', about: 'Біз туралы', discover: 'Табу', search: 'Іздеу', searchPlaceholder: 'Софт, нұсқаулар, AI құралдарын іздеу...', english: 'Ағылшын тілі' },
+  nav: { software: 'Бағдарлама', tutorials: 'Нұсқаулар', ai: 'AI Каталог', about: 'Біз туралы', discover: 'Табу', search: 'Іздеу', searchPlaceholder: 'Софт, нұсқаулар, AI құралдарын іздеу...', languages: 'Тіл үйрену' },
   home: { title: 'Бағдарламалар · AI каталог · KZT бағамы', subtitle: 'Танымал софт пен AI құралдары, орнату нұсқаулығымен.' },
   rates: { 
     title: 'Қазақстан теңге бағамы', 
@@ -97,6 +97,44 @@ const kk = {
     note: 'Нақты төлем жоқ. Батырманы басу жергілікті жаңартады.',
     nickname: 'Атау',
     pay: { title: 'Төлем тәсілдері (демо)', kaspi: 'Kaspi', card: 'Банктік карта', crypto: 'Крипто' },
+  },
+  languages: {
+    title: 'Тіл үйрену',
+    subtitle: 'Таңдалған бейне, құжат, аудио оқу материалдары',
+    empty: 'Тіл үйрену ресурстары жоқ',
+    emptyHint: 'content/languages/ қалтасына JSON файлдарын қосыңыз',
+    targetLanguage: {
+      english: 'Ағылшын',
+      chinese: 'Қытай',
+      kazakh: 'Қазақ',
+      russian: 'Орыс',
+      other: 'Басқа',
+    },
+    category: {
+      grammar: 'Грамматика',
+      vocabulary: 'Сөздік',
+      listening: 'Тыңдау',
+      speaking: 'Сөйлеу',
+      reading: 'Оқу',
+      writing: 'Жазу',
+      course: 'Курс',
+    },
+    level: {
+      beginner: 'Бастапқы',
+      intermediate: 'Орта',
+      advanced: 'Жоғары',
+    },
+    resourceType: {
+      video: 'Бейне',
+      document: 'Құжат',
+      audio: 'Аудио',
+      pdf: 'PDF',
+      link: 'Сілтеме',
+    },
+    free: 'Тегін',
+    resources: 'ресурс',
+    viewDownload: 'Көру/Жүктеу',
+    learningResources: 'Оқу ресурстары',
   },
 };
 

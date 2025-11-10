@@ -7,6 +7,7 @@
     "kk": "Негізгі грамматика: Нақты уақыт",
     "ru": "Базовая грамматика: Настоящее время"
   },
+  "targetLanguage": "english",
   "category": "grammar",
   "level": "beginner",
   "description": "学习英语现在时态的基本用法，包括一般现在时、现在进行时等",
@@ -21,6 +22,12 @@
     {
       "type": "video",
       "title": "教学视频：现在时态详解",
+      "title_i18n": {
+        "zh": "教学视频：现在时态详解",
+        "en": "Teaching Video: Present Tense Explained",
+        "kk": "Оқу бейнесі: Нақты уақыттың түсіндірмесі",
+        "ru": "Обучающее видео: Настоящее время объяснено"
+      },
       "url": "https://example.com/videos/grammar-present-tense.mp4",
       "duration": "15:30",
       "format": "mp4"
@@ -28,6 +35,12 @@
     {
       "type": "document",
       "title": "语法笔记 PDF",
+      "title_i18n": {
+        "zh": "语法笔记 PDF",
+        "en": "Grammar Notes PDF",
+        "kk": "Грамматика жазбалары PDF",
+        "ru": "Грамматические заметки PDF"
+      },
       "url": "https://example.com/docs/grammar-present-tense.pdf",
       "size": "2.5 MB",
       "format": "pdf"
@@ -35,6 +48,12 @@
     {
       "type": "audio",
       "title": "听力练习音频",
+      "title_i18n": {
+        "zh": "听力练习音频",
+        "en": "Listening Practice Audio",
+        "kk": "Тыңдау жаттығуы аудио",
+        "ru": "Аудио для практики аудирования"
+      },
       "url": "https://example.com/audio/grammar-present-tense.mp3",
       "duration": "10:20",
       "format": "mp3"

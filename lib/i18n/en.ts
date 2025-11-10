@@ -1,5 +1,5 @@
 const en = {
-  nav: { software: 'Software', tutorials: 'Tutorials', ai: 'AI Directory', about: 'About', discover: 'Discover', search: 'Search', searchPlaceholder: 'Search software, tutorials, AI tools...', english: 'English Learning' },
+  nav: { software: 'Software', tutorials: 'Tutorials', ai: 'AI Directory', about: 'About', discover: 'Discover', search: 'Search', searchPlaceholder: 'Search software, tutorials, AI tools...', languages: 'Learn Languages' },
   home: { title: 'Software Hub · AI Directory · KZT Rates', subtitle: 'Curated tools with install guides and mirrors.' },
   rates: { 
     title: 'KZT Exchange Rates', 
@@ -97,6 +97,44 @@ const en = {
     note: 'No real payment. Clicking upgrades locally.',
     nickname: 'Nickname',
     pay: { title: 'Payment methods (mock)', kaspi: 'Kaspi', card: 'Bank Card', crypto: 'Crypto' },
+  },
+  languages: {
+    title: 'Learn Languages',
+    subtitle: 'Curated video, document, and audio learning materials',
+    empty: 'No language learning resources',
+    emptyHint: 'Add JSON files to content/languages/ directory',
+    targetLanguage: {
+      english: 'English',
+      chinese: 'Chinese',
+      kazakh: 'Kazakh',
+      russian: 'Russian',
+      other: 'Other',
+    },
+    category: {
+      grammar: 'Grammar',
+      vocabulary: 'Vocabulary',
+      listening: 'Listening',
+      speaking: 'Speaking',
+      reading: 'Reading',
+      writing: 'Writing',
+      course: 'Course',
+    },
+    level: {
+      beginner: 'Beginner',
+      intermediate: 'Intermediate',
+      advanced: 'Advanced',
+    },
+    resourceType: {
+      video: 'Video',
+      document: 'Document',
+      audio: 'Audio',
+      pdf: 'PDF',
+      link: 'Link',
+    },
+    free: 'Free',
+    resources: 'resources',
+    viewDownload: 'View/Download',
+    learningResources: 'Learning Resources',
   },
 };
 
