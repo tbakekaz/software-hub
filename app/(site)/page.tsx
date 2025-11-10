@@ -11,6 +11,7 @@ import type { Software, TutorialMeta, AIItem } from '@/lib/content-edge';
 import type { Lang } from '@/lib/i18n';
 
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 // 移除 edge runtime 以支持汇率 API 调用
 // export const runtime = 'edge';
 

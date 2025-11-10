@@ -3,6 +3,9 @@ import { getDictionary } from '@/lib/i18n/server';
 import { LanguagesPageClient } from './LanguagesPageClient';
 import type { LanguageResource } from '@/lib/content-edge';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default async function LanguagesPage() {
   const { dict, lang } = await getDictionary();
   const resources = getAllLanguageResources();

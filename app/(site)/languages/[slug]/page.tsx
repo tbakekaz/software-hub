@@ -6,6 +6,9 @@ import { LanguageTranslator } from '@/components/LanguageTranslator';
 import type { Metadata } from 'next';
 import { siteConfig } from '@/config/site';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
