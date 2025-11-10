@@ -68,6 +68,13 @@ export function NavbarClient({
     { href: '/software', label: navDict.software || '软件' },
     { href: '/tutorials', label: navDict.tutorials || '教程' },
     {
+      href: 'https://www.typingstudy.com/kk/',
+      label: navDict.typing || '打字练习',
+      className:
+        'px-3 h-8 inline-flex items-center gap-1 rounded-full text-sm border transition-colors bg-gradient-to-r from-amber-500/10 to-orange-500/10 hover:from-amber-500/20 hover:to-orange-500/20 border-amber-500/30 text-amber-600 dark:text-amber-400 font-medium',
+      external: true
+    },
+    {
       href: '/ai',
       label: navDict.ai || 'AI 导航',
       className:
@@ -106,11 +113,20 @@ export function NavbarClient({
               className="w-52 h-9 text-sm"
             />
           </form>
-          {navLinks.map((item) => (
-            <Link key={item.href} href={item.href} className={clsx('hover:text-primary transition-colors', item.className)}>
-              {item.label}
-            </Link>
-          ))}
+          {navLinks.map((item) => {
+            const linkProps = item.external
+              ? { href: item.href, target: '_blank', rel: 'noopener noreferrer' }
+              : { href: item.href };
+            return item.external ? (
+              <a key={item.href} {...linkProps} className={clsx('hover:text-primary transition-colors', item.className)}>
+                {item.label}
+              </a>
+            ) : (
+              <Link key={item.href} {...linkProps} className={clsx('hover:text-primary transition-colors', item.className)}>
+                {item.label}
+              </Link>
+            );
+          })}
           <LanguageSwitcher />
           <AuthButton labels={dict.auth} />
         </nav>
@@ -149,11 +165,27 @@ export function NavbarClient({
               className="w-full"
             />
           </form>
-          {navLinks.map((item) => (
-            <Link key={item.href} href={item.href} className="block py-2 text-base" onClick={() => setMobileMenuOpen(false)}>
-              {item.label}
-            </Link>
-          ))}
+          {navLinks.map((item) => {
+            if (item.external) {
+              return (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block py-2 text-base"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {item.label}
+                </a>
+              );
+            }
+            return (
+              <Link key={item.href} href={item.href} className="block py-2 text-base" onClick={() => setMobileMenuOpen(false)}>
+                {item.label}
+              </Link>
+            );
+          })}
           <div className="flex items-center gap-2 pt-2">
             <LanguageSwitcher />
             <AuthButton labels={dict.auth} />
