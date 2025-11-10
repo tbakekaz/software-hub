@@ -4,6 +4,12 @@
   "tags": ["model", "chat"],
   "category": "模型",
   "description": "Anthropic 高性能通用模型",
+  "description_i18n": {
+    "zh": "Anthropic 高性能通用模型",
+    "en": "Anthropic high-performance general-purpose model",
+    "ru": "Высокопроизводительная универсальная модель Anthropic",
+    "kk": "Anthropic жоғары өнімділікті жалпы мақсатты модель"
+  },
   "locale": ["en"],
   "icon": "🧠",
   "isFeatured": true,

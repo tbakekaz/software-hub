@@ -4,6 +4,12 @@
   "tags": ["model", "multimodal"],
   "category": "模型",
   "description": "Google 多模态模型平台",
+  "description_i18n": {
+    "zh": "Google 多模态模型平台",
+    "en": "Google multimodal model platform",
+    "ru": "Мультимодальная платформа моделей Google",
+    "kk": "Google мультимодальды модель платформасы"
+  },
   "locale": ["en"],
   "icon": "💎",
   "isFeatured": true,

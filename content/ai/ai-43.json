@@ -4,6 +4,12 @@
   "tags": ["model", "open-source"],
   "category": "模型",
   "description": "开源 LLM 模型提供方",
+  "description_i18n": {
+    "zh": "开源 LLM 模型提供方",
+    "en": "Open-source LLM model provider",
+    "ru": "Провайдер моделей LLM с открытым исходным кодом",
+    "kk": "Ашық кодты LLM модель провайдері"
+  },
   "locale": ["en"],
   "icon": "🌪️",
   "isFeatured": false,

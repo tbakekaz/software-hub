@@ -4,6 +4,12 @@
   "tags": ["model", "chat"],
   "category": "模型",
   "description": "全球通用型大模型平台",
+  "description_i18n": {
+    "zh": "全球通用型大模型平台",
+    "en": "Global general-purpose large model platform",
+    "ru": "Глобальная универсальная платформа больших моделей",
+    "kk": "Жаһандық жалпы мақсатты үлкен модель платформасы"
+  },
   "locale": ["en"],
   "icon": "🤖",
   "isFeatured": true,

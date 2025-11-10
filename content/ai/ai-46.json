@@ -4,6 +4,12 @@
   "tags": ["model", "enterprise"],
   "category": "模型",
   "description": "企业对话式 AI 智能平台",
+  "description_i18n": {
+    "zh": "企业对话式 AI 智能平台",
+    "en": "Enterprise conversational AI intelligent platform",
+    "ru": "Корпоративная платформа разговорного ИИ",
+    "kk": "Кәсіпорын диалогтық AI ақылды платформасы"
+  },
   "locale": ["en"],
   "icon": "🟦",
   "isFeatured": false,
