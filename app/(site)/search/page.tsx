@@ -3,6 +3,7 @@ import { getDictionary } from '@/lib/i18n/server';
 import SearchClient from './SearchClient';
 
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export default async function SearchPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
   try {

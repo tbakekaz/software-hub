@@ -5,6 +5,7 @@ import type { Metadata } from 'next';
 import { siteConfig } from '@/config/site';
 
 export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 // 移除 edge runtime 以启用静态生成/ISR
 // export const runtime = 'edge';
 
