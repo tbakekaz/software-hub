@@ -21,6 +21,18 @@ interface Props {
     resourceType?: Record<string, string>;
     free?: string;
     resources?: string;
+    searchPlaceholder?: string;
+    selectLanguage?: string;
+    allCourses?: string;
+    continueLearning?: string;
+    noMatches?: string;
+    copyAllLinks?: string;
+    downloadAll?: string;
+    markComplete?: string;
+    completed?: string;
+    completeCourse?: string;
+    completeAllResources?: string;
+    pleaseCompleteAll?: string;
   };
   lang: Lang;
 }
