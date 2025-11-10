@@ -57,7 +57,7 @@ export function TypingPracticeClient({ dict, lang }: Props) {
   const [selectedCourse, setSelectedCourse] = useState<TypingCourse | null>(null);
   const [currentLesson, setCurrentLesson] = useState<TypingLesson | null>(null);
   const [practiceMode, setPracticeMode] = useState<'free' | 'course' | 'speed' | 'accuracy'>('course');
-  const [showKeyboard, setShowKeyboard] = useState(false);
+  const [showKeyboard, setShowKeyboard] = useState(true); // 默认显示键盘
   const [timeLimit, setTimeLimit] = useState(60); // 速度测试时间限制（秒）
   const [targetAccuracy, setTargetAccuracy] = useState(95); // 准确率挑战目标
   
@@ -284,18 +284,27 @@ export function TypingPracticeClient({ dict, lang }: Props) {
     }
   };
 
-  // 渲染文本（高亮正确/错误）
+  // 渲染文本（高亮正确/错误）- 参考 typingstudy.com 效果
   const renderText = () => {
     const chars = text.split('');
     return chars.map((char, index) => {
-      let className = 'text-muted-foreground';
+      let className = '';
       if (index < currentIndex) {
-        className = userInput[index] === char ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/20';
+        // 已输入的字符：正确=绿色，错误=红色背景+下划线
+        if (userInput[index] === char) {
+          className = 'text-green-600 dark:text-green-400';
+        } else {
+          className = 'text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-950/30 underline decoration-red-500 decoration-2';
+        }
       } else if (index === currentIndex) {
-        className = 'bg-primary/20 border-b-2 border-primary';
+        // 当前字符：明显的下划线高亮（参考 typingstudy.com）
+        className = 'bg-blue-100 dark:bg-blue-950/30 border-b-4 border-blue-500 dark:border-blue-400 text-blue-900 dark:text-blue-100 font-semibold';
+      } else {
+        // 未输入的字符：灰色
+        className = 'text-gray-400 dark:text-gray-500';
       }
       return (
-        <span key={index} className={className}>
+        <span key={index} className={`inline-block ${className}`}>
           {char === ' ' ? '\u00A0' : char}
         </span>
       );
@@ -573,11 +582,11 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                 </div>
               </div>
 
-              {/* 键盘布局（可选显示） */}
+              {/* 键盘布局（默认显示在文本下方，参考 typingstudy.com） */}
               {showKeyboard && (
-                <div className="mb-4">
+                <div className="mt-6">
                   <KeyboardLayout
-                    currentKey={text[currentIndex]}
+                    currentKey={text[currentIndex] || undefined}
                     language={selectedLanguage}
                     lang={lang}
                     showFingerHints={true}
@@ -609,8 +618,8 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                 </div>
               )}
 
-              {/* 文本显示区域 */}
-              <div className="p-6 bg-muted/30 rounded-lg min-h-[200px] text-lg leading-relaxed font-mono">
+              {/* 文本显示区域 - 参考 typingstudy.com 样式 */}
+              <div className="p-8 bg-white dark:bg-gray-900 rounded-lg min-h-[250px] text-xl leading-relaxed font-mono border-2 border-gray-200 dark:border-gray-700 shadow-sm">
                 {text ? renderText() : (
                   <p className="text-muted-foreground text-center">
                     {lang === 'zh' ? '请在自由练习模式下输入自定义文本' : lang === 'kk' ? 'Еркін жаттығу режимінде теңдестірілген мәтін енгізіңіз' : lang === 'ru' ? 'Введите свой текст в режиме свободной практики' : 'Enter custom text in free practice mode'}

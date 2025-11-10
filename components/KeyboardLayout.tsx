@@ -58,8 +58,19 @@ export function KeyboardLayout({ currentKey, language = 'english', lang = 'zh', 
       // 将小写转换为大写以匹配布局
       const key = currentKey.toUpperCase();
       setHighlightedKey(key);
+    } else {
+      setHighlightedKey(null);
     }
   }, [currentKey]);
+
+  // 获取当前字符对应的手指
+  const getCurrentFinger = (key: string | null): string | null => {
+    if (!key) return null;
+    const upperKey = key.toUpperCase();
+    return fingerMap[upperKey] || null;
+  };
+
+  const currentFinger = getCurrentFinger(currentKey || null);
 
   const getKeyClass = (key: string): string => {
     const baseClass = 'px-2 py-1 rounded text-xs font-medium transition-all';
@@ -68,11 +79,12 @@ export function KeyboardLayout({ currentKey, language = 'english', lang = 'zh', 
     
     let highlightClass = '';
     if (highlightedKey && key.toUpperCase() === highlightedKey.toUpperCase()) {
-      highlightClass = 'ring-2 ring-primary bg-primary/20 scale-110';
+      // 当前按键：明显的红色高亮（参考 typingstudy.com）
+      highlightClass = 'ring-2 ring-red-500 bg-red-200 dark:bg-red-800 scale-110 font-bold text-red-900 dark:text-red-100';
     } else if (showFingerHints && fingerColor) {
       highlightClass = fingerColor;
     } else {
-      highlightClass = 'bg-muted hover:bg-muted/80';
+      highlightClass = 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700';
     }
 
     // 特殊键样式
@@ -84,7 +96,7 @@ export function KeyboardLayout({ currentKey, language = 'english', lang = 'zh', 
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-4 bg-muted/30 rounded-lg">
+    <div className="w-full max-w-4xl mx-auto p-4 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
       <div className="space-y-1">
         {qwertyLayout.map((row, rowIndex) => (
           <div key={rowIndex} className="flex gap-1 justify-center">
@@ -112,6 +124,36 @@ export function KeyboardLayout({ currentKey, language = 'english', lang = 'zh', 
         ))}
       </div>
       
+      {/* 当前手指提示（参考 typingstudy.com） */}
+      {currentKey && currentFinger && (
+        <div className="mt-4 text-center p-3 bg-primary/10 dark:bg-primary/20 rounded-lg border border-primary/30">
+          <p className="text-sm font-semibold mb-1">
+            {lang === 'zh' ? '使用手指' : lang === 'kk' ? 'Саусақ' : lang === 'ru' ? 'Палец' : 'Use Finger'}: 
+            <span className={`ml-2 px-3 py-1 rounded font-bold ${
+              currentFinger === 'pinky-l' || currentFinger === 'pinky-r' ? 'bg-blue-200 dark:bg-blue-800 text-blue-900 dark:text-blue-100' :
+              currentFinger === 'ring-l' || currentFinger === 'ring-r' ? 'bg-green-200 dark:bg-green-800 text-green-900 dark:text-green-100' :
+              currentFinger === 'middle-l' || currentFinger === 'middle-r' ? 'bg-yellow-200 dark:bg-yellow-800 text-yellow-900 dark:text-yellow-100' :
+              currentFinger === 'index-l' || currentFinger === 'index-r' ? 'bg-red-200 dark:bg-red-800 text-red-900 dark:text-red-100' :
+              'bg-purple-200 dark:bg-purple-800 text-purple-900 dark:text-purple-100'
+            }`}>
+              {currentFinger === 'pinky-l' || currentFinger === 'pinky-r' ? 
+                (lang === 'zh' ? '小指' : lang === 'kk' ? 'Кішкентай саусақ' : lang === 'ru' ? 'Мизинец' : 'Pinky') :
+              currentFinger === 'ring-l' || currentFinger === 'ring-r' ?
+                (lang === 'zh' ? '无名指' : lang === 'kk' ? 'Анонимдік саусақ' : lang === 'ru' ? 'Безымянный' : 'Ring') :
+              currentFinger === 'middle-l' || currentFinger === 'middle-r' ?
+                (lang === 'zh' ? '中指' : lang === 'kk' ? 'Орта саусақ' : lang === 'ru' ? 'Средний' : 'Middle') :
+              currentFinger === 'index-l' || currentFinger === 'index-r' ?
+                (lang === 'zh' ? '食指' : lang === 'kk' ? 'Сайыс саусақ' : lang === 'ru' ? 'Указательный' : 'Index') :
+              (lang === 'zh' ? '拇指' : lang === 'kk' ? 'Бас бармақ' : lang === 'ru' ? 'Большой' : 'Thumb')
+              }
+            </span>
+          </p>
+          <p className="text-xs text-muted-foreground">
+            {lang === 'zh' ? '当前按键' : lang === 'kk' ? 'Ағымдағы перне' : lang === 'ru' ? 'Текущая клавиша' : 'Current Key'}: <span className="font-mono font-bold">{currentKey}</span>
+          </p>
+        </div>
+      )}
+
       {showFingerHints && (
         <div className="mt-4 flex items-center justify-center gap-4 text-xs text-muted-foreground flex-wrap">
           <div className="flex items-center gap-1">
