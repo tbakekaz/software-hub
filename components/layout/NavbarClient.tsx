@@ -5,6 +5,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import { clsx } from 'clsx';
 import { Input } from '@/components/ui/input';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { GlobalTranslator } from '@/components/GlobalTranslator';
 import AuthButton from '@/components/AuthButton';
 
 export function NavbarClient({
@@ -118,6 +119,7 @@ export function NavbarClient({
             </Link>
           ))}
           <LanguageSwitcher />
+          <GlobalTranslator />
           <AuthButton labels={dict.auth} />
         </nav>
 
@@ -162,6 +164,7 @@ export function NavbarClient({
           ))}
           <div className="flex items-center gap-2 pt-2">
             <LanguageSwitcher />
+            <GlobalTranslator />
             <AuthButton labels={dict.auth} />
           </div>
         </div>
