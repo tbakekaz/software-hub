@@ -100,15 +100,10 @@ export function KeyboardLayout({ currentKey, language = 'english', lang = 'zh', 
     <div className="w-full max-w-6xl mx-auto">
       {/* 键盘和双手布局（参考 typingstudy.com） */}
       <div className="flex items-center justify-center gap-4">
-        {/* 左手 */}
-        {currentKey && currentFinger && currentFinger.includes('-l') && (
-          <div className="flex-shrink-0">
-            <HandsFingerGuide currentFinger={currentFinger} lang={lang} />
-          </div>
-        )}
-        {(!currentKey || !currentFinger || !currentFinger.includes('-l')) && (
-          <div className="w-32 flex-shrink-0"></div>
-        )}
+        {/* 左手 - 一直显示 */}
+        <div className="flex-shrink-0">
+          <HandsFingerGuide currentFinger={currentFinger} lang={lang} />
+        </div>
         
         {/* 键盘布局 */}
         <div className="flex-1 p-4 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
@@ -165,16 +160,6 @@ export function KeyboardLayout({ currentKey, language = 'english', lang = 'zh', 
           </div>
         )}
         </div>
-        
-        {/* 右手 */}
-        {currentKey && currentFinger && currentFinger.includes('-r') && (
-          <div className="flex-shrink-0">
-            <HandsFingerGuide currentFinger={currentFinger} lang={lang} />
-          </div>
-        )}
-        {(!currentKey || !currentFinger || !currentFinger.includes('-r')) && (
-          <div className="w-32 flex-shrink-0"></div>
-        )}
       </div>
     </div>
   );
