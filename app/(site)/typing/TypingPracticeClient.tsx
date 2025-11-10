@@ -582,18 +582,6 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                 </div>
               </div>
 
-              {/* 键盘布局（默认显示在文本下方，参考 typingstudy.com） */}
-              {showKeyboard && (
-                <div className="mt-6">
-                  <KeyboardLayout
-                    currentKey={text[currentIndex] || undefined}
-                    language={selectedLanguage}
-                    lang={lang}
-                    showFingerHints={true}
-                  />
-                </div>
-              )}
-
               {/* 速度测试倒计时 */}
               {practiceMode === 'speed' && isActive && startTime && (
                 <div className="p-4 bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg text-center">
@@ -642,6 +630,18 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                 disabled={isCompleted}
                 autoFocus
               />
+
+              {/* 键盘布局（默认显示在文本和输入框下方，参考 typingstudy.com） */}
+              {showKeyboard && (
+                <div className="mt-6">
+                  <KeyboardLayout
+                    currentKey={text[currentIndex] || undefined}
+                    language={selectedLanguage}
+                    lang={lang}
+                    showFingerHints={true}
+                  />
+                </div>
+              )}
 
               {/* 控制按钮 */}
               <div className="flex gap-2">
