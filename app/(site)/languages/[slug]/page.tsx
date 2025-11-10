@@ -2,6 +2,7 @@ import { getLanguageResourceBySlug } from '@/lib/content-edge';
 import { notFound } from 'next/navigation';
 import { getDictionary } from '@/lib/i18n/server';
 import { pickLocaleString } from '@/lib/i18n/translate';
+import { LanguageTranslator } from '@/components/LanguageTranslator';
 import type { Metadata } from 'next';
 import { siteConfig } from '@/config/site';
 
@@ -43,7 +44,13 @@ export default async function LanguageResourceDetailPage({ params }: PageProps) 
   const resourceTypeLabels = dict.languages?.resourceType || {};
 
   return (
-    <main className="container mx-auto px-4 py-8 space-y-6">
+    <main className="container mx-auto px-4 py-8 space-y-6" data-no-translate="false">
+      {/* 翻译功能 - 放在页面顶部显眼位置 */}
+      <div className="sticky top-20 z-30 -mx-4 px-4 py-3 bg-background/95 backdrop-blur border-b shadow-sm">
+        <LanguageTranslator
+          targetLanguage={resource.targetLanguage}
+        />
+      </div>
       <header className="space-y-2">
         <div className="flex items-center gap-2 flex-wrap">
           <span className="px-2 py-1 text-xs rounded bg-primary/10 text-primary capitalize">

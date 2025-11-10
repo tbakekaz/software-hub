@@ -6,6 +6,7 @@ import { AIItemCard } from '@/components/AIItemCard';
 import { MonetizeSlot } from '@/components/MonetizeSlot';
 import { AdCard } from '@/components/AdCard';
 import { getDictionary } from '@/lib/i18n/server';
+import Link from 'next/link';
 import type { Software, TutorialMeta, AIItem } from '@/lib/content-edge';
 import type { Lang } from '@/lib/i18n';
 
@@ -62,6 +63,42 @@ export default async function HomePage() {
         <p className="text-muted-foreground max-w-3xl mx-auto">{dict.home.subtitle}</p>
         <div className="max-w-3xl mx-auto">
           <MonetizeSlot position="home-below-hero" />
+        </div>
+      </section>
+
+      {/* 语言学习入口 - 显眼位置 */}
+      <section className="rounded-2xl border-2 border-primary/30 bg-gradient-to-br from-primary/10 via-primary/5 to-transparent p-6 md:p-8 shadow-lg">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex-1 text-center md:text-left">
+            <h2 className="text-2xl md:text-3xl font-bold mb-2">🌍 {dict.nav.languages || '学习语言'}</h2>
+            <p className="text-muted-foreground mb-4">
+              {dict.languages?.subtitle || '精选视频、文档、音频学习材料，支持一键翻译，让学习更轻松'}
+            </p>
+            <Link
+              href="/languages"
+              className="inline-flex items-center px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity font-semibold text-lg"
+            >
+              开始学习 →
+            </Link>
+          </div>
+          <div className="flex gap-2">
+            <div className="px-4 py-2 rounded-lg bg-background/80 border text-center">
+              <div className="text-2xl mb-1">🇬🇧</div>
+              <div className="text-xs font-medium">英语</div>
+            </div>
+            <div className="px-4 py-2 rounded-lg bg-background/80 border text-center">
+              <div className="text-2xl mb-1">🇨🇳</div>
+              <div className="text-xs font-medium">中文</div>
+            </div>
+            <div className="px-4 py-2 rounded-lg bg-background/80 border text-center">
+              <div className="text-2xl mb-1">🇰🇿</div>
+              <div className="text-xs font-medium">哈萨克语</div>
+            </div>
+            <div className="px-4 py-2 rounded-lg bg-background/80 border text-center">
+              <div className="text-2xl mb-1">🇷🇺</div>
+              <div className="text-xs font-medium">俄语</div>
+            </div>
+          </div>
         </div>
       </section>
 

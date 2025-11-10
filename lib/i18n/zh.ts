@@ -100,7 +100,7 @@ const zh = {
   },
   languages: {
     title: '学习语言',
-    subtitle: '精选视频、文档、音频学习材料',
+    subtitle: '精选视频、文档、音频学习材料，支持一键翻译，让学习更轻松',
     empty: '暂无语言学习资源',
     emptyHint: '请在 content/languages/ 目录添加 JSON 文件',
     targetLanguage: {

@@ -100,7 +100,7 @@ const en = {
   },
   languages: {
     title: 'Learn Languages',
-    subtitle: 'Curated video, document, and audio learning materials',
+    subtitle: 'Curated video, document, and audio learning materials with one-click translation',
     empty: 'No language learning resources',
     emptyHint: 'Add JSON files to content/languages/ directory',
     targetLanguage: {
