@@ -4,6 +4,7 @@ import { SoftwareCard } from '@/components/SoftwareCard';
 import { TutorialCard } from '@/components/TutorialCard';
 import { AIItemCard } from '@/components/AIItemCard';
 import { MonetizeSlot } from '@/components/MonetizeSlot';
+import { AdCard } from '@/components/AdCard';
 import { getDictionary } from '@/lib/i18n/server';
 import type { Software, TutorialMeta, AIItem } from '@/lib/content-edge';
 import type { Lang } from '@/lib/i18n';
@@ -25,7 +26,7 @@ export default async function HomePage() {
     lang = result.lang;
     
     // 优先显示 soft-a (Adobe Soft)，然后显示其他软件
-    const allSoftware = getAllSoftware();
+    const allSoftware = await getAllSoftware();
     const softA = allSoftware.find((s) => s.slug === 'soft-a');
     const otherSoftware = allSoftware.filter((s) => s.slug !== 'soft-a');
     software = softA ? [softA, ...otherSoftware].slice(0, 3) : allSoftware.slice(0, 3);
@@ -78,6 +79,16 @@ export default async function HomePage() {
             <TutorialCard key={t.slug} tutorial={t} lang={lang} dict={dict} />
           ))}
         </div>
+      </section>
+
+      <section>
+        <AdCard
+          title={dict.software.reviewAuthor || 'Software Hub Pro'}
+          description={dict.pricing?.desc || 'Unlock ad-free browsing, faster mirrors and AI enhancements.'}
+          href="/pricing"
+          ctaLabel={dict.pricing?.cta || 'Upgrade now'}
+          icon="🚀"
+        />
       </section>
 
       <section className="pt-2">

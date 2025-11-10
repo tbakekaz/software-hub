@@ -7,11 +7,13 @@
 // 使用静态 ES6 import（在构建时解析，Edge Runtime 完全支持）
 // 如果文件不存在，构建会失败，这是预期的行为
 import {
-  allSoftware as _allSoftware,
-  allTutorials as _allTutorials,
-  allTutorialsMeta as _allTutorialsMeta,
-  allAI as _allAI,
-} from './generated/content';
+  loadAllSoftware as loadAllSoftwarePages,
+  loadSoftwarePage as loadSoftwarePageData,
+  loadFirstSoftwarePage,
+  softwareManifest,
+} from './generated/software/loader';
+import { allTutorials, allTutorialsMeta } from './generated/tutorials';
+import { allAI } from './generated/ai';
 
 // 定义类型（避免导入 lib/content.ts）
 export type DownloadSource = {
@@ -68,36 +70,44 @@ export type AIItem = {
   isInternational?: boolean;
 };
 
-// 使用导入的数据，提供默认值以防万一
-// 注意：生成的 content.ts 现在使用 as const，所以类型会被正确推断
-const generatedContent = {
-  allSoftware: (_allSoftware as any) || [],
-  allTutorials: (_allTutorials as any) || [],
-  allTutorialsMeta: (_allTutorialsMeta as any) || [],
-  allAI: (_allAI as any) || [],
-};
+let softwareCache: Software[] | null = null;
 
-export function getAllSoftware(): Software[] {
-  return generatedContent.allSoftware || [];
+export { softwareManifest };
+
+export async function getAllSoftware(): Promise<Software[]> {
+  if (softwareCache) return softwareCache;
+  const data = await loadAllSoftwarePages();
+  softwareCache = (data as unknown as Software[]);
+  return softwareCache;
 }
 
-export function getSoftware(slug: string): Software | null {
-  const all = getAllSoftware();
+export async function getSoftware(slug: string): Promise<Software | null> {
+  const all = await getAllSoftware();
   return all.find((s) => s.slug === slug) || null;
 }
 
+export async function getSoftwarePage(pageIndex: number): Promise<Software[]> {
+  const page = await loadSoftwarePageData(pageIndex);
+  return page as unknown as Software[];
+}
+
+export async function getInitialSoftwarePage(): Promise<Software[]> {
+  const first = await loadFirstSoftwarePage();
+  return first as unknown as Software[];
+}
+
 export function getAllTutorials(): TutorialMeta[] {
-  return generatedContent.allTutorialsMeta || [];
+  return allTutorialsMeta as unknown as TutorialMeta[];
 }
 
 export function getTutorialBySlug(slug: string) {
-  const tutorials = generatedContent.allTutorials || [];
-  const tutorial = tutorials.find((t: any) => t.meta?.slug === slug);
+  const tutorials = allTutorials as unknown as Array<{ meta: TutorialMeta; content: string }>;
+  const tutorial = tutorials.find((t) => t.meta?.slug === slug);
   if (!tutorial) return null;
-  return { content: tutorial.content, meta: tutorial.meta as TutorialMeta };
+  return { content: tutorial.content, meta: tutorial.meta };
 }
 
 export function getAllAI(): AIItem[] {
-  return generatedContent.allAI || [];
+  return allAI as unknown as AIItem[];
 }
 

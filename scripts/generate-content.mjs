@@ -7,80 +7,135 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const root = path.resolve(__dirname, '..');
 
-// 读取所有软件
-const softwareDir = path.join(root, 'content/software');
-const softwareFiles = fs.readdirSync(softwareDir).filter((f) => f.endsWith('.json'));
-const allSoftware = softwareFiles
-  .map((f) => {
-    const content = fs.readFileSync(path.join(softwareDir, f), 'utf8');
-    return JSON.parse(content);
-  })
+const OUTPUT_ROOT = path.join(root, 'lib/generated');
+const SOFTWARE_SOURCE = path.join(root, 'content/software');
+const TUTORIALS_SOURCE = path.join(root, 'content/tutorials');
+const AI_SOURCE = path.join(root, 'content/ai');
+const SOFTWARE_PAGE_SIZE = 12;
+
+function ensureDir(dir) {
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+}
+
+function writeFile(filePath, content) {
+  ensureDir(path.dirname(filePath));
+  fs.writeFileSync(filePath, content, 'utf8');
+}
+
+function chunk(list, size) {
+  const pages = [];
+  for (let i = 0; i < list.length; i += size) {
+    pages.push(list.slice(i, i + size));
+  }
+  return pages;
+}
+
+function formatPage(data) {
+  return `// 此文件由 scripts/generate-content.mjs 自动生成，请勿手动编辑\nconst data = ${JSON.stringify(data)} as const;\nexport default data;\n`;
+}
+
+if (fs.existsSync(OUTPUT_ROOT)) {
+  fs.rmSync(OUTPUT_ROOT, { recursive: true, force: true });
+}
+ensureDir(OUTPUT_ROOT);
+
+const allSoftware = fs
+  .readdirSync(SOFTWARE_SOURCE)
+  .filter((f) => f.endsWith('.json'))
+  .map((file) => JSON.parse(fs.readFileSync(path.join(SOFTWARE_SOURCE, file), 'utf8')))
   .sort((a, b) => a.slug.localeCompare(b.slug));
 
-// 读取所有教程
-const tutorialsDir = path.join(root, 'content/tutorials');
-const tutorialFiles = fs.readdirSync(tutorialsDir).filter((f) => f.endsWith('.mdx'));
-const allTutorials = tutorialFiles.map((f) => {
-  const raw = fs.readFileSync(path.join(tutorialsDir, f), 'utf8');
-  const { data, content } = matter(raw);
-  return {
-    meta: data,
-    content
-  };
-});
+const allTutorials = fs
+  .readdirSync(TUTORIALS_SOURCE)
+  .filter((f) => f.endsWith('.mdx'))
+  .map((file) => {
+    const raw = fs.readFileSync(path.join(TUTORIALS_SOURCE, file), 'utf8');
+    const { data, content } = matter(raw);
+    return { meta: data, content };
+  });
 
-// 创建教程索引（仅元数据）
 const tutorialsMeta = allTutorials
   .map((t) => t.meta)
   .sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')));
 
-// 读取所有 AI 项目
-const aiDir = path.join(root, 'content/ai');
-const aiFiles = fs.readdirSync(aiDir).filter((f) => f.endsWith('.json'));
-const allAI = aiFiles
-  .map((f) => {
-    const content = fs.readFileSync(path.join(aiDir, f), 'utf8');
-    return JSON.parse(content);
-  })
+const allAI = fs
+  .readdirSync(AI_SOURCE)
+  .filter((f) => f.endsWith('.json'))
+  .map((file) => JSON.parse(fs.readFileSync(path.join(AI_SOURCE, file), 'utf8')))
   .sort((a, b) => a.name.localeCompare(b.name));
 
-// 生成内容数据
-const contentData = {
-  software: allSoftware,
-  tutorials: allTutorials,
-  tutorialsMeta,
-  ai: allAI
+// 软件分页
+const softwareGeneratedDir = path.join(OUTPUT_ROOT, 'software');
+ensureDir(softwareGeneratedDir);
+const softwarePages = chunk(allSoftware, SOFTWARE_PAGE_SIZE);
+softwarePages.forEach((page, index) => {
+  writeFile(path.join(softwareGeneratedDir, `page-${index}.ts`), formatPage(page));
+});
+
+const softwareManifest = {
+  total: allSoftware.length,
+  pageSize: SOFTWARE_PAGE_SIZE,
+  pageCount: softwarePages.length,
+  slugs: allSoftware.map((item) => item.slug),
+  categories: Array.from(new Set(allSoftware.map((item) => item.category))).sort(),
 };
 
-// 写入 TypeScript 文件
-const outputDir = path.join(root, 'lib/generated');
-if (!fs.existsSync(outputDir)) {
-  fs.mkdirSync(outputDir, { recursive: true });
+const loaderSource = `// 此文件由 scripts/generate-content.mjs 自动生成，请勿手动编辑
+export const softwareManifest = ${JSON.stringify(softwareManifest)} as const;
+
+type PageLoader = () => Promise<typeof import('./page-0').default>;
+type PageData = Awaited<ReturnType<PageLoader>>;
+
+const loaders: PageLoader[] = [
+${softwarePages
+  .map((_, index) => `  () => import('./page-${index}').then((mod) => mod.default) as Promise<typeof import('./page-${index}').default>`,)
+  .join(',\n')}
+];
+
+let cachedPages: PageData[] | null = null;
+let cachedAll: PageData[number][] | null = null;
+let firstPageCache: PageData | null = null;
+
+export async function loadSoftwarePage(index: number) {
+  const loader = loaders[index];
+  if (!loader) {
+    throw new Error('Software page index ' + index + ' out of range');
+  }
+  return loader();
 }
 
-// 生成 TypeScript 文件
-// 注意：不导入 lib/content.ts 的类型，因为它包含 Node.js 模块导入
-// 使用 any 类型，或者让 TypeScript 推断类型
-const tsContent = `// 此文件由 scripts/generate-content.mjs 自动生成，请勿手动编辑
-// 注意：不导入 lib/content.ts 的类型，避免触发 Node.js 模块加载
+export async function loadFirstSoftwarePage() {
+  if (firstPageCache) return firstPageCache;
+  const firstLoader = loaders[0];
+  if (!firstLoader) return [];
+  firstPageCache = await firstLoader();
+  return firstPageCache;
+}
 
-export const allSoftware = ${JSON.stringify(allSoftware, null, 2)} as const;
-
-export const allTutorials = ${JSON.stringify(allTutorials, null, 2)} as const;
-
-export const allTutorialsMeta = ${JSON.stringify(tutorialsMeta, null, 2)} as const;
-
-export const allAI = ${JSON.stringify(allAI, null, 2)} as const;
+export async function loadAllSoftware() {
+  if (cachedAll) return cachedAll;
+  const pages = cachedPages || (await Promise.all(loaders.map((loader) => loader())));
+  cachedPages = pages;
+  cachedAll = pages.flat();
+  return cachedAll;
+}
 `;
+writeFile(path.join(softwareGeneratedDir, 'loader.ts'), loaderSource);
 
-fs.writeFileSync(
-  path.join(outputDir, 'content.ts'),
-  tsContent,
-  'utf8'
+// 教程与 AI 数据
+writeFile(
+  path.join(OUTPUT_ROOT, 'tutorials.ts'),
+  `// 此文件由 scripts/generate-content.mjs 自动生成，请勿手动编辑\nexport const allTutorials = ${JSON.stringify(allTutorials)} as const;\nexport const allTutorialsMeta = ${JSON.stringify(tutorialsMeta)} as const;\n`
+);
+
+writeFile(
+  path.join(OUTPUT_ROOT, 'ai.ts'),
+  `// 此文件由 scripts/generate-content.mjs 自动生成，请勿手动编辑\nexport const allAI = ${JSON.stringify(allAI)} as const;\n`
 );
 
 console.log('✅ 内容数据已生成：');
-console.log(`   - ${allSoftware.length} 个软件`);
+console.log(`   - ${allSoftware.length} 个软件，分页 ${softwarePages.length} 页，每页 ${SOFTWARE_PAGE_SIZE} 条`);
 console.log(`   - ${allTutorials.length} 个教程`);
 console.log(`   - ${allAI.length} 个 AI 项目`);
-

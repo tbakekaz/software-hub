@@ -1,5 +1,5 @@
-export default {
-  nav: { software: 'Бағдарлама', tutorials: 'Нұсқаулар', ai: 'AI Каталог', about: 'Біз туралы', discover: 'Табу' },
+const kk = {
+  nav: { software: 'Бағдарлама', tutorials: 'Нұсқаулар', ai: 'AI Каталог', about: 'Біз туралы', discover: 'Табу', search: 'Іздеу', searchPlaceholder: 'Софт, нұсқаулар, AI құралдарын іздеу...' },
   home: { title: 'Бағдарламалар · AI каталог · KZT бағамы', subtitle: 'Танымал софт пен AI құралдары, орнату нұсқаулығымен.' },
   rates: { title: 'Қазақстан теңге бағамы', refresh: 'Жаңарту' },
   section: {
@@ -9,7 +9,9 @@ export default {
   },
   software: {
     listTitle: 'Софт тізімі',
+    downloadSection: 'Жүктеу сілтемелері',
     download: 'Жүктеу',
+    downloadUnavailable: 'Жүктеу сілтемесі әзірге жоқ',
     mirrors: 'Айна',
     viewDocs: 'Құжатты көру',
     downloadFrom: '{source} арқылы жүктеу',
@@ -17,14 +19,36 @@ export default {
     sourceR2: 'Cloudflare R2',
     sourceOther: 'Басқа',
     related: 'Қатысты бағдарлама',
+    backToList: 'Тізімге оралу',
     version: 'Нұсқа',
-    latest: 'Соңғы'
+    latest: 'Соңғы',
+    faqDownload: 'Бағдарламаны қалай жүктеймін?',
+    faqDownloadAnswer: 'Қажетті сілтемені таңдаңыз, қажет болса айна сілтемесін қолданыңыз.',
+    faqUpdate: 'Жаңартуды қалай аламын?',
+    faqUpdateAnswer: 'Ақпаратты тұрақты жаңартамыз, соңғы нұсқасын осы жерден таба аласыз.',
+    howToTitle: 'Орнату қадамдары',
+    howToDescription: 'Төмендегі қадамдарды орындаңыз.',
+    step: 'Қадам',
+    stepDownload: 'Жүктеп, орнатыңыз.',
+    reviewAuthor: 'Software Hub командасы',
+    reviewSummary: 'Бағдарлама бірнеше платформаларда тұрақты жұмыс істейді.'
   },
   tutorials: { title: 'Нұсқаулықтар' },
   ai: { title: 'AI Каталог' },
   favorites: { title: 'Таңдаулылар', empty: 'Әзірге бос.' },
   footer: { privacy: 'Құпиялылық', terms: 'Шарттар', sponsor: 'Демеу' },
-  search: { softwarePlaceholder: 'Софт іздеу...' },
+  search: {
+    softwarePlaceholder: 'Софт іздеу...',
+    loadedCount: 'Жүктелді {count} / {total}',
+    loadError: 'Жүктеу сәтсіз, кейінірек қайталап көріңіз.',
+    loading: 'Жүктелуде…',
+    loadMore: 'Тағы жүктеу',
+    noSoftware: 'Сәйкес софт табылмады',
+    resultCount: '{count} нәтиже табылды',
+    empty: 'Нәтиже жоқ',
+    tryAnother: 'Басқа кілт сөзді байқап көріңіз',
+    hint: 'Іздеуді бастау үшін мәтін енгізіңіз'
+  },
   discover: {
     title: 'AI Каталог · Табу',
     subtitle: 'Discover AI стилі: халықаралық сайттар, санаттар, іздеу және тіл сүзгілері.',
@@ -35,9 +59,23 @@ export default {
     empty: 'Нәтижелер табылмады',
     langFilter: { all: 'Барлығы', kk: 'Қазақша', ru: 'Орысша', en: 'Ағылшынша' }
   },
-  common: { dismiss: 'Жасыр' }
-  ,auth: { login: 'Кіру', register: 'Тіркелу', nickname: 'Атау', email: 'Email (міндетті емес)', signin: 'Кіру', signup: 'Тіркелу', logout: 'Шығу', upgrade: 'Pro-ға өту', member: 'Тарифтер', pro: 'Pro қолданушы', logged: 'Сіз кірдіңіз', favorites: 'Таңдаулылар' }
-  ,pricing: { title: 'Тарифтер', desc: 'Pro жарнаманы өшіреді, айна сілтемелерді басым етеді және көбірек сүзгілер ашады.', free: 'Тегін', pro: 'Pro', perks: { free: ['Негізгі қарау мен іздеу','Нұсқаулықтар және софт','Жарнама көрсетіледі'], pro: ['Жарнамасыз','Айна/резерв артықшылықта','AI каталогында көбірек сүзгілер'] }, cta: 'Қазір жаңарту (демо)', upgraded: 'Сіз Pro-сыз.', note: 'Нақты төлем жоқ. Батырманы басу жергілікті жаңартады.', nickname: 'Атау', pay: { title: 'Төлем тәсілдері (демо)', kaspi: 'Kaspi', card: 'Банктік карта', crypto: 'Крипто' } }
+  common: { dismiss: 'Жасыр' },
+  auth: { login: 'Кіру', register: 'Тіркелу', nickname: 'Атау', email: 'Email (міндетті емес)', signin: 'Кіру', signup: 'Тіркелу', logout: 'Шығу', upgrade: 'Pro-ға өту', member: 'Тарифтер', pro: 'Pro қолданушы', logged: 'Сіз кірдіңіз', favorites: 'Таңдаулылар' },
+  pricing: {
+    title: 'Тарифтер',
+    desc: 'Pro жарнаманы өшіреді, айна сілтемелерді басым етеді және көбірек сүзгілер ашады.',
+    free: 'Тегін',
+    pro: 'Pro',
+    perks: {
+      free: ['Негізгі қарау мен іздеу', 'Нұсқаулықтар және софт', 'Жарнама көрсетіледі'],
+      pro: ['Жарнамасыз', 'Айна/резерв артықшылықта', 'AI каталогында көбірек сүзгілер'],
+    },
+    cta: 'Қазір жаңарту (демо)',
+    upgraded: 'Сіз Pro-сыз.',
+    note: 'Нақты төлем жоқ. Батырманы басу жергілікті жаңартады.',
+    nickname: 'Атау',
+    pay: { title: 'Төлем тәсілдері (демо)', kaspi: 'Kaspi', card: 'Банктік карта', crypto: 'Крипто' },
+  },
 };
 
-
+export default kk;

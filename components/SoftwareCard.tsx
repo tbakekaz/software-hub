@@ -1,5 +1,4 @@
-import Link from 'next/link';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { CardBase, CardHeader, CardBody, CardBadge } from '@/components/CardBase';
 import { pickLocaleString } from '@/lib/i18n/translate';
 import type { Lang } from '@/lib/i18n';
 
@@ -7,17 +6,19 @@ export function SoftwareCard({ item, lang }: { item: { slug: string; name: strin
   const name = pickLocaleString(item.name_i18n || item.name, lang);
   const desc = pickLocaleString(item.description_i18n || item.description, lang);
   return (
-    <Card>
-      <CardHeader className="flex items-center justify-between">
-        <Link href={`/software/${item.slug}`} className="font-medium underline">
-          {name}
-        </Link>
-        <span className="text-xs">v{item.version}</span>
+    <CardBase href={`/software/${item.slug}`} className="group">
+      <CardHeader>
+        <div className="flex-1 min-w-0">
+          <div className="font-semibold text-base text-foreground group-hover:text-primary transition-colors line-clamp-1">
+            {name}
+          </div>
+        </div>
+        <CardBadge>v{item.version}</CardBadge>
       </CardHeader>
-      <CardContent>
-        <p className="text-sm text-muted-foreground">{desc}</p>
-      </CardContent>
-    </Card>
+      <CardBody>
+        <p className="line-clamp-2 leading-relaxed">{desc}</p>
+      </CardBody>
+    </CardBase>
   );
 }
 

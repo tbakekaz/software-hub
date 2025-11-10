@@ -8,7 +8,7 @@ export async function GET(
 ) {
   try {
     const { slug } = await params;
-    const data = getSoftware(slug);
+    const data = await getSoftware(slug);
     
     if (!data) {
       const body = JSON.stringify({ error: 'Software not found' });

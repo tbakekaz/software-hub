@@ -21,7 +21,7 @@ export async function GET() {
     };
 
     try {
-      const software = getAllSoftware();
+      const software = await getAllSoftware();
       tests.tests.contentEdge = `success (${software.length} items)`;
     } catch (error: any) {
       tests.tests.contentEdge = `error: ${error.message}`;

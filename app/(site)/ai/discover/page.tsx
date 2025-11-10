@@ -1,9 +1,21 @@
 import { getAllAI } from '@/lib/content-edge';
 import { getDictionary } from '@/lib/i18n/server';
 import DiscoverClient from './DiscoverClient';
+import type { Metadata } from 'next';
+import { siteConfig } from '@/config/site';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'edge';
+
+export const metadata: Metadata = {
+  title: `AI 工具发现 - ${siteConfig.name}`,
+  description: '发现最新的 AI 工具，包括对话、图像、视频、办公等各类 AI 应用',
+  openGraph: {
+    title: `AI 工具发现 - ${siteConfig.name}`,
+    description: '发现最新的 AI 工具，包括对话、图像、视频、办公等各类 AI 应用',
+    url: `${siteConfig.url}/ai/discover`,
+  },
+};
 
 export default async function DiscoverPage() {
   try {

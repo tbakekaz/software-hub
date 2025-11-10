@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from 'react';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { CardBase, CardHeader, CardBody, CardBadge } from '@/components/CardBase';
 import { pickLocaleString } from '@/lib/i18n/translate';
 import { SoftwareDownloadModal } from '@/components/SoftwareDownloadModal';
 import type { Lang } from '@/lib/i18n';
 import type { Software } from '@/lib/content-edge';
+
+const openModalKeys = ['Enter', ' '];
 
 type Props = {
   item: Software;
@@ -29,25 +30,36 @@ export function RelatedSoftwareCard({ item, lang, dict }: Props) {
   const name = pickLocaleString(item.name_i18n || item.name, lang);
   const desc = pickLocaleString(item.description_i18n || item.description, lang);
 
+  const handleOpen = () => setIsModalOpen(true);
+
   return (
     <>
-      <Card className="h-full flex flex-col hover:shadow-md transition-shadow border-border/50">
-        <CardHeader className="flex items-center justify-between pb-2.5">
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="font-medium hover:underline text-base text-left"
-          >
-            {name}
-          </button>
-          <Badge className="text-[10px] bg-muted/50 text-muted-foreground border-0 px-1.5 py-0.5">
-            v{item.version}
-          </Badge>
+      <CardBase
+        role="button"
+        tabIndex={0}
+        onClick={handleOpen}
+        onKeyDown={(event) => {
+          if (openModalKeys.includes(event.key)) {
+            event.preventDefault();
+            handleOpen();
+          }
+        }}
+        className="h-full cursor-pointer select-none group"
+        compact
+      >
+        <CardHeader>
+          <div className="flex-1 min-w-0">
+            <div className="font-medium text-base text-left line-clamp-1 group-hover:text-primary transition-colors">
+              {name}
+            </div>
+          </div>
+          <CardBadge>v{item.version}</CardBadge>
         </CardHeader>
-        <CardContent className="flex-1 flex flex-col pt-0">
-          <p className="text-sm text-muted-foreground line-clamp-3 leading-relaxed">{desc}</p>
-        </CardContent>
-      </Card>
-      
+        <CardBody className="flex-1">
+          <p className="line-clamp-3 leading-relaxed">{desc}</p>
+        </CardBody>
+      </CardBase>
+
       {isModalOpen && (
         <SoftwareDownloadModal
           software={item}

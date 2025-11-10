@@ -14,6 +14,10 @@ export type AdItem = {
   img?: { src: string; alt?: string; width?: number; height?: number };
   html?: string;
   script?: string;
+  // AdSense specific
+  adSlot?: string;
+  adFormat?: string;
+  responsive?: boolean;
 };
 
 export const adsConfig: Record<AdPosition, AdItem> = {

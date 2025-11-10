@@ -1,38 +1,58 @@
 "use client";
+import { useEffect, useState } from 'react';
+import { CardBase, CardHeader, CardBody, CardBadge, CardMeta } from '@/components/CardBase';
 import { pickLocaleString } from '@/lib/i18n/translate';
 import type { Lang } from '@/lib/i18n';
 import { isFavorite, toggleFavorite } from '@/lib/fav';
-import { useEffect, useState } from 'react';
 
 export function AIItemCard({ item, lang }: { item: { name: string; name_i18n?: any; url: string; description: string; description_i18n?: any; icon: string; locale?: string[] }; lang: Lang }) {
   const [fav, setFav] = useState(false);
-  useEffect(() => { setFav(isFavorite(item.name)); }, [item.name]);
+  useEffect(() => {
+    setFav(isFavorite(item.name));
+  }, [item.name]);
   const name = pickLocaleString(item.name_i18n || item.name, lang);
   const desc = pickLocaleString(item.description_i18n || item.description, lang);
+  const locales = item.locale ?? [];
+
   return (
-    <a href={item.url} rel="noopener" className="relative border rounded p-4 block hover:bg-accent">
-      <div className="flex items-center justify-between">
-        <div className="text-2xl">{item.icon}</div>
-        <div className="flex gap-1">
-          {item.locale?.includes('kk') && (
-            <span className="inline-flex items-center rounded-full border px-2 py-0.5 text-[10px]">kk</span>
-          )}
-          {item.locale?.includes('ru') && (
-            <span className="inline-flex items-center rounded-full border px-2 py-0.5 text-[10px]">ru</span>
-          )}
-          {item.locale?.includes('en') && (
-            <span className="inline-flex items-center rounded-full border px-2 py-0.5 text-[10px]">en</span>
-          )}
+    <CardBase href={item.url} target="_blank" rel="noopener" className="group" compact>
+      <CardHeader className="items-start">
+        <div className="flex items-center gap-3">
+          <span className="text-2xl shrink-0 group-hover:scale-110 transition-transform" aria-hidden>
+            {item.icon}
+          </span>
+          <div className="flex-1 min-w-0">
+            <div className="font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-1">
+              {name}
+            </div>
+            {locales.length > 0 && (
+              <CardMeta className="mt-1 gap-1">
+                {locales.map((code) => (
+                  <CardBadge key={code} className="uppercase tracking-wide">
+                    {code}
+                  </CardBadge>
+                ))}
+              </CardMeta>
+            )}
+          </div>
         </div>
-      </div>
-      <div className="font-medium underline mt-2 flex items-center justify-between">
-        <span>{name}</span>
-        <button type="button" className="text-xs border rounded px-2 py-0.5" onClick={(e)=>{e.preventDefault(); setFav(toggleFavorite(item.name).includes(item.name));}}>
+        <button
+          type="button"
+          className="text-xs border rounded-full px-2 py-0.5 hover:bg-primary/10 hover:border-primary/50 transition-colors"
+          onClick={(e) => {
+            e.preventDefault();
+            const favorites = toggleFavorite(item.name);
+            setFav(favorites.includes(item.name));
+          }}
+          aria-label={fav ? '取消收藏' : '收藏'}
+        >
           {fav ? '★' : '☆'}
         </button>
-      </div>
-      <div className="text-sm text-muted-foreground">{desc}</div>
-    </a>
+      </CardHeader>
+      <CardBody>
+        <p className="line-clamp-3 leading-relaxed">{desc}</p>
+      </CardBody>
+    </CardBase>
   );
 }
 

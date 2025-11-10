@@ -39,6 +39,7 @@ export default function AuthButton({ labels }: { labels?: AuthLabels }) {
               <div className="mb-2">{user.email || 'guest'}</div>
               <button className="w-full h-8 rounded border mb-2" onClick={upgrade}>{labels?.upgrade || 'Upgrade'}</button>
               <a className="block w-full h-8 rounded border text-center leading-8" href="/pricing">{labels?.member || 'Pricing'}</a>
+              <a className="block w-full h-8 rounded border text-center leading-8 mt-2" href="/account">会员中心</a>
               <a className="block w-full h-8 rounded border text-center leading-8 mt-2" href="/ai/favorites">{labels?.favorites || 'Favorites'}</a>
               <button className="w-full h-8 rounded border mt-2" onClick={signout}>{labels?.logout || 'Sign out'}</button>
             </div>
