@@ -80,8 +80,8 @@ export function KeyboardLayout({ currentKey, language = 'english', lang = 'zh', 
     
     let highlightClass = '';
     if (highlightedKey && key.toUpperCase() === highlightedKey.toUpperCase()) {
-      // 当前按键：明显的红色高亮（参考 typingstudy.com）
-      highlightClass = 'ring-2 ring-red-500 bg-red-200 dark:bg-red-800 scale-110 font-bold text-red-900 dark:text-red-100';
+      // 当前按键：绿色高亮（参考 typingstudy.com）
+      highlightClass = 'ring-2 ring-green-500 bg-green-400 dark:bg-green-600 scale-110 font-bold text-white shadow-lg';
     } else if (showFingerHints && fingerColor) {
       highlightClass = fingerColor;
     } else {
@@ -97,16 +97,21 @@ export function KeyboardLayout({ currentKey, language = 'english', lang = 'zh', 
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto space-y-4">
-      {/* 双手手指提示（参考 typingstudy.com） */}
-      {currentKey && currentFinger && (
-        <div className="p-4 bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
-          <HandsFingerGuide currentFinger={currentFinger} lang={lang} />
-        </div>
-      )}
-      
-      {/* 键盘布局 */}
-      <div className="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
+    <div className="w-full max-w-6xl mx-auto">
+      {/* 键盘和双手布局（参考 typingstudy.com） */}
+      <div className="flex items-center justify-center gap-4">
+        {/* 左手 */}
+        {currentKey && currentFinger && currentFinger.includes('-l') && (
+          <div className="flex-shrink-0">
+            <HandsFingerGuide currentFinger={currentFinger} lang={lang} />
+          </div>
+        )}
+        {(!currentKey || !currentFinger || !currentFinger.includes('-l')) && (
+          <div className="w-32 flex-shrink-0"></div>
+        )}
+        
+        {/* 键盘布局 */}
+        <div className="flex-1 p-4 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
         <div className="space-y-1">
         {qwertyLayout.map((row, rowIndex) => (
           <div key={rowIndex} className="flex gap-1 justify-center">
@@ -158,6 +163,17 @@ export function KeyboardLayout({ currentKey, language = 'english', lang = 'zh', 
               <span>{lang === 'zh' ? '拇指' : lang === 'kk' ? 'Бас бармақ' : lang === 'ru' ? 'Большой' : 'Thumb'}</span>
             </div>
           </div>
+        )}
+        </div>
+        
+        {/* 右手 */}
+        {currentKey && currentFinger && currentFinger.includes('-r') && (
+          <div className="flex-shrink-0">
+            <HandsFingerGuide currentFinger={currentFinger} lang={lang} />
+          </div>
+        )}
+        {(!currentKey || !currentFinger || !currentFinger.includes('-r')) && (
+          <div className="w-32 flex-shrink-0"></div>
         )}
       </div>
     </div>
