@@ -197,6 +197,14 @@ const en = {
     courseMode: 'Course Mode',
     speedTest: 'Speed Test',
     accuracyChallenge: 'Accuracy Challenge',
+    leaderboard: 'Speed Leaderboard',
+    rank: 'Rank',
+    date: 'Date',
+    noRecords: 'No Records',
+    allTime: 'All Time',
+    today: 'Today',
+    thisWeek: 'This Week',
+    thisMonth: 'This Month',
   },
 };
 

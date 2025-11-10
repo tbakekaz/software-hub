@@ -74,6 +74,16 @@ const kazakhCourses: TypingCourse[] = [
         title: '科技文章',
         text: 'Қазақстанда цифрлық технологиялардың дамуы жыл сайын жылдамдап келеді. Білім беру саласында онлайн оқыту жүйелері кеңінен қолданылады. Бұл студенттерге кез келген уақытта және жерде білім алуға мүмкіндік береді.',
       },
+      {
+        id: 'kk-advanced-01-02',
+        title: '商务文章',
+        text: 'Бизнес әлемінде тиімді басқару мен стратегиялық жоспарлау маңызды рөл атқарады. Компаниялар нарықта бәсекелестік артықшылыққа ие болу үшін инновациялық шешімдерді іздеуі керек.',
+      },
+      {
+        id: 'kk-advanced-01-03',
+        title: '文化文章',
+        text: 'Қазақ мәдениеті бай дәстүрлер мен заманауи құндылықтарды біріктіреді. Ұлттық музыка, әндер, билер мен дәстүрлі киімдер қазақ халқының мәдени мұрасының маңызды бөлігі болып табылады.',
+      },
     ],
   },
 ];
@@ -135,6 +145,21 @@ const chineseCourses: TypingCourse[] = [
         title: '科技文章',
         text: '人工智能技术的发展正在改变我们的生活方式。机器学习、深度学习等技术的应用越来越广泛。这些技术不仅提高了工作效率，还为解决复杂问题提供了新的思路和方法。',
       },
+      {
+        id: 'zh-advanced-01-02',
+        title: '商务文章',
+        text: '现代企业管理需要注重创新和效率。成功的公司往往能够快速适应市场变化，利用新技术提升竞争力。团队协作和沟通能力也是企业成功的关键因素。',
+      },
+      {
+        id: 'zh-advanced-01-03',
+        title: '文化文章',
+        text: '中华文化源远流长，包含了丰富的哲学思想、文学艺术和传统习俗。从古代的诗词歌赋到现代的影视作品，中国文化在不断传承和创新中发展。',
+      },
+      {
+        id: 'zh-advanced-01-04',
+        title: '教育文章',
+        text: '教育是个人成长和社会进步的重要基础。现代教育强调培养学生的创新思维和实践能力，而不仅仅是知识的传授。在线教育的发展为更多人提供了学习机会。',
+      },
     ],
   },
 ];
@@ -190,6 +215,16 @@ const russianCourses: TypingCourse[] = [
         id: 'ru-advanced-01-01',
         title: '科技文章',
         text: 'Развитие цифровых технологий в Казахстане ускоряется с каждым годом. В сфере образования широко используются системы онлайн-обучения. Это позволяет студентам получать знания в любое время и в любом месте.',
+      },
+      {
+        id: 'ru-advanced-01-02',
+        title: '商务文章',
+        text: 'Эффективное управление бизнесом требует стратегического мышления и адаптивности. Компании должны постоянно искать инновационные решения для поддержания конкурентоспособности на рынке.',
+      },
+      {
+        id: 'ru-advanced-01-03',
+        title: '文化文章',
+        text: 'Казахская культура богата традициями и современными ценностями. Национальная музыка, песни, танцы и традиционная одежда являются важной частью культурного наследия казахского народа.',
       },
     ],
   },
@@ -251,6 +286,21 @@ const englishCourses: TypingCourse[] = [
         id: 'en-advanced-01-01',
         title: '科技文章',
         text: 'The development of digital technologies in Kazakhstan is accelerating every year. Online learning systems are widely used in the field of education. This allows students to acquire knowledge at any time and in any place.',
+      },
+      {
+        id: 'en-advanced-01-02',
+        title: '商务文章',
+        text: 'Effective business management requires strategic thinking and adaptability. Companies must constantly seek innovative solutions to maintain competitiveness in the market. Team collaboration and communication skills are also key factors for business success.',
+      },
+      {
+        id: 'en-advanced-01-03',
+        title: '文化文章',
+        text: 'Kazakh culture is rich in traditions and modern values. National music, songs, dances, and traditional clothing are an important part of the cultural heritage of the Kazakh people. The culture continues to evolve while preserving its unique identity.',
+      },
+      {
+        id: 'en-advanced-01-04',
+        title: '教育文章',
+        text: 'Education is a fundamental foundation for personal growth and social progress. Modern education emphasizes developing students innovative thinking and practical abilities, not just knowledge transmission. The development of online education provides learning opportunities for more people.',
       },
     ],
   },

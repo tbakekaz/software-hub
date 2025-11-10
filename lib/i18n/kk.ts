@@ -197,6 +197,14 @@ const kk = {
     courseMode: 'Курс режимі',
     speedTest: 'Жылдамдық тесті',
     accuracyChallenge: 'Дәлдік сынағы',
+    leaderboard: 'Жылдамдық рейтингі',
+    rank: 'Орын',
+    date: 'Күні',
+    noRecords: 'Жазбалар жоқ',
+    allTime: 'Барлық уақыт',
+    today: 'Бүгін',
+    thisWeek: 'Осы апта',
+    thisMonth: 'Осы ай',
   },
 };
 

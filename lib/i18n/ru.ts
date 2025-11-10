@@ -197,6 +197,14 @@ const ru = {
     courseMode: 'Режим курса',
     speedTest: 'Тест скорости',
     accuracyChallenge: 'Вызов точности',
+    leaderboard: 'Рейтинг скорости',
+    rank: 'Место',
+    date: 'Дата',
+    noRecords: 'Нет записей',
+    allTime: 'Все время',
+    today: 'Сегодня',
+    thisWeek: 'На этой неделе',
+    thisMonth: 'В этом месяце',
   },
 };
 

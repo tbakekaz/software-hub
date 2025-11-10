@@ -197,6 +197,14 @@ const zh = {
     courseMode: '课程模式',
     speedTest: '速度测试',
     accuracyChallenge: '准确率挑战',
+    leaderboard: '速度排行榜',
+    rank: '排名',
+    date: '日期',
+    noRecords: '暂无记录',
+    allTime: '全部时间',
+    today: '今天',
+    thisWeek: '本周',
+    thisMonth: '本月',
   },
 };
 

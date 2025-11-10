@@ -8,6 +8,8 @@ import { getTypingCourses, type TypingCourse, type TypingLesson } from '@/lib/ty
 import { saveTypingProgress, getTypingStats, type TypingStats } from '@/lib/typing-progress';
 import { checkAchievements, unlockAchievement, getUnlockedAchievements, type TypingAchievement } from '@/lib/typing-achievements';
 import { pickLocaleString } from '@/lib/i18n/translate';
+import { KeyboardLayout } from '@/components/KeyboardLayout';
+import { TypingLeaderboard } from '@/components/TypingLeaderboard';
 
 interface Props {
   dict?: {
@@ -37,6 +39,14 @@ interface Props {
     courseMode?: string;
     speedTest?: string;
     accuracyChallenge?: string;
+    leaderboard?: string;
+    rank?: string;
+    date?: string;
+    noRecords?: string;
+    allTime?: string;
+    today?: string;
+    thisWeek?: string;
+    thisMonth?: string;
   };
   lang: Lang;
 }
@@ -47,6 +57,9 @@ export function TypingPracticeClient({ dict, lang }: Props) {
   const [selectedCourse, setSelectedCourse] = useState<TypingCourse | null>(null);
   const [currentLesson, setCurrentLesson] = useState<TypingLesson | null>(null);
   const [practiceMode, setPracticeMode] = useState<'free' | 'course' | 'speed' | 'accuracy'>('course');
+  const [showKeyboard, setShowKeyboard] = useState(false);
+  const [timeLimit, setTimeLimit] = useState(60); // 速度测试时间限制（秒）
+  const [targetAccuracy, setTargetAccuracy] = useState(95); // 准确率挑战目标
   
   const [text, setText] = useState('');
   const [userInput, setUserInput] = useState('');
@@ -113,6 +126,43 @@ export function TypingPracticeClient({ dict, lang }: Props) {
     };
   }, [isActive, startTime, calculateStats]);
 
+  // 速度测试模式：时间限制
+  useEffect(() => {
+    if (practiceMode === 'speed' && isActive && startTime) {
+      const timer = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - startTime) / 1000);
+        if (elapsed >= timeLimit) {
+          setIsActive(false);
+          setIsCompleted(true);
+          const finalStats = calculateStats();
+          saveTypingProgress({
+            language: selectedLanguage,
+            difficulty: selectedDifficulty,
+            wpm: finalStats.wpm,
+            accuracy: finalStats.accuracy,
+            time: finalStats.time,
+            errors: errors,
+            lessonId: currentLesson?.id || 'speed-test',
+            completedAt: new Date().toISOString(),
+          });
+          setStats(getTypingStats(selectedLanguage));
+        }
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [practiceMode, isActive, startTime, timeLimit]);
+
+  // 准确率挑战模式：检查准确率
+  useEffect(() => {
+    if (practiceMode === 'accuracy' && isActive && userInput.length > 0) {
+      const currentAccuracy = displayStats.accuracy;
+      if (currentAccuracy < targetAccuracy && userInput.length > text.length * 0.5) {
+        // 如果准确率低于目标且已输入超过一半，提示
+        // 可以在这里添加警告提示
+      }
+    }
+  }, [practiceMode, isActive, displayStats.accuracy, targetAccuracy, userInput, text]);
+
   // 处理输入
   const handleInput = (value: string) => {
     if (!isActive && value.length > 0) {
@@ -132,8 +182,8 @@ export function TypingPracticeClient({ dict, lang }: Props) {
     setErrors(newErrors);
     setCurrentIndex(value.length);
 
-    // 检查完成
-    if (value === text) {
+    // 检查完成（课程模式和自由模式）
+    if ((practiceMode === 'course' || practiceMode === 'free') && value === text) {
       setIsActive(false);
       setIsCompleted(true);
       if (startTime) {
@@ -168,6 +218,28 @@ export function TypingPracticeClient({ dict, lang }: Props) {
           achievements.forEach(ach => unlockAchievement(ach.id));
           setNewAchievements(achievements);
           setUnlockedAchievements(getUnlockedAchievements());
+        }
+      }
+    }
+    
+    // 准确率挑战模式：检查是否达到目标准确率
+    if (practiceMode === 'accuracy' && value === text) {
+      const finalStats = calculateStats();
+      if (finalStats.accuracy >= targetAccuracy) {
+        setIsActive(false);
+        setIsCompleted(true);
+        if (startTime) {
+          saveTypingProgress({
+            language: selectedLanguage,
+            difficulty: selectedDifficulty,
+            wpm: finalStats.wpm,
+            accuracy: finalStats.accuracy,
+            time: finalStats.time,
+            errors: errors,
+            lessonId: currentLesson?.id || 'accuracy-challenge',
+            completedAt: new Date().toISOString(),
+          });
+          setStats(getTypingStats(selectedLanguage));
         }
       }
     }
@@ -353,17 +425,135 @@ export function TypingPracticeClient({ dict, lang }: Props) {
 
         {/* 中间：练习区域 */}
         <div className="md:col-span-2 space-y-4">
+          {/* 练习模式选择 */}
+          <CardBase>
+            <CardHeader>
+              <h2 className="text-lg font-semibold">{dict?.courseMode || '练习模式'}</h2>
+            </CardHeader>
+            <CardBody>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                <button
+                  onClick={() => {
+                    setPracticeMode('course');
+                    handleRestart();
+                  }}
+                  className={`px-4 py-2 rounded-lg border transition-colors ${
+                    practiceMode === 'course'
+                      ? 'bg-primary text-primary-foreground border-primary'
+                      : 'hover:bg-muted'
+                  }`}
+                >
+                  {dict?.courseMode || '课程模式'}
+                </button>
+                <button
+                  onClick={() => {
+                    setPracticeMode('free');
+                    setText('');
+                    handleRestart();
+                  }}
+                  className={`px-4 py-2 rounded-lg border transition-colors ${
+                    practiceMode === 'free'
+                      ? 'bg-primary text-primary-foreground border-primary'
+                      : 'hover:bg-muted'
+                  }`}
+                >
+                  {dict?.freePractice || '自由练习'}
+                </button>
+                <button
+                  onClick={() => {
+                    setPracticeMode('speed');
+                    handleRestart();
+                  }}
+                  className={`px-4 py-2 rounded-lg border transition-colors ${
+                    practiceMode === 'speed'
+                      ? 'bg-primary text-primary-foreground border-primary'
+                      : 'hover:bg-muted'
+                  }`}
+                >
+                  {dict?.speedTest || '速度测试'}
+                </button>
+                <button
+                  onClick={() => {
+                    setPracticeMode('accuracy');
+                    handleRestart();
+                  }}
+                  className={`px-4 py-2 rounded-lg border transition-colors ${
+                    practiceMode === 'accuracy'
+                      ? 'bg-primary text-primary-foreground border-primary'
+                      : 'hover:bg-muted'
+                  }`}
+                >
+                  {dict?.accuracyChallenge || '准确率挑战'}
+                </button>
+              </div>
+              
+              {practiceMode === 'speed' && (
+                <div className="mt-4 flex items-center gap-2">
+                  <label className="text-sm">{dict?.time || '时间限制'}:</label>
+                  <select
+                    value={timeLimit}
+                    onChange={(e) => setTimeLimit(Number(e.target.value))}
+                    className="px-3 py-1 border rounded"
+                  >
+                    <option value={30}>30 秒</option>
+                    <option value={60}>1 分钟</option>
+                    <option value={120}>2 分钟</option>
+                    <option value={300}>5 分钟</option>
+                  </select>
+                </div>
+              )}
+              
+              {practiceMode === 'accuracy' && (
+                <div className="mt-4 flex items-center gap-2">
+                  <label className="text-sm">{dict?.accuracy || '目标准确率'}:</label>
+                  <select
+                    value={targetAccuracy}
+                    onChange={(e) => setTargetAccuracy(Number(e.target.value))}
+                    className="px-3 py-1 border rounded"
+                  >
+                    <option value={90}>90%</option>
+                    <option value={95}>95%</option>
+                    <option value={98}>98%</option>
+                    <option value={100}>100%</option>
+                  </select>
+                </div>
+              )}
+              
+              {practiceMode === 'free' && (
+                <div className="mt-4">
+                  <textarea
+                    value={text}
+                    onChange={(e) => {
+                      setText(e.target.value);
+                      handleRestart();
+                    }}
+                    placeholder={lang === 'zh' ? '输入自定义练习文本...' : lang === 'kk' ? 'Теңдестірілген мәтін енгізіңіз...' : lang === 'ru' ? 'Введите свой текст...' : 'Enter custom text...'}
+                    className="w-full p-3 border rounded-lg min-h-[100px]"
+                  />
+                </div>
+              )}
+            </CardBody>
+          </CardBase>
+
           <CardBase>
             <CardHeader>
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-semibold">
                   {currentLesson?.title || dict?.freePractice || '自由练习'}
                 </h2>
-                {currentLesson && (
-                  <span className="text-sm text-muted-foreground">
-                    {currentLessonIndex + 1} / {selectedCourse?.lessons.length || 0}
-                  </span>
-                )}
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setShowKeyboard(!showKeyboard)}
+                    className="px-3 py-1 text-sm border rounded hover:bg-muted"
+                  >
+                    {showKeyboard ? (lang === 'zh' ? '隐藏键盘' : lang === 'kk' ? 'Пернетақтаны жасыру' : lang === 'ru' ? 'Скрыть клавиатуру' : 'Hide Keyboard') : (lang === 'zh' ? '显示键盘' : lang === 'kk' ? 'Пернетақтаны көрсету' : lang === 'ru' ? 'Показать клавиатуру' : 'Show Keyboard')}
+                  </button>
+                  {currentLesson && (
+                    <span className="text-sm text-muted-foreground">
+                      {currentLessonIndex + 1} / {selectedCourse?.lessons.length || 0}
+                    </span>
+                  )}
+                </div>
               </div>
             </CardHeader>
             <CardBody className="space-y-4">
@@ -383,9 +573,49 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                 </div>
               </div>
 
+              {/* 键盘布局（可选显示） */}
+              {showKeyboard && (
+                <div className="mb-4">
+                  <KeyboardLayout
+                    currentKey={text[currentIndex]}
+                    language={selectedLanguage}
+                    lang={lang}
+                    showFingerHints={true}
+                  />
+                </div>
+              )}
+
+              {/* 速度测试倒计时 */}
+              {practiceMode === 'speed' && isActive && startTime && (
+                <div className="p-4 bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg text-center">
+                  <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">
+                    {timeLimit - Math.floor((Date.now() - startTime) / 1000)}s
+                  </div>
+                  <div className="text-sm text-muted-foreground mt-1">
+                    {lang === 'zh' ? '剩余时间' : lang === 'kk' ? 'Қалған уақыт' : lang === 'ru' ? 'Осталось времени' : 'Time Remaining'}
+                  </div>
+                </div>
+              )}
+
+              {/* 准确率挑战提示 */}
+              {practiceMode === 'accuracy' && isActive && (
+                <div className="p-4 bg-yellow-50 dark:bg-yellow-950/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+                  <div className="text-sm font-semibold mb-1">
+                    {lang === 'zh' ? '目标准确率' : lang === 'kk' ? 'Мақсатты дәлдік' : lang === 'ru' ? 'Целевая точность' : 'Target Accuracy'}: {targetAccuracy}%
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    {lang === 'zh' ? '当前准确率' : lang === 'kk' ? 'Ағымдағы дәлдік' : lang === 'ru' ? 'Текущая точность' : 'Current Accuracy'}: {displayStats.accuracy}%
+                  </div>
+                </div>
+              )}
+
               {/* 文本显示区域 */}
               <div className="p-6 bg-muted/30 rounded-lg min-h-[200px] text-lg leading-relaxed font-mono">
-                {renderText()}
+                {text ? renderText() : (
+                  <p className="text-muted-foreground text-center">
+                    {lang === 'zh' ? '请在自由练习模式下输入自定义文本' : lang === 'kk' ? 'Еркін жаттығу режимінде теңдестірілген мәтін енгізіңіз' : lang === 'ru' ? 'Введите свой текст в режиме свободной практики' : 'Enter custom text in free practice mode'}
+                  </p>
+                )}
               </div>
 
               {/* 输入区域 */}
@@ -473,6 +703,11 @@ export function TypingPracticeClient({ dict, lang }: Props) {
             </CardBody>
           </CardBase>
         </div>
+      </div>
+
+      {/* 排行榜 */}
+      <div className="mt-6">
+        <TypingLeaderboard lang={lang} dict={dict} />
       </div>
     </main>
   );
