@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import type { Lang } from '@/lib/i18n';
+import { HandsFingerGuide } from './HandsFingerGuide';
 
 interface KeyboardLayoutProps {
   currentKey?: string;
@@ -96,8 +97,17 @@ export function KeyboardLayout({ currentKey, language = 'english', lang = 'zh', 
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-4 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
-      <div className="space-y-1">
+    <div className="w-full max-w-4xl mx-auto space-y-4">
+      {/* 双手手指提示（参考 typingstudy.com） */}
+      {currentKey && currentFinger && (
+        <div className="p-4 bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
+          <HandsFingerGuide currentFinger={currentFinger} lang={lang} />
+        </div>
+      )}
+      
+      {/* 键盘布局 */}
+      <div className="p-4 bg-gray-50 dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700">
+        <div className="space-y-1">
         {qwertyLayout.map((row, rowIndex) => (
           <div key={rowIndex} className="flex gap-1 justify-center">
             {row.map((key) => {
@@ -122,62 +132,34 @@ export function KeyboardLayout({ currentKey, language = 'english', lang = 'zh', 
             })}
           </div>
         ))}
-      </div>
-      
-      {/* 当前手指提示（参考 typingstudy.com） */}
-      {currentKey && currentFinger && (
-        <div className="mt-4 text-center p-3 bg-primary/10 dark:bg-primary/20 rounded-lg border border-primary/30">
-          <p className="text-sm font-semibold mb-1">
-            {lang === 'zh' ? '使用手指' : lang === 'kk' ? 'Саусақ' : lang === 'ru' ? 'Палец' : 'Use Finger'}: 
-            <span className={`ml-2 px-3 py-1 rounded font-bold ${
-              currentFinger === 'pinky-l' || currentFinger === 'pinky-r' ? 'bg-blue-200 dark:bg-blue-800 text-blue-900 dark:text-blue-100' :
-              currentFinger === 'ring-l' || currentFinger === 'ring-r' ? 'bg-green-200 dark:bg-green-800 text-green-900 dark:text-green-100' :
-              currentFinger === 'middle-l' || currentFinger === 'middle-r' ? 'bg-yellow-200 dark:bg-yellow-800 text-yellow-900 dark:text-yellow-100' :
-              currentFinger === 'index-l' || currentFinger === 'index-r' ? 'bg-red-200 dark:bg-red-800 text-red-900 dark:text-red-100' :
-              'bg-purple-200 dark:bg-purple-800 text-purple-900 dark:text-purple-100'
-            }`}>
-              {currentFinger === 'pinky-l' || currentFinger === 'pinky-r' ? 
-                (lang === 'zh' ? '小指' : lang === 'kk' ? 'Кішкентай саусақ' : lang === 'ru' ? 'Мизинец' : 'Pinky') :
-              currentFinger === 'ring-l' || currentFinger === 'ring-r' ?
-                (lang === 'zh' ? '无名指' : lang === 'kk' ? 'Анонимдік саусақ' : lang === 'ru' ? 'Безымянный' : 'Ring') :
-              currentFinger === 'middle-l' || currentFinger === 'middle-r' ?
-                (lang === 'zh' ? '中指' : lang === 'kk' ? 'Орта саусақ' : lang === 'ru' ? 'Средний' : 'Middle') :
-              currentFinger === 'index-l' || currentFinger === 'index-r' ?
-                (lang === 'zh' ? '食指' : lang === 'kk' ? 'Сайыс саусақ' : lang === 'ru' ? 'Указательный' : 'Index') :
-              (lang === 'zh' ? '拇指' : lang === 'kk' ? 'Бас бармақ' : lang === 'ru' ? 'Большой' : 'Thumb')
-              }
-            </span>
-          </p>
-          <p className="text-xs text-muted-foreground">
-            {lang === 'zh' ? '当前按键' : lang === 'kk' ? 'Ағымдағы перне' : lang === 'ru' ? 'Текущая клавиша' : 'Current Key'}: <span className="font-mono font-bold">{currentKey}</span>
-          </p>
         </div>
-      )}
 
-      {showFingerHints && (
-        <div className="mt-4 flex items-center justify-center gap-4 text-xs text-muted-foreground flex-wrap">
-          <div className="flex items-center gap-1">
-            <div className="w-3 h-3 rounded bg-blue-200 dark:bg-blue-800"></div>
-            <span>{lang === 'zh' ? '小指' : lang === 'kk' ? 'Кішкентай саусақ' : lang === 'ru' ? 'Мизинец' : 'Pinky'}</span>
+        {/* 手指颜色图例 */}
+        {showFingerHints && (
+          <div className="mt-4 flex items-center justify-center gap-4 text-xs text-muted-foreground flex-wrap">
+            <div className="flex items-center gap-1">
+              <div className="w-3 h-3 rounded bg-blue-200 dark:bg-blue-800"></div>
+              <span>{lang === 'zh' ? '小指' : lang === 'kk' ? 'Кішкентай саусақ' : lang === 'ru' ? 'Мизинец' : 'Pinky'}</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <div className="w-3 h-3 rounded bg-green-200 dark:bg-green-800"></div>
+              <span>{lang === 'zh' ? '无名指' : lang === 'kk' ? 'Анонимдік саусақ' : lang === 'ru' ? 'Безымянный' : 'Ring'}</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <div className="w-3 h-3 rounded bg-yellow-200 dark:bg-yellow-800"></div>
+              <span>{lang === 'zh' ? '中指' : lang === 'kk' ? 'Орта саусақ' : lang === 'ru' ? 'Средний' : 'Middle'}</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <div className="w-3 h-3 rounded bg-red-200 dark:bg-red-800"></div>
+              <span>{lang === 'zh' ? '食指' : lang === 'kk' ? 'Сайыс саусақ' : lang === 'ru' ? 'Указательный' : 'Index'}</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <div className="w-3 h-3 rounded bg-purple-200 dark:bg-purple-800"></div>
+              <span>{lang === 'zh' ? '拇指' : lang === 'kk' ? 'Бас бармақ' : lang === 'ru' ? 'Большой' : 'Thumb'}</span>
+            </div>
           </div>
-          <div className="flex items-center gap-1">
-            <div className="w-3 h-3 rounded bg-green-200 dark:bg-green-800"></div>
-            <span>{lang === 'zh' ? '无名指' : lang === 'kk' ? 'Анонимдік саусақ' : lang === 'ru' ? 'Безымянный' : 'Ring'}</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <div className="w-3 h-3 rounded bg-yellow-200 dark:bg-yellow-800"></div>
-            <span>{lang === 'zh' ? '中指' : lang === 'kk' ? 'Орта саусақ' : lang === 'ru' ? 'Средний' : 'Middle'}</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <div className="w-3 h-3 rounded bg-red-200 dark:bg-red-800"></div>
-            <span>{lang === 'zh' ? '食指' : lang === 'kk' ? 'Сайыс саусақ' : lang === 'ru' ? 'Указательный' : 'Index'}</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <div className="w-3 h-3 rounded bg-purple-200 dark:bg-purple-800"></div>
-            <span>{lang === 'zh' ? '拇指' : lang === 'kk' ? 'Бас бармақ' : lang === 'ru' ? 'Большой' : 'Thumb'}</span>
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
