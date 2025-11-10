@@ -1,8 +1,12 @@
 import { fetchKZTRates } from '@/lib/rates';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { RatesCardClient } from './RatesCardClient';
+import { getDictionary } from '@/lib/i18n/server';
 
 export default async function RatesCard() {
+  // 获取国际化字典
+  const { dict, lang } = await getDictionary();
+  
   try {
     const data = await fetchKZTRates();
     console.log('[RatesCard Server] Fetched data:', {
@@ -35,7 +39,7 @@ export default async function RatesCard() {
         },
         source: 'fallback' as const
       };
-      return <RatesCardClient initialData={fallback} />;
+      return <RatesCardClient initialData={fallback} dict={dict.rates} lang={lang} />;
     }
     
     // 确保数据可以被正确序列化
@@ -52,7 +56,7 @@ export default async function RatesCard() {
     };
     
     console.log('[RatesCard Server] Serialized data:', serializedData);
-    return <RatesCardClient initialData={serializedData} />;
+    return <RatesCardClient initialData={serializedData} dict={dict.rates} lang={lang} />;
   } catch (error: any) {
     console.error('[RatesCard Server] Error:', error);
     // 使用默认值
@@ -67,7 +71,7 @@ export default async function RatesCard() {
       },
       source: 'fallback' as const
     };
-    return <RatesCardClient initialData={fallback} />;
+    return <RatesCardClient initialData={fallback} dict={dict.rates} lang={lang} />;
   }
 }
 

@@ -5,24 +5,39 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import type { RatesResponse } from '@/lib/rates';
+import type { Lang } from '@/lib/i18n';
 
 interface Props {
   initialData: RatesResponse;
+  dict: {
+    kztRate?: string;
+    calculator?: string;
+    hideCalculator?: string;
+    convert?: string;
+    amount?: string;
+    from?: string;
+    to?: string;
+    swap?: string;
+    result?: string;
+    updated?: string;
+    updating?: string;
+    dataSource?: string;
+    currencyNames?: {
+      KZT?: string;
+      USD?: string;
+      EUR?: string;
+      CNY?: string;
+      RUB?: string;
+    };
+  };
+  lang: Lang;
 }
 
 const AUTO_REFRESH_INTERVAL = 5 * 60 * 1000; // 5 分钟自动刷新
 
 type Currency = 'KZT' | 'USD' | 'EUR' | 'CNY' | 'RUB';
 
-const CURRENCY_NAMES: Record<Currency, string> = {
-  KZT: '坚戈',
-  USD: '美元',
-  EUR: '欧元',
-  CNY: '人民币',
-  RUB: '卢布',
-};
-
-export function RatesCardClient({ initialData }: Props) {
+export function RatesCardClient({ initialData, dict, lang }: Props) {
   const [data, setData] = useState(initialData);
   const [isLoading, setIsLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
@@ -165,12 +180,18 @@ export function RatesCardClient({ initialData }: Props) {
     return kztAmount * toRate;
   }, [amount, fromCurrency, toCurrency, data.rates]);
 
+  // 获取货币名称（使用字典或回退到货币代码）
+  const getCurrencyName = (currency: Currency): string => {
+    return dict.currencyNames?.[currency] || currency;
+  };
+
   const formatCurrency = (value: number | null): string => {
     if (value === null) return '0.00';
+    const locale = lang === 'zh' ? 'zh-CN' : lang === 'kk' ? 'kk-KZ' : lang === 'ru' ? 'ru-RU' : 'en-US';
     if (value >= 1) {
-      return value.toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      return value.toLocaleString(locale, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     } else {
-      return value.toLocaleString('zh-CN', { minimumFractionDigits: 4, maximumFractionDigits: 6 });
+      return value.toLocaleString(locale, { minimumFractionDigits: 4, maximumFractionDigits: 6 });
     }
   };
 
@@ -183,7 +204,7 @@ export function RatesCardClient({ initialData }: Props) {
     <Card>
       <CardHeader className="flex items-center justify-between">
         <div className="font-medium">
-          KZT 汇率
+          {dict.kztRate || 'KZT 汇率'}
           {data.date && <span className="text-xs text-muted-foreground ml-2">({data.date})</span>}
         </div>
         <div className="flex items-center gap-2">
@@ -193,14 +214,14 @@ export function RatesCardClient({ initialData }: Props) {
             onClick={() => setShowCalculator(!showCalculator)}
             className="text-xs"
           >
-            {showCalculator ? '隐藏计算器' : '汇率计算'}
+            {showCalculator ? (dict.hideCalculator || '隐藏计算器') : (dict.calculator || '汇率计算')}
           </Button>
           {isLoading && (
-            <span className="text-xs text-muted-foreground animate-pulse">更新中...</span>
+            <span className="text-xs text-muted-foreground animate-pulse">{dict.updating || '更新中...'}</span>
           )}
           {!isLoading && lastUpdate && (
             <span className="text-xs text-muted-foreground">
-              已更新: {formatTime(lastUpdate)}
+              {dict.updated || '已更新'}: {formatTime(lastUpdate)}
             </span>
           )}
         </div>
@@ -208,25 +229,25 @@ export function RatesCardClient({ initialData }: Props) {
       <CardContent>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
           <div className="space-y-1">
-            <div className="text-xs text-muted-foreground">美元 (USD)</div>
+            <div className="text-xs text-muted-foreground">{getCurrencyName('USD')} (USD)</div>
             <div className="font-semibold text-lg">
               {formatRate(data.rates?.USD)}
             </div>
           </div>
           <div className="space-y-1">
-            <div className="text-xs text-muted-foreground">欧元 (EUR)</div>
+            <div className="text-xs text-muted-foreground">{getCurrencyName('EUR')} (EUR)</div>
             <div className="font-semibold text-lg">
               {formatRate(data.rates?.EUR)}
             </div>
           </div>
           <div className="space-y-1">
-            <div className="text-xs text-muted-foreground">人民币 (CNY)</div>
+            <div className="text-xs text-muted-foreground">{getCurrencyName('CNY')} (CNY)</div>
             <div className="font-semibold text-lg">
               {formatRate(data.rates?.CNY)}
             </div>
           </div>
           <div className="space-y-1">
-            <div className="text-xs text-muted-foreground">卢布 (RUB)</div>
+            <div className="text-xs text-muted-foreground">{getCurrencyName('RUB')} (RUB)</div>
             <div className="font-semibold text-lg">
               {formatRate(data.rates?.RUB)}
             </div>
@@ -234,24 +255,24 @@ export function RatesCardClient({ initialData }: Props) {
         </div>
         {data.source && data.source !== 'default' && (
           <div className="mt-3 text-xs text-muted-foreground text-center">
-            数据来源: {data.source}
+            {dict.dataSource || '数据来源'}: {data.source}
           </div>
         )}
 
         {/* 汇率计算器 */}
         {showCalculator && (
           <div className="mt-6 pt-6 border-t space-y-4">
-            <div className="text-sm font-medium mb-3">汇率换算</div>
+            <div className="text-sm font-medium mb-3">{dict.convert || '汇率换算'}</div>
             
             <div className="space-y-3">
               {/* 输入金额 */}
               <div className="space-y-2">
-                <label className="text-xs text-muted-foreground">金额</label>
+                <label className="text-xs text-muted-foreground">{dict.amount || '金额'}</label>
                 <Input
                   type="number"
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
-                  placeholder="输入金额"
+                  placeholder={dict.amount || '输入金额'}
                   min="0"
                   step="0.01"
                   className="w-full"
@@ -261,7 +282,7 @@ export function RatesCardClient({ initialData }: Props) {
               {/* 货币选择 */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-2">
-                  <label className="text-xs text-muted-foreground">从</label>
+                  <label className="text-xs text-muted-foreground">{dict.from || '从'}</label>
                   <select
                     value={fromCurrency}
                     onChange={(e) => setFromCurrency(e.target.value as Currency)}
@@ -269,14 +290,14 @@ export function RatesCardClient({ initialData }: Props) {
                   >
                     {(['KZT', 'USD', 'EUR', 'CNY', 'RUB'] as Currency[]).map((curr) => (
                       <option key={curr} value={curr}>
-                        {curr} ({CURRENCY_NAMES[curr]})
+                        {curr} ({getCurrencyName(curr)})
                       </option>
                     ))}
                   </select>
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-xs text-muted-foreground">到</label>
+                  <label className="text-xs text-muted-foreground">{dict.to || '到'}</label>
                   <select
                     value={toCurrency}
                     onChange={(e) => setToCurrency(e.target.value as Currency)}
@@ -284,7 +305,7 @@ export function RatesCardClient({ initialData }: Props) {
                   >
                     {(['KZT', 'USD', 'EUR', 'CNY', 'RUB'] as Currency[]).map((curr) => (
                       <option key={curr} value={curr}>
-                        {curr} ({CURRENCY_NAMES[curr]})
+                        {curr} ({getCurrencyName(curr)})
                       </option>
                     ))}
                   </select>
@@ -300,14 +321,14 @@ export function RatesCardClient({ initialData }: Props) {
                   className="text-xs"
                   type="button"
                 >
-                  ⇅ 交换
+                  ⇅ {dict.swap || '交换'}
                 </Button>
               </div>
 
               {/* 计算结果 */}
               {convertedAmount !== null && (
                 <div className="p-4 rounded-lg bg-muted/50 border">
-                  <div className="text-xs text-muted-foreground mb-1">换算结果</div>
+                  <div className="text-xs text-muted-foreground mb-1">{dict.result || '换算结果'}</div>
                   <div className="text-2xl font-bold">
                     {formatCurrency(convertedAmount)} {toCurrency}
                   </div>
