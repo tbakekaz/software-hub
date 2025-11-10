@@ -17,6 +17,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     const routes: MetadataRoute.Sitemap = [
       { url: base, lastModified: now, changeFrequency: 'daily', priority: 1.0 },
+      { url: `${base}/zh`, lastModified: now, changeFrequency: 'daily', priority: 0.9 },
+      { url: `${base}/kk`, lastModified: now, changeFrequency: 'daily', priority: 0.9 },
+      { url: `${base}/ru`, lastModified: now, changeFrequency: 'daily', priority: 0.9 },
+      { url: `${base}/en`, lastModified: now, changeFrequency: 'daily', priority: 0.9 },
       { url: `${base}/software`, lastModified: now, changeFrequency: 'daily', priority: 0.9 },
       { url: `${base}/tutorials`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
       { url: `${base}/ai`, lastModified: now, changeFrequency: 'daily', priority: 0.8 },
@@ -53,6 +57,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const now = new Date();
     return [
       { url: base, lastModified: now, changeFrequency: 'daily', priority: 1.0 },
+      { url: `${base}/zh`, lastModified: now, changeFrequency: 'daily', priority: 0.9 },
+      { url: `${base}/kk`, lastModified: now, changeFrequency: 'daily', priority: 0.9 },
+      { url: `${base}/ru`, lastModified: now, changeFrequency: 'daily', priority: 0.9 },
+      { url: `${base}/en`, lastModified: now, changeFrequency: 'daily', priority: 0.9 },
       { url: `${base}/software`, lastModified: now, changeFrequency: 'daily', priority: 0.9 },
       { url: `${base}/tutorials`, lastModified: now, changeFrequency: 'weekly', priority: 0.8 },
       { url: `${base}/ai`, lastModified: now, changeFrequency: 'daily', priority: 0.8 },

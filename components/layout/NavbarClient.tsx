@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { clsx } from 'clsx';
 import { Input } from '@/components/ui/input';
-import LangSwitcher from '@/components/LangSwitcher';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import AuthButton from '@/components/AuthButton';
 
 export function NavbarClient({
@@ -106,7 +106,7 @@ export function NavbarClient({
               {item.label}
             </Link>
           ))}
-          <LangSwitcher />
+          <LanguageSwitcher />
           <AuthButton labels={dict.auth} />
         </nav>
 
@@ -150,7 +150,7 @@ export function NavbarClient({
             </Link>
           ))}
           <div className="flex items-center gap-2 pt-2">
-            <LangSwitcher />
+            <LanguageSwitcher />
             <AuthButton labels={dict.auth} />
           </div>
         </div>

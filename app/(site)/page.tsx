@@ -13,6 +13,19 @@ export const dynamic = 'force-dynamic';
 // 移除 edge runtime 以支持汇率 API 调用
 // export const runtime = 'edge';
 
+export const metadata = {
+  title: 'KazSoft — AI & Software Hub',
+  alternates: {
+    languages: {
+      'x-default': '/',
+      'zh-KZ': '/zh',
+      'kk-KZ': '/kk',
+      'ru-RU': '/ru',
+      'en': '/en',
+    },
+  },
+};
+
 export default async function HomePage() {
   // 添加错误处理，确保页面始终可以渲染
   let dict: Awaited<ReturnType<typeof getDictionary>>['dict'];
