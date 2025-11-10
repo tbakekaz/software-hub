@@ -2,8 +2,8 @@ import { getAllAI } from '@/lib/content-edge';
 import { getDictionary } from '@/lib/i18n/server';
 import DiscoverClient from './DiscoverClient';
 
-export const dynamic = 'force-dynamic';
-export const runtime = 'edge';
+// export const dynamic = 'force-dynamic';
+// export const runtime = 'edge';
 
 export default async function DiscoverPage() {
   try {

@@ -12,20 +12,54 @@ type Labels = {
   langFilter: { all: string; kk: string; ru: string; en: string };
 };
 
+// 分类映射：英文key -> 中文分类名
+const CATEGORY_MAP: Record<string, string> = {
+  chat: '对话',
+  image: '图像',
+  video: '视频',
+  office: '办公',
+  audio: '音频',
+  dev: '开发',
+  paper: '论文',
+  search: '搜索',
+  model: '模型',
+};
+
 export default function DiscoverClient({ items, lang, labels }: { items: any[]; lang: any; labels: Labels }) {
   const [q, setQ] = useState('');
-  const [active, setActive] = useState<string>(labels.categories[0]?.key || '对话');
+  const [active, setActive] = useState<string>(labels.categories[0]?.key || 'chat');
   const [langFilter, setLangFilter] = useState<'all' | 'kk' | 'ru' | 'en'>('all');
+  
   const filtered = useMemo(() => {
-    const intl = items
-      .filter((i) => i.isInternational && (i.locale?.includes('en') || i.locale?.includes('ru')))
-      .sort((a, b) => (b.locale?.includes('kk') ? 1 : 0) - (a.locale?.includes('kk') ? 1 : 0));
-    const byLang =
-      langFilter === 'all' ? intl : intl.filter((i) => i.locale?.includes(langFilter));
-    const byCat = byLang.filter((i) => (i.category || '').includes(active));
-    if (!q) return byCat;
-    const lowercase = q.toLowerCase();
-    return byCat.filter((i) => `${i.name} ${i.description}`.toLowerCase().includes(lowercase));
+    // 获取当前分类的中文名称
+    const categoryName = CATEGORY_MAP[active] || active;
+    
+    // 先按分类筛选
+    let byCat = items.filter((i) => {
+      const itemCategory = i.category || '';
+      return itemCategory === categoryName || itemCategory === active;
+    });
+    
+    // 按语言筛选
+    const byLang = langFilter === 'all' 
+      ? byCat 
+      : byCat.filter((i) => {
+          const locales = i.locale || [];
+          return Array.isArray(locales) ? locales.includes(langFilter) : false;
+        });
+    
+    // 按搜索关键词筛选
+    if (q) {
+      const lowercase = q.toLowerCase();
+      return byLang.filter((i) => {
+        const name = i.name || '';
+        const description = i.description || '';
+        const tags = (i.tags || []).join(' ');
+        return `${name} ${description} ${tags}`.toLowerCase().includes(lowercase);
+      });
+    }
+    
+    return byLang;
   }, [items, active, q, langFilter]);
 
   return (
