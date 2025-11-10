@@ -92,7 +92,7 @@ export function NavbarClient({
           isScrolled ? 'h-14 py-2' : 'h-[4.5rem] py-3'
         )}
       >
-        <Link href="/" className="font-semibold text-lg tracking-tight">
+        <Link href="/" className="font-semibold text-lg tracking-tight" data-translate-text="true">
           Software Hub
         </Link>
 
