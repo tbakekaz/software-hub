@@ -333,25 +333,27 @@ export function TypingPracticeClient({ dict, lang }: Props) {
             <CardHeader>
               <h2 className="text-lg font-semibold">{dict?.selectLanguage || '选择语言'}</h2>
             </CardHeader>
-            <CardBody className="space-y-2">
-              {(['kazakh', 'chinese', 'russian', 'english'] as const).map((lang) => (
-                <button
-                  key={lang}
-                  onClick={() => {
-                    setSelectedLanguage(lang);
-                    setSelectedCourse(null);
-                    setCurrentLesson(null);
-                    handleRestart();
-                  }}
-                  className={`w-full px-3 py-1.5 text-sm rounded-lg border transition-colors ${
-                    selectedLanguage === lang
-                      ? 'bg-primary text-primary-foreground border-primary'
-                      : 'hover:bg-muted'
-                  }`}
-                >
-                  {lang === 'kazakh' ? 'Қазақша' : lang === 'chinese' ? '中文' : lang === 'russian' ? 'Русский' : 'English'}
-                </button>
-              ))}
+            <CardBody>
+              <div className="flex flex-wrap gap-2">
+                {(['kazakh', 'chinese', 'russian', 'english'] as const).map((lang) => (
+                  <button
+                    key={lang}
+                    onClick={() => {
+                      setSelectedLanguage(lang);
+                      setSelectedCourse(null);
+                      setCurrentLesson(null);
+                      handleRestart();
+                    }}
+                    className={`px-3 py-1.5 text-sm rounded-lg border transition-colors whitespace-nowrap ${
+                      selectedLanguage === lang
+                        ? 'bg-primary text-primary-foreground border-primary'
+                        : 'hover:bg-muted'
+                    }`}
+                  >
+                    {lang === 'kazakh' ? 'Қазақша' : lang === 'chinese' ? '中文' : lang === 'russian' ? 'Русский' : 'English'}
+                  </button>
+                ))}
+              </div>
             </CardBody>
           </CardBase>
 
@@ -359,29 +361,31 @@ export function TypingPracticeClient({ dict, lang }: Props) {
             <CardHeader>
               <h2 className="text-lg font-semibold">{dict?.selectDifficulty || '选择难度'}</h2>
             </CardHeader>
-            <CardBody className="space-y-2">
-              {(['beginner', 'intermediate', 'advanced'] as const).map((difficulty) => (
-                <button
-                  key={difficulty}
-                  onClick={() => {
-                    setSelectedDifficulty(difficulty);
-                    setSelectedCourse(null);
-                    setCurrentLesson(null);
-                    handleRestart();
-                  }}
-                  className={`w-full px-3 py-1.5 text-sm rounded-lg border transition-colors ${
-                    selectedDifficulty === difficulty
-                      ? 'bg-primary text-primary-foreground border-primary'
-                      : 'hover:bg-muted'
-                  }`}
-                >
-                  {difficulty === 'beginner' 
-                    ? (dict?.level?.beginner || '初级')
-                    : difficulty === 'intermediate'
-                    ? (dict?.level?.intermediate || '中级')
-                    : (dict?.level?.advanced || '高级')}
-                </button>
-              ))}
+            <CardBody>
+              <div className="flex flex-wrap gap-2">
+                {(['beginner', 'intermediate', 'advanced'] as const).map((difficulty) => (
+                  <button
+                    key={difficulty}
+                    onClick={() => {
+                      setSelectedDifficulty(difficulty);
+                      setSelectedCourse(null);
+                      setCurrentLesson(null);
+                      handleRestart();
+                    }}
+                    className={`px-3 py-1.5 text-sm rounded-lg border transition-colors whitespace-nowrap ${
+                      selectedDifficulty === difficulty
+                        ? 'bg-primary text-primary-foreground border-primary'
+                        : 'hover:bg-muted'
+                    }`}
+                  >
+                    {difficulty === 'beginner' 
+                      ? (dict?.level?.beginner || '初级')
+                      : difficulty === 'intermediate'
+                      ? (dict?.level?.intermediate || '中级')
+                      : (dict?.level?.advanced || '高级')}
+                  </button>
+                ))}
+              </div>
             </CardBody>
           </CardBase>
 
