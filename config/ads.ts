@@ -57,6 +57,16 @@ export const adsConfig: Record<AdPosition, AdItem> = {
     variant: 'image',
     url: '#',
     img: { src: 'https://via.placeholder.com/1200x80?text=Footer+Banner', alt: 'Footer Banner' }
+  },
+  'list-inline': {
+    enabled: false,
+    variant: 'affiliate-card',
+    url: '#'
+  },
+  'detail-sidebar': {
+    enabled: false,
+    variant: 'affiliate-card',
+    url: '#'
   }
 };
 

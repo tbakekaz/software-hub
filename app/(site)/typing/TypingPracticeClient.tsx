@@ -10,7 +10,7 @@ import { checkAchievements, unlockAchievement, getUnlockedAchievements, type Typ
 import { pickLocaleString } from '@/lib/i18n/translate';
 import { KeyboardLayout } from '@/components/KeyboardLayout';
 import { TypingLeaderboard } from '@/components/TypingLeaderboard';
-import { arabicToCyrillic, normalizeForCompare, type KazakhScript } from '@/lib/kazakh-convert';
+import { arabicToCyrillic, cyrillicToArabic, normalizeForCompare, type KazakhScript } from '@/lib/kazakh-convert';
 
 interface Props {
   dict?: {
@@ -71,6 +71,10 @@ export function TypingPracticeClient({ dict, lang }: Props) {
   const [targetAccuracy, setTargetAccuracy] = useState(95); // 准确率挑战目标
   // 哈萨克语脚本切换：新疆阿拉伯（arabic） / 哈国西里尔（cyrillic）
   const [kazakhScript, setKazakhScript] = useState<KazakhScript>('cyrillic');
+  // 文字转换器（入口）
+  const [showConverter, setShowConverter] = useState(false);
+  const [converterMode, setConverterMode] = useState<'a2c' | 'c2a'>('a2c');
+  const [converterInput, setConverterInput] = useState('');
   
   const [text, setText] = useState('');
   const [userInput, setUserInput] = useState('');
@@ -594,6 +598,35 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                   {currentLesson?.title || dict?.freePractice || '自由练习'}
                 </h2>
                 <div className="flex items-center gap-2">
+                  {/* 脚本切换（仅哈萨克语时显示） */}
+                  {selectedLanguage === 'kazakh' && (
+                    <div className="hidden md:flex items-center gap-1">
+                      <button
+                        onClick={() => setKazakhScript('cyrillic')}
+                        className={`px-2 py-1 text-xs rounded border ${kazakhScript === 'cyrillic' ? 'bg-primary text-primary-foreground border-primary' : 'hover:bg-muted'}`}
+                        title="西里尔（哈萨克斯坦）"
+                      >
+                        西里尔
+                      </button>
+                      <button
+                        onClick={() => setKazakhScript('arabic')}
+                        className={`px-2 py-1 text-xs rounded border ${kazakhScript === 'arabic' ? 'bg-primary text-primary-foreground border-primary' : 'hover:bg-muted'}`}
+                        title="阿拉伯（新疆哈萨克）"
+                      >
+                        阿拉伯
+                      </button>
+                    </div>
+                  )}
+                  {/* 文字转换器入口 */}
+                  {selectedLanguage === 'kazakh' && (
+                    <button
+                      onClick={() => setShowConverter(true)}
+                      className="px-3 py-1 text-sm border rounded hover:bg-muted"
+                      title="文字转换器（阿拉伯 ↔ 西里尔）"
+                    >
+                      文字转换器
+                    </button>
+                  )}
                   <button
                     onClick={() => setShowKeyboard(!showKeyboard)}
                     className="px-3 py-1 text-sm border rounded hover:bg-muted"
@@ -757,6 +790,73 @@ export function TypingPracticeClient({ dict, lang }: Props) {
           </CardBase>
         </div>
       </div>
+
+      {/* 文字转换器对话框 */}
+      {showConverter && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/40" onClick={() => setShowConverter(false)} />
+          <div className="relative bg-background rounded-xl shadow-2xl border w-full max-w-3xl p-4 md:p-6">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-lg font-semibold">文字转换器（哈萨克：阿拉伯 ↔ 西里尔）</h3>
+              <button className="px-2 py-1 rounded hover:bg-muted" onClick={() => setShowConverter(false)}>✕</button>
+            </div>
+            <div className="flex flex-col md:flex-row gap-3">
+              <div className="flex-1">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setConverterMode('a2c')}
+                      className={`px-3 py-1.5 text-sm rounded border ${converterMode === 'a2c' ? 'bg-primary text-primary-foreground border-primary' : 'hover:bg-muted'}`}
+                    >
+                      阿拉伯 → 西里尔
+                    </button>
+                    <button
+                      onClick={() => setConverterMode('c2a')}
+                      className={`px-3 py-1.5 text-sm rounded border ${converterMode === 'c2a' ? 'bg-primary text-primary-foreground border-primary' : 'hover:bg-muted'}`}
+                    >
+                      西里尔 → 阿拉伯
+                    </button>
+                  </div>
+                </div>
+                <textarea
+                  dir={converterMode === 'a2c' ? 'rtl' : 'ltr'}
+                  placeholder={converterMode === 'a2c' ? '输入阿拉伯文（新疆哈萨克）...' : '输入西里尔文（哈萨克斯坦）...'}
+                  className={`w-full min-h-[140px] p-3 border rounded font-mono ${converterMode === 'a2c' ? 'text-right' : ''}`}
+                  value={converterInput}
+                  onChange={(e) => setConverterInput(e.target.value)}
+                />
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-sm text-muted-foreground">转换结果</span>
+                  <button
+                    className="px-2 py-1 text-xs border rounded hover:bg-muted"
+                    onClick={() => {
+                      const output = converterMode === 'a2c'
+                        ? arabicToCyrillic(converterInput)
+                        : cyrillicToArabic(converterInput);
+                      navigator.clipboard.writeText(output);
+                    }}
+                  >
+                    复制
+                  </button>
+                </div>
+                <div
+                  dir={converterMode === 'c2a' ? 'rtl' : 'ltr'}
+                  className={`w-full min-h-[140px] p-3 border rounded bg-muted/40 font-mono whitespace-pre-wrap break-words ${converterMode === 'c2a' ? 'text-right' : ''}`}
+                >
+                  {converterMode === 'a2c'
+                    ? arabicToCyrillic(converterInput || '')
+                    : cyrillicToArabic(converterInput || '')}
+                </div>
+              </div>
+            </div>
+            <div className="mt-3 text-xs text-muted-foreground">
+              提示：转换按常见规则执行。若需完全与参考站一致，请提供对照表以逐条校对。
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* 排行榜 */}
       <div className="mt-6">
