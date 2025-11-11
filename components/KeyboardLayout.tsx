@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import type { Lang } from '@/lib/i18n';
-import { HandsFingerGuide } from './HandsFingerGuide';
+import { Hand } from './HandsFingerGuide';
 
 interface KeyboardLayoutProps {
   currentKey?: string;
@@ -100,9 +100,9 @@ export function KeyboardLayout({ currentKey, language = 'english', lang = 'zh', 
     <div className="w-full max-w-6xl mx-auto">
       {/* 键盘和双手布局（参考 typingstudy.com） */}
       <div className="flex items-center justify-center gap-4">
-        {/* 左手 - 一直显示 */}
+        {/* 左手 - 放在键盘左边 */}
         <div className="flex-shrink-0">
-          <HandsFingerGuide currentFinger={currentFinger} lang={lang} />
+          <Hand hand="left" currentFinger={currentFinger} lang={lang} />
         </div>
         
         {/* 键盘布局 */}
@@ -159,6 +159,11 @@ export function KeyboardLayout({ currentKey, language = 'english', lang = 'zh', 
             </div>
           </div>
         )}
+        </div>
+        
+        {/* 右手 - 放在键盘右边 */}
+        <div className="flex-shrink-0">
+          <Hand hand="right" currentFinger={currentFinger} lang={lang} />
         </div>
       </div>
     </div>
