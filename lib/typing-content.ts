@@ -3,15 +3,15 @@ export type TypingDifficulty = 'beginner' | 'intermediate' | 'advanced';
 
 export interface TypingLesson {
   id: string;
-  title: string;
+  title: string | { zh?: string; kk?: string; ru?: string; en?: string };
   text: string;
-  description?: string;
+  description?: string | { zh?: string; kk?: string; ru?: string; en?: string };
 }
 
 export interface TypingCourse {
   id: string;
-  title: string;
-  description?: string;
+  title: string | { zh?: string; kk?: string; ru?: string; en?: string };
+  description?: string | { zh?: string; kk?: string; ru?: string; en?: string };
   language: TypingLanguage;
   difficulty: TypingDifficulty;
   lessons: TypingLesson[];
@@ -21,67 +21,67 @@ export interface TypingCourse {
 const kazakhCourses: TypingCourse[] = [
   {
     id: 'kk-beginner-01',
-    title: '基础字母练习',
-    description: '学习哈萨克语基础字母',
+    title: { zh: '基础字母练习', kk: 'Негізгі әріптер жаттығуы', ru: 'Базовые буквы', en: 'Basic Alphabet Practice' },
+    description: { zh: '学习哈萨克语基础字母', kk: 'Қазақ тілінің негізгі әріптерін үйрену', ru: 'Изучение базовых букв казахского языка', en: 'Learn basic Kazakh alphabet' },
     language: 'kazakh',
     difficulty: 'beginner',
     lessons: [
       {
         id: 'kk-beginner-01-01',
-        title: '字母 A-Ә',
+        title: { zh: '字母 A-Ә', kk: 'Әріптер A-Ә', ru: 'Буквы A-Ә', en: 'Letters A-Ә' },
         text: 'А а Ә ә Б б В в Г г Ғ ғ Д д Е е Ё ё Ж ж З з И и Й й К к Қ қ Л л М м Н н Ң ң О о Ө ө П п Р р С с Т т У у Ұ ұ Ү ү Ф ф Х х Һ һ Ц ц Ч ч Ш ш Щ щ Ъ ъ Ы ы І і Ь ь Э э Ю ю Я я',
       },
       {
         id: 'kk-beginner-01-02',
-        title: '常用单词',
+        title: { zh: '常用单词', kk: 'Жиі қолданылатын сөздер', ru: 'Часто используемые слова', en: 'Common Words' },
         text: 'сәлем алайсың қалайсың рахмет кешіріңіз жарайды жақсы керемет',
       },
       {
         id: 'kk-beginner-01-03',
-        title: '简单句子',
+        title: { zh: '简单句子', kk: 'Қарапайым сөйлемдер', ru: 'Простые предложения', en: 'Simple Sentences' },
         text: 'Менің атым Айгүл. Сіз қалайсыз? Мен жақсымын. Рахмет.',
       },
     ],
   },
   {
     id: 'kk-intermediate-01',
-    title: '日常对话',
-    description: '日常对话练习',
+    title: { zh: '日常对话', kk: 'Күнделікті әңгіме', ru: 'Повседневный диалог', en: 'Daily Conversation' },
+    description: { zh: '日常对话练习', kk: 'Күнделікті әңгіме жаттығуы', ru: 'Практика повседневного диалога', en: 'Daily conversation practice' },
     language: 'kazakh',
     difficulty: 'intermediate',
     lessons: [
       {
         id: 'kk-intermediate-01-01',
-        title: '问候与介绍',
+        title: { zh: '问候与介绍', kk: 'Сәлемдесу және таныстыру', ru: 'Приветствие и знакомство', en: 'Greetings and Introductions' },
         text: 'Сәлеметсіз бе! Менің атым Нұрлан. Мен студентпін. Сіз не істейсіз? Мен мұғаліммін. Қандай мамандық? Мен информатика оқимын.',
       },
       {
         id: 'kk-intermediate-01-02',
-        title: '购物对话',
+        title: { zh: '购物对话', kk: 'Сатып алу әңгімесі', ru: 'Диалог о покупках', en: 'Shopping Dialogue' },
         text: 'Бұл қанша тұрады? Бұл бес мың теңге. Барлығы неше? Барлығы он мың теңге. Рахмет, келесі жолы кездескенше.',
       },
     ],
   },
   {
     id: 'kk-advanced-01',
-    title: '专业文章',
-    description: '专业术语和长文章',
+    title: { zh: '专业文章', kk: 'Кәсіби мақалалар', ru: 'Профессиональные статьи', en: 'Professional Articles' },
+    description: { zh: '专业术语和长文章', kk: 'Кәсіби терминдер мен ұзын мақалалар', ru: 'Профессиональные термины и длинные статьи', en: 'Professional terms and long articles' },
     language: 'kazakh',
     difficulty: 'advanced',
     lessons: [
       {
         id: 'kk-advanced-01-01',
-        title: '科技文章',
+        title: { zh: '科技文章', kk: 'Ғылыми-техникалық мақала', ru: 'Научно-техническая статья', en: 'Science & Technology Article' },
         text: 'Қазақстанда цифрлық технологиялардың дамуы жыл сайын жылдамдап келеді. Білім беру саласында онлайн оқыту жүйелері кеңінен қолданылады. Бұл студенттерге кез келген уақытта және жерде білім алуға мүмкіндік береді.',
       },
       {
         id: 'kk-advanced-01-02',
-        title: '商务文章',
+        title: { zh: '商务文章', kk: 'Бизнес мақаласы', ru: 'Бизнес-статья', en: 'Business Article' },
         text: 'Бизнес әлемінде тиімді басқару мен стратегиялық жоспарлау маңызды рөл атқарады. Компаниялар нарықта бәсекелестік артықшылыққа ие болу үшін инновациялық шешімдерді іздеуі керек.',
       },
       {
         id: 'kk-advanced-01-03',
-        title: '文化文章',
+        title: { zh: '文化文章', kk: 'Мәдениет мақаласы', ru: 'Статья о культуре', en: 'Culture Article' },
         text: 'Қазақ мәдениеті бай дәстүрлер мен заманауи құндылықтарды біріктіреді. Ұлттық музыка, әндер, билер мен дәстүрлі киімдер қазақ халқының мәдени мұрасының маңызды бөлігі болып табылады.',
       },
     ],

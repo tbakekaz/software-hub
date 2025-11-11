@@ -463,7 +463,7 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                         : 'hover:bg-muted'
                     }`}
                   >
-                    {course.title}
+                    {typeof course.title === 'string' ? course.title : pickLocaleString(course.title, lang)}
                   </button>
                 ))}
               </CardBody>
@@ -614,7 +614,9 @@ export function TypingPracticeClient({ dict, lang }: Props) {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-semibold">
-                  {currentLesson?.title || t('freePractice', { zh: '自由练习', kk: 'Еркін жаттығу', ru: 'Свободная практика', en: 'Free Practice' })}
+                  {currentLesson?.title 
+                    ? (typeof currentLesson.title === 'string' ? currentLesson.title : pickLocaleString(currentLesson.title, lang))
+                    : t('freePractice', { zh: '自由练习', kk: 'Еркін жаттығу', ru: 'Свободная практика', en: 'Free Practice' })}
                 </h2>
                 <div className="flex items-center gap-2">
                   {/* 脚本切换（仅哈萨克语时显示） */}
