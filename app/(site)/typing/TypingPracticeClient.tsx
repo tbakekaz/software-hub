@@ -394,9 +394,9 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                   <button
                     onClick={() => setShowConverter(true)}
                     className="px-3 py-1.5 text-sm rounded-lg border hover:bg-muted"
-                    title="文字转换器（阿拉伯 ↔ 西里尔）"
+                    title="سايكەستىرگىش / Сайкестіргіш"
                   >
-                    文字转换器（阿↔西）
+                    سايكەستىرگىش / Сайкестіргіш
                   </button>
                 </div>
               )}
@@ -634,9 +634,9 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                     <button
                       onClick={() => setShowConverter(true)}
                       className="px-3 py-1 text-sm border rounded hover:bg-muted"
-                      title="文字转换器（阿拉伯 ↔ 西里尔）"
+                      title="سايكەستىرگىش / Сайкестіргіш"
                     >
-                      文字转换器
+                      سايكەستىرگىش / Сайкестіргіш
                     </button>
                   )}
                   <button
