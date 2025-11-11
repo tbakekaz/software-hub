@@ -809,7 +809,11 @@ export function TypingPracticeClient({ dict, lang }: Props) {
           <div className="absolute inset-0 bg-black/40" onClick={() => setShowConverter(false)} />
           <div className="relative bg-background rounded-xl shadow-2xl border w-full max-w-3xl p-4 md:p-6">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-lg font-semibold">文字转换器（哈萨克：阿拉伯 ↔ 西里尔）</h3>
+              <h3 className="text-lg font-semibold">
+                {lang === 'kk'
+                  ? 'Мәтін түрлендіргіш (қазақ: араб ↔ кирилл)'
+                  : '文字转换器（哈萨克：阿拉伯 ↔ 西里尔）'}
+              </h3>
               <button className="px-2 py-1 rounded hover:bg-muted" onClick={() => setShowConverter(false)}>✕</button>
             </div>
             <div className="flex flex-col md:flex-row gap-3">
@@ -820,20 +824,24 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                       onClick={() => setConverterMode('a2c')}
                       className={`px-3 py-1.5 text-sm rounded border ${converterMode === 'a2c' ? 'bg-primary text-primary-foreground border-primary' : 'hover:bg-muted'}`}
                     >
-                      阿拉伯 → 西里尔
+                      {lang === 'kk' ? 'Араб → Кирилл' : '阿拉伯 → 西里尔'}
                     </button>
                     <button
                       onClick={() => setConverterMode('c2a')}
                       className={`px-3 py-1.5 text-sm rounded border ${converterMode === 'c2a' ? 'bg-primary text-primary-foreground border-primary' : 'hover:bg-muted'}`}
                     >
-                      西里尔 → 阿拉伯
+                      {lang === 'kk' ? 'Кирилл → Араб' : '西里尔 → 阿拉伯'}
                     </button>
                   </div>
                 </div>
                 <textarea
                   dir={converterMode === 'a2c' ? 'rtl' : 'ltr'}
                   lang={converterMode === 'a2c' ? 'kk-Arab' : 'kk'}
-                  placeholder={converterMode === 'a2c' ? '输入阿拉伯文（新疆哈萨克）...' : '输入西里尔文（哈萨克斯坦）...'}
+                  placeholder={
+                    converterMode === 'a2c'
+                      ? (lang === 'kk' ? 'Араб жазуын енгізіңіз (Шыңжаң қазақ)...' : '输入阿拉伯文（新疆哈萨克）...')
+                      : (lang === 'kk' ? 'Кирилл жазуын енгізіңіз (Қазақстан)...' : '输入西里尔文（哈萨克斯坦）...')
+                  }
                   className={`w-full min-h-[140px] p-3 border rounded text-base leading-relaxed ${
                     converterMode === 'a2c' 
                       ? 'text-right font-sans'
@@ -851,7 +859,9 @@ export function TypingPracticeClient({ dict, lang }: Props) {
               </div>
               <div className="flex-1">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm text-muted-foreground">转换结果</span>
+                  <span className="text-sm text-muted-foreground">
+                    {lang === 'kk' ? 'Түрлендіру нәтижесі' : '转换结果'}
+                  </span>
                   <button
                     className="px-2 py-1 text-xs border rounded hover:bg-muted"
                     onClick={() => {
@@ -861,7 +871,7 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                       navigator.clipboard.writeText(output);
                     }}
                   >
-                    复制
+                    {lang === 'kk' ? 'Көшіру' : '复制'}
                   </button>
                 </div>
                 <div
@@ -886,7 +896,9 @@ export function TypingPracticeClient({ dict, lang }: Props) {
               </div>
             </div>
             <div className="mt-3 text-xs text-muted-foreground">
-              提示：转换算法已优化，支持双向转换。如发现错误，请提供具体例子以便进一步改进。
+              {lang === 'kk'
+                ? 'Ескерту: түрлендіру алгоритмі жетілдірілді, екі бағытта жұмыс істейді. Қате байқалса, мысал жіберіңіз.'
+                : '提示：转换算法已优化，支持双向转换。如发现错误，请提供具体例子以便进一步改进。'}
             </div>
           </div>
         </div>
