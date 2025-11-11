@@ -47,6 +47,11 @@ interface Props {
     today?: string;
     thisWeek?: string;
     thisMonth?: string;
+    level?: {
+      beginner?: string;
+      intermediate?: string;
+      advanced?: string;
+    };
   };
   lang: Lang;
 }
@@ -338,7 +343,7 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                     setCurrentLesson(null);
                     handleRestart();
                   }}
-                  className={`w-full px-4 py-2 rounded-lg border transition-colors ${
+                  className={`w-full px-3 py-1.5 text-sm rounded-lg border transition-colors ${
                     selectedLanguage === lang
                       ? 'bg-primary text-primary-foreground border-primary'
                       : 'hover:bg-muted'
@@ -364,13 +369,17 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                     setCurrentLesson(null);
                     handleRestart();
                   }}
-                  className={`w-full px-4 py-2 rounded-lg border transition-colors ${
+                  className={`w-full px-3 py-1.5 text-sm rounded-lg border transition-colors ${
                     selectedDifficulty === difficulty
                       ? 'bg-primary text-primary-foreground border-primary'
                       : 'hover:bg-muted'
                   }`}
                 >
-                  {difficulty === 'beginner' ? '初级' : difficulty === 'intermediate' ? '中级' : '高级'}
+                  {difficulty === 'beginner' 
+                    ? (dict?.level?.beginner || '初级')
+                    : difficulty === 'intermediate'
+                    ? (dict?.level?.intermediate || '中级')
+                    : (dict?.level?.advanced || '高级')}
                 </button>
               ))}
             </CardBody>

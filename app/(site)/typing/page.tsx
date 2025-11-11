@@ -23,6 +23,12 @@ export const metadata: Metadata = {
 export default async function TypingPage() {
   const { dict, lang } = await getDictionary();
   
-  return <TypingPracticeClient dict={dict.typing || {}} lang={lang} />;
+  // 合并 typing 字典和 languages.level 字典，确保难度选项可以翻译
+  const typingDict = {
+    ...(dict.typing || {}),
+    level: dict.languages?.level || (dict.typing as any)?.level,
+  };
+  
+  return <TypingPracticeClient dict={typingDict} lang={lang} />;
 }
 
