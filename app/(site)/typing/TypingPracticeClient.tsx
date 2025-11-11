@@ -10,6 +10,7 @@ import { checkAchievements, unlockAchievement, getUnlockedAchievements, type Typ
 import { pickLocaleString } from '@/lib/i18n/translate';
 import { KeyboardLayout } from '@/components/KeyboardLayout';
 import { TypingLeaderboard } from '@/components/TypingLeaderboard';
+import { arabicToCyrillic, normalizeForCompare, type KazakhScript } from '@/lib/kazakh-convert';
 
 interface Props {
   dict?: {
@@ -68,6 +69,8 @@ export function TypingPracticeClient({ dict, lang }: Props) {
   const [showKeyboard, setShowKeyboard] = useState(true); // 默认显示键盘
   const [timeLimit, setTimeLimit] = useState(60); // 速度测试时间限制（秒）
   const [targetAccuracy, setTargetAccuracy] = useState(95); // 准确率挑战目标
+  // 哈萨克语脚本切换：新疆阿拉伯（arabic） / 哈国西里尔（cyrillic）
+  const [kazakhScript, setKazakhScript] = useState<KazakhScript>('cyrillic');
   
   const [text, setText] = useState('');
   const [userInput, setUserInput] = useState('');
@@ -171,6 +174,10 @@ export function TypingPracticeClient({ dict, lang }: Props) {
     }
   }, [practiceMode, isActive, displayStats.accuracy, targetAccuracy, userInput, text]);
 
+  // 显示与比较统一
+  const displayDir = selectedLanguage === 'kazakh' && kazakhScript === 'arabic' ? 'rtl' : 'ltr';
+  const normalizedTarget = selectedLanguage === 'kazakh' ? normalizeForCompare(text, kazakhScript) : text;
+
   // 处理输入
   const handleInput = (value: string) => {
     if (!isActive && value.length > 0) {
@@ -180,18 +187,30 @@ export function TypingPracticeClient({ dict, lang }: Props) {
 
     setUserInput(value);
     
-    // 检查错误
+    // 检查错误（哈萨克语下将双方统一到西里尔再比较）
     let newErrors = 0;
-    for (let i = 0; i < value.length; i++) {
-      if (i >= text.length || value[i] !== text[i]) {
-        newErrors++;
+    if (selectedLanguage === 'kazakh') {
+      const normalizedInput = normalizeForCompare(value, kazakhScript);
+      for (let i = 0; i < normalizedInput.length; i++) {
+        if (i >= normalizedTarget.length || normalizedInput[i] !== normalizedTarget[i]) {
+          newErrors++;
+        }
+      }
+    } else {
+      for (let i = 0; i < value.length; i++) {
+        if (i >= text.length || value[i] !== text[i]) {
+          newErrors++;
+        }
       }
     }
     setErrors(newErrors);
     setCurrentIndex(value.length);
 
     // 检查完成（课程模式和自由模式）
-    if ((practiceMode === 'course' || practiceMode === 'free') && value === text) {
+    const isCompletedMatch = selectedLanguage === 'kazakh'
+      ? normalizeForCompare(value, kazakhScript) === normalizedTarget
+      : value === text;
+    if ((practiceMode === 'course' || practiceMode === 'free') && isCompletedMatch) {
       setIsActive(false);
       setIsCompleted(true);
       if (startTime) {
@@ -231,7 +250,7 @@ export function TypingPracticeClient({ dict, lang }: Props) {
     }
     
     // 准确率挑战模式：检查是否达到目标准确率
-    if (practiceMode === 'accuracy' && value === text) {
+    if (practiceMode === 'accuracy' && isCompletedMatch) {
       const finalStats = calculateStats();
       if (finalStats.accuracy >= targetAccuracy) {
         setIsActive(false);
@@ -299,7 +318,15 @@ export function TypingPracticeClient({ dict, lang }: Props) {
       let className = '';
       if (index < currentIndex) {
         // 已输入的字符：正确=绿色，错误=红色背景+下划线
-        if (userInput[index] === char) {
+        let isCorrect = false;
+        if (selectedLanguage === 'kazakh') {
+          const normalizedInput = normalizeForCompare(userInput.slice(0, index + 1), kazakhScript);
+          const target = normalizedTarget.slice(0, index + 1);
+          isCorrect = normalizedInput[normalizedInput.length - 1] === target[target.length - 1];
+        } else {
+          isCorrect = userInput[index] === char;
+        }
+        if (isCorrect) {
           className = 'text-green-600 dark:text-green-400';
         } else {
           className = 'text-red-600 dark:text-red-400 bg-red-100 dark:bg-red-950/30 underline decoration-red-500 decoration-2';
@@ -623,7 +650,7 @@ export function TypingPracticeClient({ dict, lang }: Props) {
               )}
 
               {/* 文本显示区域 - 参考 typingstudy.com 样式 */}
-              <div className="p-8 bg-white dark:bg-gray-900 rounded-lg min-h-[250px] text-xl leading-relaxed font-mono border-2 border-gray-200 dark:border-gray-700 shadow-sm">
+              <div dir={displayDir} className={`p-8 bg-white dark:bg-gray-900 rounded-lg min-h-[250px] text-xl leading-relaxed font-mono border-2 border-gray-200 dark:border-gray-700 shadow-sm ${displayDir === 'rtl' ? 'text-right' : ''}`}>
                 {text ? renderText() : (
                   <p className="text-muted-foreground text-center">
                     {lang === 'zh' ? '请在自由练习模式下输入自定义文本' : lang === 'kk' ? 'Еркін жаттығу режимінде теңдестірілген мәтін енгізіңіз' : lang === 'ru' ? 'Введите свой текст в режиме свободной практики' : 'Enter custom text in free practice mode'}
@@ -641,7 +668,8 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                     e.preventDefault();
                   }
                 }}
-                className="w-full p-4 border rounded-lg font-mono text-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                dir={displayDir}
+                className={`w-full p-4 border rounded-lg font-mono text-lg focus:outline-none focus:ring-2 focus:ring-primary ${displayDir === 'rtl' ? 'text-right' : ''}`}
                 placeholder={dict?.start || '开始打字...'}
                 disabled={isCompleted}
                 autoFocus

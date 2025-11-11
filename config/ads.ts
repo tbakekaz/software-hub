@@ -4,7 +4,9 @@ export type AdPosition =
   | 'home-between-sections'
   | 'sidebar'
   | 'in-article'
-  | 'footer';
+  | 'footer'
+  | 'list-inline'
+  | 'detail-sidebar';
 
 export type AdItem = {
   enabled: boolean;
@@ -58,4 +60,33 @@ export const adsConfig: Record<AdPosition, AdItem> = {
   }
 };
 
+// List inline ad configuration (used by list pages to inject AdCard at fixed positions)
+export const listInlineAd = {
+  enabled: true,
+  positions: [2, 8], // inject after 2nd and 8th cards
+  payload: {
+    variant: 'affiliate-card' as const,
+    url: '#',
+  },
+  text: {
+    tag: 'Sponsored',
+    title: 'KazSoft 专属优惠',
+    desc: '精选软件与服务的独家折扣，支持站点运营',
+    href: 'https://kazsoft.dpdns.org/pricing'
+  }
+};
 
+// Detail page sidebar ad configuration (optional)
+export const detailSidebarAd = {
+  enabled: false,
+  payload: {
+    variant: 'affiliate-card' as const,
+    url: '#',
+  },
+  text: {
+    tag: '推广',
+    title: '升级为 Pro',
+    desc: '解锁离线下载、收藏夹与无广告体验',
+    href: 'https://kazsoft.dpdns.org/pricing'
+  }
+};
