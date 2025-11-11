@@ -832,8 +832,18 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                 </div>
                 <textarea
                   dir={converterMode === 'a2c' ? 'rtl' : 'ltr'}
+                  lang={converterMode === 'a2c' ? 'ar' : 'kk'}
                   placeholder={converterMode === 'a2c' ? '输入阿拉伯文（新疆哈萨克）...' : '输入西里尔文（哈萨克斯坦）...'}
-                  className={`w-full min-h-[140px] p-3 border rounded font-mono ${converterMode === 'a2c' ? 'text-right' : ''}`}
+                  className={`w-full min-h-[140px] p-3 border rounded font-mono text-base leading-relaxed ${
+                    converterMode === 'a2c' 
+                      ? 'text-right font-sans' 
+                      : 'text-left'
+                  }`}
+                  style={converterMode === 'a2c' ? { 
+                    direction: 'rtl',
+                    textAlign: 'right',
+                    fontFamily: 'system-ui, -apple-system, "Segoe UI", "Noto Sans Arabic", sans-serif'
+                  } : {}}
                   value={converterInput}
                   onChange={(e) => setConverterInput(e.target.value)}
                 />
@@ -855,7 +865,17 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                 </div>
                 <div
                   dir={converterMode === 'c2a' ? 'rtl' : 'ltr'}
-                  className={`w-full min-h-[140px] p-3 border rounded bg-muted/40 font-mono whitespace-pre-wrap break-words ${converterMode === 'c2a' ? 'text-right' : ''}`}
+                  lang={converterMode === 'c2a' ? 'ar' : 'kk'}
+                  className={`w-full min-h-[140px] p-3 border rounded bg-muted/40 font-mono whitespace-pre-wrap break-words text-base leading-relaxed ${
+                    converterMode === 'c2a' 
+                      ? 'text-right font-sans' 
+                      : 'text-left'
+                  }`}
+                  style={converterMode === 'c2a' ? { 
+                    direction: 'rtl',
+                    textAlign: 'right',
+                    fontFamily: 'system-ui, -apple-system, "Segoe UI", "Noto Sans Arabic", sans-serif'
+                  } : {}}
                 >
                   {converterMode === 'a2c'
                     ? arabicToCyrillic(converterInput || '')
