@@ -388,6 +388,18 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                   </button>
                 ))}
               </div>
+              {/* 文字转换器入口（在语言选择卡片中也提供一处，确保可见） */}
+              {selectedLanguage === 'kazakh' && (
+                <div className="mt-3">
+                  <button
+                    onClick={() => setShowConverter(true)}
+                    className="px-3 py-1.5 text-sm rounded-lg border hover:bg-muted"
+                    title="文字转换器（阿拉伯 ↔ 西里尔）"
+                  >
+                    文字转换器（阿↔西）
+                  </button>
+                </div>
+              )}
             </CardBody>
           </CardBase>
 
