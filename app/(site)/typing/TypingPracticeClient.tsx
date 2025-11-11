@@ -75,58 +75,6 @@ export function TypingPracticeClient({ dict, lang }: Props) {
   const [showConverter, setShowConverter] = useState(false);
   const [converterMode, setConverterMode] = useState<'a2c' | 'c2a'>('a2c');
   const [converterInput, setConverterInput] = useState('');
-  const [useRemoteAlgo, setUseRemoteAlgo] = useState(false);
-  const [remoteOutput, setRemoteOutput] = useState<string>('');
-  const [remoteError, setRemoteError] = useState<string>('');
-  const remoteAbortRef = useRef<AbortController | null>(null);
-
-  // 远端转换（可选）：使用外部接口，确保与指定网站一致
-  useEffect(() => {
-    if (!showConverter || !useRemoteAlgo) {
-      setRemoteOutput('');
-      setRemoteError('');
-      return;
-    }
-    if (!converterInput.trim()) {
-      setRemoteOutput('');
-      setRemoteError('');
-      return;
-    }
-    if (remoteAbortRef.current) {
-      remoteAbortRef.current.abort();
-    }
-    const controller = new AbortController();
-    remoteAbortRef.current = controller;
-    const timer = setTimeout(() => controller.abort(), 10000);
-    (async () => {
-      try {
-        const res = await fetch('/api/convert', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ text: converterInput, mode: converterMode }),
-          signal: controller.signal,
-          cache: 'no-store',
-        });
-        clearTimeout(timer);
-        const data = await res.json().catch(() => null);
-        if (!res.ok) {
-          setRemoteError(data?.error || '转换失败');
-          setRemoteOutput('');
-        } else {
-          setRemoteError('');
-          setRemoteOutput(typeof data?.result === 'string' ? data.result : '');
-        }
-      } catch (e: any) {
-        clearTimeout(timer);
-        setRemoteError(e?.name === 'AbortError' ? '超时' : (e?.message || '网络错误'));
-        setRemoteOutput('');
-      }
-    })();
-    return () => {
-      clearTimeout(timer);
-      controller.abort();
-    };
-  }, [showConverter, useRemoteAlgo, converterInput, converterMode]);
   
   const [text, setText] = useState('');
   const [userInput, setUserInput] = useState('');
@@ -896,12 +844,10 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                   <button
                     className="px-2 py-1 text-xs border rounded hover:bg-muted"
                     onClick={() => {
-                      const computed = useRemoteAlgo
-                        ? (remoteOutput || '')
-                        : (converterMode === 'a2c'
-                          ? arabicToCyrillic(converterInput)
-                          : cyrillicToArabic(converterInput));
-                      navigator.clipboard.writeText(computed);
+                      const output = converterMode === 'a2c'
+                        ? arabicToCyrillic(converterInput)
+                        : cyrillicToArabic(converterInput);
+                      navigator.clipboard.writeText(output);
                     }}
                   >
                     复制
@@ -911,24 +857,14 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                   dir={converterMode === 'c2a' ? 'rtl' : 'ltr'}
                   className={`w-full min-h-[140px] p-3 border rounded bg-muted/40 font-mono whitespace-pre-wrap break-words ${converterMode === 'c2a' ? 'text-right' : ''}`}
                 >
-                  {useRemoteAlgo
-                    ? (remoteError ? `错误：${remoteError}` : (remoteOutput || ''))
-                    : (converterMode === 'a2c'
-                      ? arabicToCyrillic(converterInput || '')
-                      : cyrillicToArabic(converterInput || ''))}
+                  {converterMode === 'a2c'
+                    ? arabicToCyrillic(converterInput || '')
+                    : cyrillicToArabic(converterInput || '')}
                 </div>
               </div>
             </div>
             <div className="mt-3 text-xs text-muted-foreground">
-              <label className="inline-flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  className="accent-primary"
-                  checked={useRemoteAlgo}
-                  onChange={(e) => setUseRemoteAlgo(e.target.checked)}
-                />
-                使用 KazakhSoft 算法（需配置 KZ_CONVERT_API_URL）
-              </label>
+              提示：转换算法已优化，支持双向转换。如发现错误，请提供具体例子以便进一步改进。
             </div>
           </div>
         </div>
