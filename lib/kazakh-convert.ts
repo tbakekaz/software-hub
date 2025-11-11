@@ -18,10 +18,14 @@ const combosArabToCyr: Pair[] = [
   ['يا', 'Я'],
   ['يو', 'Ю'],
   ['یو', 'Ё'],
-  // ء + ا -> Ә（哈萨克语特有）
+  // Hamza 影响元音
   ['ءا', 'Ә'],
-  // 其他可能的组合
   ['ئا', 'Ә'], // 另一种写法
+  ['ءو', 'Ө'],
+  ['ءۇ', 'Ү'],
+  ['ءى', 'І'],
+  // 常见双字符音节
+  ['ۇي', 'ҮЙ'],
 ];
 
 // 单字符映射（阿 → 西），默认输出为大写，随后统一做大小写规范
@@ -30,8 +34,8 @@ const singlesArabToCyr: Pair[] = [
   ['ا', 'А'],
   ['ە', 'Е'], // “كەرەك” -> “керек” 需要 ە → Е
   ['ی', 'И'],
-  ['ى', 'Ы'], // “مىسالاى” -> “мысалай” 需要 ى → Ы
-  ['و', 'О'], // “وسىلاي” -> “осылай” 需要 و → О
+  ['ى', 'І'], // “بىلىم” -> “білім” 需要 ى → І
+  ['و', 'О'], // 基本映射；带 Hamza 情况在组合中处理为 Ө
   ['ۆ', 'Ө'],
   ['ۇ', 'Ұ'],
   ['ۈ', 'Ү'],
@@ -46,7 +50,7 @@ const singlesArabToCyr: Pair[] = [
   ['د', 'Д'],
   ['ج', 'Ж'],
   ['ز', 'З'],
-  ['ي', 'Й'],
+  ['ي', 'И'], // 无点 ya 在词中多作元音 i
   ['ك', 'К'],
   ['ق', 'Қ'],
   ['ل', 'Л'],
@@ -168,7 +172,7 @@ function applyPairs(input: string, pairs: Pair[]): string {
   return out;
 }
 
-// 句首/空白后标题化（简化大小写规范）
+// 句首标题化（仅在句首或句末标点后），不因空白而标题化，避免每个词首大写
 function sentenceCaseCyrillic(input: string): string {
   let result = '';
   let capitalize = true;
@@ -187,7 +191,6 @@ function sentenceCaseCyrillic(input: string): string {
     // 非字母原样
     result += ch;
     if (/[.!?؛؟]/.test(ch)) capitalize = true;
-    if (/\s/.test(ch)) capitalize = true;
   }
   return result;
 }
