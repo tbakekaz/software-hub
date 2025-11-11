@@ -205,6 +205,9 @@ const zh = {
     today: '今天',
     thisWeek: '本周',
     thisMonth: '本月',
+    minutes: '分钟',
+    seconds: '秒',
+    practiceMode: '练习模式',
   },
 };
 

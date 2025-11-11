@@ -205,6 +205,9 @@ const kk = {
     today: 'Бүгін',
     thisWeek: 'Осы апта',
     thisMonth: 'Осы ай',
+    minutes: 'минут',
+    seconds: 'секунд',
+    practiceMode: 'Жаттығу режимі',
   },
 };
 

@@ -205,6 +205,9 @@ const en = {
     today: 'Today',
     thisWeek: 'This Week',
     thisMonth: 'This Month',
+    minutes: 'minutes',
+    seconds: 'seconds',
+    practiceMode: 'Practice Mode',
   },
 };
 

@@ -205,6 +205,9 @@ const ru = {
     today: 'Сегодня',
     thisWeek: 'На этой неделе',
     thisMonth: 'В этом месяце',
+    minutes: 'минут',
+    seconds: 'секунд',
+    practiceMode: 'Режим практики',
   },
 };
 

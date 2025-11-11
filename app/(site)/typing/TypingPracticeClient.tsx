@@ -47,6 +47,9 @@ interface Props {
     today?: string;
     thisWeek?: string;
     thisMonth?: string;
+    minutes?: string;
+    seconds?: string;
+    practiceMode?: string;
     level?: {
       beginner?: string;
       intermediate?: string;
@@ -434,7 +437,7 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">{dict?.totalPractice || '总练习时长'}:</span>
-                  <span className="font-semibold">{Math.floor(stats.totalTime / 60)} 分钟</span>
+                  <span className="font-semibold">{Math.floor(stats.totalTime / 60)} {dict?.minutes || '分钟'}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">{dict?.lessonsCompleted || '完成课程'}:</span>
@@ -450,7 +453,7 @@ export function TypingPracticeClient({ dict, lang }: Props) {
           {/* 练习模式选择 */}
           <CardBase>
             <CardHeader>
-              <h2 className="text-lg font-semibold">{dict?.courseMode || '练习模式'}</h2>
+              <h2 className="text-lg font-semibold">{dict?.practiceMode || dict?.courseMode || '练习模式'}</h2>
             </CardHeader>
             <CardBody>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
@@ -517,10 +520,10 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                     onChange={(e) => setTimeLimit(Number(e.target.value))}
                     className="px-3 py-1 border rounded"
                   >
-                    <option value={30}>30 秒</option>
-                    <option value={60}>1 分钟</option>
-                    <option value={120}>2 分钟</option>
-                    <option value={300}>5 分钟</option>
+                    <option value={30}>30 {dict?.seconds || '秒'}</option>
+                    <option value={60}>1 {dict?.minutes || '分钟'}</option>
+                    <option value={120}>2 {dict?.minutes || '分钟'}</option>
+                    <option value={300}>5 {dict?.minutes || '分钟'}</option>
                   </select>
                 </div>
               )}
