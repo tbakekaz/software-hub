@@ -31,10 +31,10 @@ const combosArabToCyr: Pair[] = [
 // 单字符映射（阿 → 西），默认输出为大写，随后统一做大小写规范
 const singlesArabToCyr: Pair[] = [
   // 元音与半元音
-  ['ا', 'А'],
+  ['ا', 'А'], // 基本映射；在د后通过上下文规则变为Ә
   ['ە', 'Е'], // “كەرەك” -> “керек” 需要 ە → Е
-  ['ی', 'И'],
-  ['ى', 'І'], // “بىلىم” -> “білім” 需要 ى → І
+  ['ی', 'И'], // 基本映射；在元音后通过上下文规则变为й
+  ['ى', 'Ы'], // 基本映射；在词中通过上下文规则变为і，词尾保持ы
   ['و', 'О'], // 基本映射；带 Hamza 情况在组合中处理为 Ө
   ['ۆ', 'Ө'],
   ['ۇ', 'Ұ'],
@@ -195,9 +195,29 @@ function sentenceCaseCyrillic(input: string): string {
   return result;
 }
 
+// 上下文相关的特殊规则处理
+function applyContextualRules(input: string): string {
+  let s = input;
+  
+  // 规则1: د + ا → د + Ә（特殊规则：ا在د后变成Ә）
+  s = s.replace(/د([ا])/g, 'دӘ');
+  
+  // 规则2: ي在元音后 → й（半元音），否则 → и（元音）
+  // 先处理元音后的ي → й（需要在组合规则之前处理）
+  s = s.replace(/([اەوۆۇۈӘӨҮ])ي/g, '$1й');
+  
+  // 规则3: ى在词中（前后都有非空白字符）→ і，在词尾 → ы
+  // 先处理词中的ى → і（前后都有字母）
+  s = s.replace(/([^\s\u200C\u200D])ى([^\s\u200C\u200D])/g, '$1і$2');
+  
+  return s;
+}
+
 export function arabicToCyrillic(input: string): string {
   // 多字符组合优先
   let s = applyPairs(input, combosArabToCyr);
+  // 上下文相关规则
+  s = applyContextualRules(s);
   // 单字符替换
   s = applyPairs(s, singlesArabToCyr);
   // 大小写规范（简化）
