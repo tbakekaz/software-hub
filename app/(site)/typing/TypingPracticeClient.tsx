@@ -61,6 +61,13 @@ interface Props {
 }
 
 export function TypingPracticeClient({ dict, lang }: Props) {
+  // 多语言后备值辅助函数
+  const t = (key: string, fallbacks: { zh: string; kk: string; ru: string; en: string }): string => {
+    const dictValue = (dict as any)?.[key];
+    if (dictValue) return dictValue;
+    return fallbacks[lang] || fallbacks.zh;
+  };
+
   const [selectedLanguage, setSelectedLanguage] = useState<'kazakh' | 'chinese' | 'russian' | 'english'>('kazakh');
   const [selectedDifficulty, setSelectedDifficulty] = useState<'beginner' | 'intermediate' | 'advanced'>('beginner');
   const [selectedCourse, setSelectedCourse] = useState<TypingCourse | null>(null);
@@ -356,8 +363,8 @@ export function TypingPracticeClient({ dict, lang }: Props) {
   return (
     <main className="container mx-auto px-4 py-8 space-y-6">
       <header className="text-center space-y-2">
-        <h1 className="text-3xl font-bold">{dict?.title || '打字练习'}</h1>
-        <p className="text-muted-foreground">{dict?.subtitle || '提升打字速度和准确率'}</p>
+        <h1 className="text-3xl font-bold">{t('title', { zh: '打字练习', kk: 'Теру жаттығуы', ru: 'Практика набора', en: 'Typing Practice' })}</h1>
+        <p className="text-muted-foreground">{t('subtitle', { zh: '提升打字速度和准确率', kk: 'Теру жылдамдығы мен дәлдігін арттыру', ru: 'Повышение скорости и точности набора', en: 'Improve typing speed and accuracy' })}</p>
       </header>
 
       <div className="grid md:grid-cols-3 gap-6">
@@ -365,7 +372,7 @@ export function TypingPracticeClient({ dict, lang }: Props) {
         <div className="space-y-4">
           <CardBase>
             <CardHeader>
-              <h2 className="text-lg font-semibold">{dict?.selectLanguage || '选择语言'}</h2>
+              <h2 className="text-lg font-semibold">{t('selectLanguage', { zh: '选择语言', kk: 'Тілді таңдау', ru: 'Выбор языка', en: 'Select Language' })}</h2>
             </CardHeader>
             <CardBody>
               <div className="flex flex-wrap gap-2">
@@ -405,7 +412,7 @@ export function TypingPracticeClient({ dict, lang }: Props) {
 
           <CardBase>
             <CardHeader>
-              <h2 className="text-lg font-semibold">{dict?.selectDifficulty || '选择难度'}</h2>
+              <h2 className="text-lg font-semibold">{t('selectDifficulty', { zh: '选择难度', kk: 'Қиындықты таңдау', ru: 'Выбор сложности', en: 'Select Difficulty' })}</h2>
             </CardHeader>
             <CardBody>
               <div className="flex flex-wrap gap-2">
@@ -438,7 +445,7 @@ export function TypingPracticeClient({ dict, lang }: Props) {
           {courses.length > 0 && (
             <CardBase>
               <CardHeader>
-                <h2 className="text-lg font-semibold">{dict?.selectCourse || '选择课程'}</h2>
+                <h2 className="text-lg font-semibold">{t('selectCourse', { zh: '选择课程', kk: 'Курсты таңдау', ru: 'Выбор курса', en: 'Select Course' })}</h2>
               </CardHeader>
               <CardBody className="space-y-2">
                 {courses.map((course) => (
@@ -467,23 +474,23 @@ export function TypingPracticeClient({ dict, lang }: Props) {
           {stats && (
             <CardBase>
               <CardHeader>
-                <h2 className="text-lg font-semibold">{dict?.yourStats || '您的统计'}</h2>
+                <h2 className="text-lg font-semibold">{t('yourStats', { zh: '您的统计', kk: 'Сіздің статистикаңыз', ru: 'Ваша статистика', en: 'Your Statistics' })}</h2>
               </CardHeader>
               <CardBody className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">{dict?.averageSpeed || '平均速度'}:</span>
+                  <span className="text-muted-foreground">{t('averageSpeed', { zh: '平均速度', kk: 'Орташа жылдамдық', ru: 'Средняя скорость', en: 'Average Speed' })}:</span>
                   <span className="font-semibold">{stats.averageWpm} WPM</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">{dict?.bestSpeed || '最高速度'}:</span>
+                  <span className="text-muted-foreground">{t('bestSpeed', { zh: '最高速度', kk: 'Ең жоғары жылдамдық', ru: 'Максимальная скорость', en: 'Best Speed' })}:</span>
                   <span className="font-semibold">{stats.bestWpm} WPM</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">{dict?.totalPractice || '总练习时长'}:</span>
-                  <span className="font-semibold">{Math.floor(stats.totalTime / 60)} {dict?.minutes || '分钟'}</span>
+                  <span className="text-muted-foreground">{t('totalPractice', { zh: '总练习时长', kk: 'Жалпы жаттығу уақыты', ru: 'Общее время практики', en: 'Total Practice Time' })}:</span>
+                  <span className="font-semibold">{Math.floor(stats.totalTime / 60)} {t('minutes', { zh: '分钟', kk: 'минут', ru: 'минут', en: 'minutes' })}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">{dict?.lessonsCompleted || '完成课程'}:</span>
+                  <span className="text-muted-foreground">{t('lessonsCompleted', { zh: '完成课程', kk: 'Аяқталған сабақтар', ru: 'Завершенные уроки', en: 'Lessons Completed' })}:</span>
                   <span className="font-semibold">{stats.lessonsCompleted}</span>
                 </div>
               </CardBody>
@@ -496,7 +503,7 @@ export function TypingPracticeClient({ dict, lang }: Props) {
           {/* 练习模式选择 */}
           <CardBase>
             <CardHeader>
-              <h2 className="text-lg font-semibold">{dict?.practiceMode || dict?.courseMode || '练习模式'}</h2>
+              <h2 className="text-lg font-semibold">{t('practiceMode', { zh: '练习模式', kk: 'Жаттығу режимі', ru: 'Режим практики', en: 'Practice Mode' })}</h2>
             </CardHeader>
             <CardBody>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
@@ -511,7 +518,7 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                       : 'hover:bg-muted'
                   }`}
                 >
-                  {dict?.courseMode || '课程模式'}
+                  {t('courseMode', { zh: '课程模式', kk: 'Курс режимі', ru: 'Режим курса', en: 'Course Mode' })}
                 </button>
                 <button
                   onClick={() => {
@@ -525,7 +532,7 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                       : 'hover:bg-muted'
                   }`}
                 >
-                  {dict?.freePractice || '自由练习'}
+                  {t('freePractice', { zh: '自由练习', kk: 'Еркін жаттығу', ru: 'Свободная практика', en: 'Free Practice' })}
                 </button>
                 <button
                   onClick={() => {
@@ -538,7 +545,7 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                       : 'hover:bg-muted'
                   }`}
                 >
-                  {dict?.speedTest || '速度测试'}
+                  {t('speedTest', { zh: '速度测试', kk: 'Жылдамдық тесті', ru: 'Тест скорости', en: 'Speed Test' })}
                 </button>
                 <button
                   onClick={() => {
@@ -551,29 +558,29 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                       : 'hover:bg-muted'
                   }`}
                 >
-                  {dict?.accuracyChallenge || '准确率挑战'}
+                  {t('accuracyChallenge', { zh: '准确率挑战', kk: 'Дәлдік сынағы', ru: 'Испытание точности', en: 'Accuracy Challenge' })}
                 </button>
               </div>
               
               {practiceMode === 'speed' && (
                 <div className="mt-4 flex items-center gap-2">
-                  <label className="text-sm">{dict?.time || '时间限制'}:</label>
+                  <label className="text-sm">{t('time', { zh: '时间限制', kk: 'Уақыт шегі', ru: 'Ограничение времени', en: 'Time Limit' })}:</label>
                   <select
                     value={timeLimit}
                     onChange={(e) => setTimeLimit(Number(e.target.value))}
                     className="px-3 py-1 border rounded"
                   >
-                    <option value={30}>30 {dict?.seconds || '秒'}</option>
-                    <option value={60}>1 {dict?.minutes || '分钟'}</option>
-                    <option value={120}>2 {dict?.minutes || '分钟'}</option>
-                    <option value={300}>5 {dict?.minutes || '分钟'}</option>
+                    <option value={30}>30 {t('seconds', { zh: '秒', kk: 'секунд', ru: 'секунд', en: 'seconds' })}</option>
+                    <option value={60}>1 {t('minutes', { zh: '分钟', kk: 'минут', ru: 'минут', en: 'minutes' })}</option>
+                    <option value={120}>2 {t('minutes', { zh: '分钟', kk: 'минут', ru: 'минут', en: 'minutes' })}</option>
+                    <option value={300}>5 {t('minutes', { zh: '分钟', kk: 'минут', ru: 'минут', en: 'minutes' })}</option>
                   </select>
                 </div>
               )}
               
               {practiceMode === 'accuracy' && (
                 <div className="mt-4 flex items-center gap-2">
-                  <label className="text-sm">{dict?.accuracy || '目标准确率'}:</label>
+                  <label className="text-sm">{t('accuracy', { zh: '目标准确率', kk: 'Мақсатты дәлдік', ru: 'Целевая точность', en: 'Target Accuracy' })}:</label>
                   <select
                     value={targetAccuracy}
                     onChange={(e) => setTargetAccuracy(Number(e.target.value))}
@@ -607,7 +614,7 @@ export function TypingPracticeClient({ dict, lang }: Props) {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-semibold">
-                  {currentLesson?.title || dict?.freePractice || '自由练习'}
+                  {currentLesson?.title || t('freePractice', { zh: '自由练习', kk: 'Еркін жаттығу', ru: 'Свободная практика', en: 'Free Practice' })}
                 </h2>
                 <div className="flex items-center gap-2">
                   {/* 脚本切换（仅哈萨克语时显示） */}
@@ -616,16 +623,16 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                       <button
                         onClick={() => setKazakhScript('cyrillic')}
                         className={`px-2 py-1 text-xs rounded border ${kazakhScript === 'cyrillic' ? 'bg-primary text-primary-foreground border-primary' : 'hover:bg-muted'}`}
-                        title="西里尔（哈萨克斯坦）"
+                        title={lang === 'kk' ? 'Кирилл (Қазақстан)' : lang === 'ru' ? 'Кириллица (Казахстан)' : lang === 'en' ? 'Cyrillic (Kazakhstan)' : '西里尔（哈萨克斯坦）'}
                       >
-                        西里尔
+                        {lang === 'kk' ? 'Кирилл' : lang === 'ru' ? 'Кириллица' : lang === 'en' ? 'Cyrillic' : '西里尔'}
                       </button>
                       <button
                         onClick={() => setKazakhScript('arabic')}
                         className={`px-2 py-1 text-xs rounded border ${kazakhScript === 'arabic' ? 'bg-primary text-primary-foreground border-primary' : 'hover:bg-muted'}`}
-                        title="阿拉伯（新疆哈萨克）"
+                        title={lang === 'kk' ? 'Араб (Шыңжаң қазақ)' : lang === 'ru' ? 'Арабский (Синьцзян-Казахский)' : lang === 'en' ? 'Arabic (Xinjiang Kazakh)' : '阿拉伯（新疆哈萨克）'}
                       >
-                        阿拉伯
+                        {lang === 'kk' ? 'Араб' : lang === 'ru' ? 'Арабский' : lang === 'en' ? 'Arabic' : '阿拉伯'}
                       </button>
                     </div>
                   )}
@@ -658,15 +665,15 @@ export function TypingPracticeClient({ dict, lang }: Props) {
               <div className="grid grid-cols-3 gap-4 p-4 bg-muted/50 rounded-lg">
                 <div className="text-center">
                   <div className="text-2xl font-bold text-primary">{displayStats.wpm}</div>
-                  <div className="text-xs text-muted-foreground">{dict?.wpm || 'WPM'}</div>
+                  <div className="text-xs text-muted-foreground">{t('wpm', { zh: 'WPM', kk: 'WPM', ru: 'WPM', en: 'WPM' })}</div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold text-primary">{displayStats.accuracy}%</div>
-                  <div className="text-xs text-muted-foreground">{dict?.accuracy || '准确率'}</div>
+                  <div className="text-xs text-muted-foreground">{t('accuracy', { zh: '准确率', kk: 'Дәлдік', ru: 'Точность', en: 'Accuracy' })}</div>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl font-bold text-primary">{displayStats.time}s</div>
-                  <div className="text-xs text-muted-foreground">{dict?.time || '时间'}</div>
+                  <div className="text-xs text-muted-foreground">{t('time', { zh: '时间', kk: 'Уақыт', ru: 'Время', en: 'Time' })}</div>
                 </div>
               </div>
 
@@ -715,7 +722,7 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                 }}
                 dir={displayDir}
                 className={`w-full p-4 border rounded-lg font-mono text-lg focus:outline-none focus:ring-2 focus:ring-primary ${displayDir === 'rtl' ? 'text-right' : ''}`}
-                placeholder={dict?.start || '开始打字...'}
+                placeholder={t('start', { zh: '开始打字...', kk: 'Теруді бастау...', ru: 'Начать печатать...', en: 'Start typing...' })}
                 disabled={isCompleted}
                 autoFocus
               />
@@ -735,7 +742,7 @@ export function TypingPracticeClient({ dict, lang }: Props) {
               {/* 控制按钮 */}
               <div className="flex gap-2">
                 <Button onClick={handleRestart} variant="outline" className="flex-1">
-                  {dict?.restart || '重新开始'}
+                  {t('restart', { zh: '重新开始', kk: 'Қайта бастау', ru: 'Начать заново', en: 'Restart' })}
                 </Button>
                 {currentLesson && (
                   <>
@@ -744,14 +751,14 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                       variant="outline"
                       disabled={currentLessonIndex === 0}
                     >
-                      {dict?.previousLesson || '上一课'}
+                      {t('previousLesson', { zh: '上一课', kk: 'Алдыңғы сабақ', ru: 'Предыдущий урок', en: 'Previous Lesson' })}
                     </Button>
                     <Button
                       onClick={handleNextLesson}
                       variant="outline"
                       disabled={currentLessonIndex === (selectedCourse?.lessons.length || 0) - 1}
                     >
-                      {dict?.nextLesson || '下一课'}
+                      {t('nextLesson', { zh: '下一课', kk: 'Келесі сабақ', ru: 'Следующий урок', en: 'Next Lesson' })}
                     </Button>
                   </>
                 )}
@@ -762,17 +769,17 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                 <div className="space-y-3">
                   <div className="p-4 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded-lg text-center">
                     <p className="text-lg font-semibold text-green-700 dark:text-green-400">
-                      🎉 {dict?.congratulations || '恭喜完成！'}
+                      🎉 {t('congratulations', { zh: '恭喜完成！', kk: 'Құттықтаймыз!', ru: 'Поздравляем!', en: 'Congratulations!' })}
                     </p>
                     <p className="text-sm text-muted-foreground mt-2">
-                      {dict?.wpm || 'WPM'}: {displayStats.wpm} | {dict?.accuracy || '准确率'}: {displayStats.accuracy}% | {dict?.errors || '错误'}: {errors}
+                      {t('wpm', { zh: 'WPM', kk: 'WPM', ru: 'WPM', en: 'WPM' })}: {displayStats.wpm} | {t('accuracy', { zh: '准确率', kk: 'Дәлдік', ru: 'Точность', en: 'Accuracy' })}: {displayStats.accuracy}% | {t('errors', { zh: '错误', kk: 'Қателер', ru: 'Ошибки', en: 'Errors' })}: {errors}
                     </p>
                   </div>
                   
                   {/* 新成就提示 */}
                   {newAchievements.length > 0 && (
                     <div className="p-4 bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-950/20 dark:to-orange-950/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
-                      <p className="text-sm font-semibold mb-2">🏆 {dict?.achievements || '新成就解锁！'}</p>
+                      <p className="text-sm font-semibold mb-2">🏆 {t('achievements', { zh: '新成就解锁！', kk: 'Жаңа жетістіктер ашылды!', ru: 'Новые достижения разблокированы!', en: 'New Achievements Unlocked!' })}</p>
                       <div className="space-y-2">
                         {newAchievements.map((ach) => (
                           <div key={ach.id} className="flex items-center gap-2 p-2 bg-background/50 rounded">
@@ -789,7 +796,13 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                               ach.rarity === 'rare' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300' :
                               'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300'
                             }`}>
-                              {ach.rarity === 'legendary' ? '传说' : ach.rarity === 'epic' ? '史诗' : ach.rarity === 'rare' ? '稀有' : '普通'}
+                              {ach.rarity === 'legendary' 
+                                ? (lang === 'kk' ? 'Аңызға айналған' : lang === 'ru' ? 'Легендарный' : lang === 'en' ? 'Legendary' : '传说')
+                                : ach.rarity === 'epic'
+                                ? (lang === 'kk' ? 'Эпос' : lang === 'ru' ? 'Эпический' : lang === 'en' ? 'Epic' : '史诗')
+                                : ach.rarity === 'rare'
+                                ? (lang === 'kk' ? 'Сирек' : lang === 'ru' ? 'Редкий' : lang === 'en' ? 'Rare' : '稀有')
+                                : (lang === 'kk' ? 'Қарапайым' : lang === 'ru' ? 'Обычный' : lang === 'en' ? 'Common' : '普通')}
                             </span>
                           </div>
                         ))}
