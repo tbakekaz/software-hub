@@ -235,10 +235,11 @@ function applyContextualRules(input: string): string {
       return word.replace(/ى/g, 'і');
     } else {
       // 如果不包含，词中的 ى → і，词尾的 ى → ы
-      // 先处理词中的 ى → і（前后都有非空白字符）
-      let result = word.replace(/([^\s\u200C\u200D])ى([^\s\u200C\u200D])/g, '$1і$2');
-      // 再处理词尾的 ى → ы（后面是空格、标点或行尾）
-      result = result.replace(/([^\s\u200C\u200D])ى(\s|$|[.!?؛؟:,])/g, '$1ы$2');
+      // 重要：先处理词尾的 ى → ы，避免词尾的 ى 被词中规则误处理
+      // 词尾的 ى（单词末尾，后面没有更多字符）
+      let result = word.replace(/ى$/g, 'ы');
+      // 再处理词中的 ى → і（前后都有非空白字符）
+      result = result.replace(/([^\s\u200C\u200D])ى([^\s\u200C\u200D])/g, '$1і$2');
       return result;
     }
   });
