@@ -43,7 +43,7 @@
     "wrangler": "^4.46.0"
   },
   "engines": {
-    "node": "20.x",
+    "node": "22.x",
     "pnpm": ">=8"
   },
   "packageManager": "pnpm@10.11.1"
