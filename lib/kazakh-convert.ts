@@ -210,7 +210,8 @@ function applyContextualRules(input: string): string {
   // 更精确：د + ا + 非 "ن" 的辅音 → د + Ә
   // 但这样可能过于复杂，暂时保持简单规则
   // 实际上，可能需要根据更多例子来调整
-  s = s.replace(/د([ا])(?!ن)/g, 'دӘ$1');
+  // 修正：使用负向前瞻，排除 "د + ا + ن" 的情况
+  s = s.replace(/د([ا])(?!ن)/g, 'دӘ');
   
   // 规则2: ي在元音后 → й（半元音），否则 → и（元音）
   // 先处理元音后的ي → й（需要在组合规则之前处理）
@@ -241,14 +242,18 @@ function applyContextualRules(input: string): string {
 }
 
 export function arabicToCyrillic(input: string): string {
-  // 多字符组合优先
+  // 步骤1: 多字符组合优先（如 سا → СӘ）
   let s = applyPairs(input, combosArabToCyr);
-  // 上下文相关规则
+  
+  // 步骤2: 上下文相关规则（需要在单字符替换之前处理）
   s = applyContextualRules(s);
-  // 单字符替换
+  
+  // 步骤3: 单字符替换（将剩余的阿拉伯字符替换为西里尔字符）
   s = applyPairs(s, singlesArabToCyr);
-  // 大小写规范（简化）
+  
+  // 步骤4: 大小写规范（仅在句首或标点后大写）
   s = sentenceCaseCyrillic(s);
+  
   return s;
 }
 
