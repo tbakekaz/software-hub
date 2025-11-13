@@ -87,7 +87,7 @@ export function TypingPracticeClient({ dict, lang }: Props) {
   const [showOCR, setShowOCR] = useState(false);
   const [ocrImage, setOcrImage] = useState<string | null>(null);
   const [ocrText, setOcrText] = useState('');
-  const [ocrLanguage, setOcrLanguage] = useState<string>('eng');
+  const [ocrLanguage, setOcrLanguage] = useState<string>('ara');
   const [isProcessingOCR, setIsProcessingOCR] = useState(false);
   const [ocrProgress, setOcrProgress] = useState(0);
   const ocrWorkerRef = useRef<any>(null);
@@ -165,9 +165,9 @@ export function TypingPracticeClient({ dict, lang }: Props) {
       // 确定要使用的语言代码
       let langCode = ocrLanguage;
       
-      // 如果选择的是哈萨克语，回退到英语（因为Tesseract.js可能不支持）
-      if (langCode === 'kaz+eng') {
-        langCode = 'eng';
+      // 如果选择的是哈萨克语，使用阿拉伯语引擎（参考i2ocr.com的做法）
+      if (langCode === 'kaz+eng' || langCode === 'kaz') {
+        langCode = 'ara'; // 使用阿拉伯语引擎识别哈萨克文（包括阿拉伯字母和西里尔字母）
       }
 
       setOcrProgress(5);
@@ -1090,8 +1090,14 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                   className="w-full p-2 border rounded-lg bg-background"
                   disabled={isProcessingOCR}
                 >
+                  <option value="ara">
+                    {lang === 'zh' ? '阿拉伯语（推荐，可识别哈萨克文）' : lang === 'kk' ? 'Арабша (ұсынылады, қазақшаны тануға болады)' : lang === 'ru' ? 'Арабский (рекомендуется, может распознавать казахский)' : 'Arabic (Recommended, can recognize Kazakh)'}
+                  </option>
+                  <option value="ara+eng">
+                    {lang === 'zh' ? '阿拉伯语 + 英语' : lang === 'kk' ? 'Арабша + Ағылшынша' : lang === 'ru' ? 'Арабский + Английский' : 'Arabic + English'}
+                  </option>
                   <option value="eng">
-                    {lang === 'zh' ? '英语（推荐）' : lang === 'kk' ? 'Ағылшынша (ұсынылады)' : lang === 'ru' ? 'Английский (рекомендуется)' : 'English (Recommended)'}
+                    {lang === 'zh' ? '英语' : lang === 'kk' ? 'Ағылшынша' : lang === 'ru' ? 'Английский' : 'English'}
                   </option>
                   <option value="chi_sim+eng">
                     {lang === 'zh' ? '简体中文 + 英语' : lang === 'kk' ? 'Қытайша (жеңілдетілген) + Ағылшынша' : lang === 'ru' ? 'Китайский (упрощенный) + Английский' : 'Chinese (Simplified) + English'}
@@ -1100,7 +1106,7 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                     {lang === 'zh' ? '俄语 + 英语' : lang === 'kk' ? 'Орысша + Ағылшынша' : lang === 'ru' ? 'Русский + Английский' : 'Russian + English'}
                   </option>
                   <option value="kaz+eng">
-                    {lang === 'zh' ? '哈萨克语 + 英语（实验性）' : lang === 'kk' ? 'Қазақша + Ағылшынша (эксперименттік)' : lang === 'ru' ? 'Казахский + Английский (экспериментальный)' : 'Kazakh + English (Experimental)'}
+                    {lang === 'zh' ? '哈萨克语 + 英语（自动使用阿拉伯语引擎）' : lang === 'kk' ? 'Қазақша + Ағылшынша (арабша қозғалтқышын пайдаланады)' : lang === 'ru' ? 'Казахский + Английский (использует арабский движок)' : 'Kazakh + English (uses Arabic engine)'}
                   </option>
                 </select>
               </div>
