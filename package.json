@@ -22,7 +22,8 @@
     "next-themes": "0.3.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "react-markdown": "^10.1.0"
+    "react-markdown": "^10.1.0",
+    "tesseract.js": "^6.0.1"
   },
   "devDependencies": {
     "@cloudflare/next-on-pages": "^1.13.16",

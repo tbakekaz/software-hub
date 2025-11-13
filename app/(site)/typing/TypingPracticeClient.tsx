@@ -11,6 +11,7 @@ import { pickLocaleString } from '@/lib/i18n/translate';
 import { KeyboardLayout } from '@/components/KeyboardLayout';
 import { TypingLeaderboard } from '@/components/TypingLeaderboard';
 import { arabicToCyrillic, cyrillicToArabic, normalizeForCompare, type KazakhScript } from '@/lib/kazakh-convert';
+import { createWorker } from 'tesseract.js';
 
 interface Props {
   dict?: {
@@ -82,6 +83,14 @@ export function TypingPracticeClient({ dict, lang }: Props) {
   const [showConverter, setShowConverter] = useState(false);
   const [converterMode, setConverterMode] = useState<'a2c' | 'c2a'>('a2c');
   const [converterInput, setConverterInput] = useState('');
+  // OCR功能
+  const [showOCR, setShowOCR] = useState(false);
+  const [ocrImage, setOcrImage] = useState<string | null>(null);
+  const [ocrText, setOcrText] = useState('');
+  const [ocrLanguage, setOcrLanguage] = useState<string>('kaz+eng');
+  const [isProcessingOCR, setIsProcessingOCR] = useState(false);
+  const [ocrProgress, setOcrProgress] = useState(0);
+  const ocrWorkerRef = useRef<any>(null);
   
   const [text, setText] = useState('');
   const [userInput, setUserInput] = useState('');
@@ -112,6 +121,82 @@ export function TypingPracticeClient({ dict, lang }: Props) {
     setStats(getTypingStats(selectedLanguage));
     setUnlockedAchievements(getUnlockedAchievements());
   }, [selectedLanguage]);
+
+  // OCR处理函数
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // 检查文件类型
+    if (!file.type.startsWith('image/')) {
+      alert(lang === 'zh' ? '请选择图片文件' : lang === 'kk' ? 'Сурет файлын таңдаңыз' : lang === 'ru' ? 'Выберите файл изображения' : 'Please select an image file');
+      return;
+    }
+
+    // 读取图片并显示预览
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const imageUrl = event.target?.result as string;
+      setOcrImage(imageUrl);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const processOCR = async () => {
+    if (!ocrImage) return;
+
+    setIsProcessingOCR(true);
+    setOcrProgress(0);
+    setOcrText('');
+
+    try {
+      // 创建或重用worker
+      if (!ocrWorkerRef.current) {
+        ocrWorkerRef.current = await createWorker();
+      }
+
+      const worker = ocrWorkerRef.current;
+      
+      // 使用用户选择的OCR语言
+      const langCode = ocrLanguage;
+
+      await worker.loadLanguage(langCode);
+      await worker.initialize(langCode);
+
+      // 监听进度
+      worker.onProgress = (progress: any) => {
+        setOcrProgress(Math.round(progress.progress * 100));
+      };
+
+      // 执行OCR识别
+      const { data: { text } } = await worker.recognize(ocrImage);
+      setOcrText(text.trim());
+    } catch (error) {
+      console.error('OCR Error:', error);
+      alert(lang === 'zh' ? 'OCR识别失败，请重试' : lang === 'kk' ? 'OCR тану сәтсіз, қайталап көріңіз' : lang === 'ru' ? 'OCR распознавание не удалось, попробуйте снова' : 'OCR recognition failed, please try again');
+    } finally {
+      setIsProcessingOCR(false);
+      setOcrProgress(0);
+    }
+  };
+
+  const applyOCRText = () => {
+    if (ocrText) {
+      setText(ocrText);
+      setUserInput('');
+      handleRestart();
+      setShowOCR(false);
+    }
+  };
+
+  // 清理OCR worker
+  useEffect(() => {
+    return () => {
+      if (ocrWorkerRef.current) {
+        ocrWorkerRef.current.terminate().catch(console.error);
+      }
+    };
+  }, []);
 
   // 计算统计信息
   const calculateStats = useCallback(() => {
@@ -629,6 +714,14 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                       سايكەستىرگىش / Сайкестіргіш
                     </button>
                   )}
+                  {/* OCR扫描按钮 */}
+                  <button
+                    onClick={() => setShowOCR(true)}
+                    className="px-3 py-1 text-sm font-medium rounded bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700 transition-all shadow-md hover:shadow-lg"
+                    title={lang === 'zh' ? 'OCR文字识别' : lang === 'kk' ? 'OCR мәтін тану' : lang === 'ru' ? 'OCR распознавание текста' : 'OCR Text Recognition'}
+                  >
+                    📷 OCR
+                  </button>
                   <button
                     onClick={() => setShowKeyboard(!showKeyboard)}
                     className="px-3 py-1 text-sm border rounded hover:bg-muted"
@@ -895,6 +988,170 @@ export function TypingPracticeClient({ dict, lang }: Props) {
               {lang === 'kk'
                 ? 'Ескерту: түрлендіру алгоритмі жетілдірілді, екі бағытта жұмыс істейді. Қате байқалса, мысал жіберіңіз.'
                 : '提示：转换算法已优化，支持双向转换。如发现错误，请提供具体例子以便进一步改进。'}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* OCR对话框 */}
+      {showOCR && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/40" onClick={() => setShowOCR(false)} />
+          <div className="relative bg-background rounded-xl shadow-2xl border w-full max-w-4xl p-4 md:p-6 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold">
+                {lang === 'zh' ? '📷 OCR文字识别' : lang === 'kk' ? '📷 OCR мәтін тану' : lang === 'ru' ? '📷 OCR распознавание текста' : '📷 OCR Text Recognition'}
+              </h3>
+              <button className="px-2 py-1 rounded hover:bg-muted" onClick={() => setShowOCR(false)}>✕</button>
+            </div>
+
+            <div className="space-y-4">
+              {/* 步骤1: 选择语言 */}
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  {lang === 'zh' ? '步骤 1: 选择语言' : lang === 'kk' ? 'Қадам 1: Тілді таңдау' : lang === 'ru' ? 'Шаг 1: Выбор языка' : 'Step 1: Select Language'}
+                </label>
+                <select
+                  value={ocrLanguage}
+                  onChange={(e) => setOcrLanguage(e.target.value)}
+                  className="w-full p-2 border rounded-lg bg-background"
+                  disabled={isProcessingOCR}
+                >
+                  <option value="kaz+eng">
+                    {lang === 'zh' ? '哈萨克语 + 英语' : lang === 'kk' ? 'Қазақша + Ағылшынша' : lang === 'ru' ? 'Казахский + Английский' : 'Kazakh + English'}
+                  </option>
+                  <option value="chi_sim+eng">
+                    {lang === 'zh' ? '简体中文 + 英语' : lang === 'kk' ? 'Қытайша (жеңілдетілген) + Ағылшынша' : lang === 'ru' ? 'Китайский (упрощенный) + Английский' : 'Chinese (Simplified) + English'}
+                  </option>
+                  <option value="rus+eng">
+                    {lang === 'zh' ? '俄语 + 英语' : lang === 'kk' ? 'Орысша + Ағылшынша' : lang === 'ru' ? 'Русский + Английский' : 'Russian + English'}
+                  </option>
+                  <option value="eng">
+                    {lang === 'zh' ? '英语' : lang === 'kk' ? 'Ағылшынша' : lang === 'ru' ? 'Английский' : 'English'}
+                  </option>
+                </select>
+              </div>
+
+              {/* 步骤2: 上传图片 */}
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  {lang === 'zh' ? '步骤 2: 选择图片' : lang === 'kk' ? 'Қадам 2: Суретті таңдау' : lang === 'ru' ? 'Шаг 2: Выбор изображения' : 'Step 2: Select Image'}
+                </label>
+                <div className="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-lg p-6 text-center">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="hidden"
+                    id="ocr-image-input"
+                    disabled={isProcessingOCR}
+                  />
+                  <label
+                    htmlFor="ocr-image-input"
+                    className="cursor-pointer flex flex-col items-center gap-2"
+                  >
+                    <span className="text-4xl">📷</span>
+                    <span className="text-sm text-muted-foreground">
+                      {lang === 'zh' ? '点击选择图片或拖放图片到这里' : lang === 'kk' ? 'Суретті таңдау үшін басыңыз немесе мұнда тартыңыз' : lang === 'ru' ? 'Нажмите для выбора изображения или перетащите сюда' : 'Click to select image or drag and drop here'}
+                    </span>
+                  </label>
+                </div>
+                {ocrImage && (
+                  <div className="mt-4 relative">
+                    <img
+                      src={ocrImage}
+                      alt="OCR Preview"
+                      className="max-w-full max-h-64 rounded-lg border"
+                    />
+                    <button
+                      onClick={() => {
+                        setOcrImage(null);
+                        setOcrText('');
+                      }}
+                      className="absolute top-2 right-2 px-2 py-1 bg-red-500 text-white rounded text-xs hover:bg-red-600"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* 步骤3: 提取文本 */}
+              {ocrImage && (
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="block text-sm font-medium">
+                      {lang === 'zh' ? '步骤 3: 提取文本' : lang === 'kk' ? 'Қадам 3: Мәтінді шығару' : lang === 'ru' ? 'Шаг 3: Извлечение текста' : 'Step 3: Extract Text'}
+                    </label>
+                    <button
+                      onClick={processOCR}
+                      disabled={isProcessingOCR || !ocrImage}
+                      className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+                    >
+                      {isProcessingOCR
+                        ? (lang === 'zh' ? `识别中... ${ocrProgress}%` : lang === 'kk' ? `Танылуда... ${ocrProgress}%` : lang === 'ru' ? `Распознавание... ${ocrProgress}%` : `Recognizing... ${ocrProgress}%`)
+                        : (lang === 'zh' ? '开始识别' : lang === 'kk' ? 'Таныуды бастау' : lang === 'ru' ? 'Начать распознавание' : 'Start Recognition')}
+                    </button>
+                  </div>
+                  {isProcessingOCR && (
+                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-2">
+                      <div
+                        className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full transition-all duration-300"
+                        style={{ width: `${ocrProgress}%` }}
+                      />
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* 识别结果 */}
+              {ocrText && (
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="block text-sm font-medium">
+                      {lang === 'zh' ? '识别结果' : lang === 'kk' ? 'Танылған нәтиже' : lang === 'ru' ? 'Результат распознавания' : 'Recognition Result'}
+                    </label>
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => {
+                          navigator.clipboard.writeText(ocrText);
+                        }}
+                        className="px-3 py-1 text-xs border rounded hover:bg-muted"
+                      >
+                        {lang === 'zh' ? '复制' : lang === 'kk' ? 'Көшіру' : lang === 'ru' ? 'Копировать' : 'Copy'}
+                      </button>
+                      <button
+                        onClick={applyOCRText}
+                        className="px-3 py-1 text-xs bg-primary text-primary-foreground rounded hover:opacity-90"
+                      >
+                        {lang === 'zh' ? '应用到练习' : lang === 'kk' ? 'Жаттығуға қолдану' : lang === 'ru' ? 'Применить к упражнению' : 'Apply to Practice'}
+                      </button>
+                    </div>
+                  </div>
+                  <textarea
+                    value={ocrText}
+                    onChange={(e) => setOcrText(e.target.value)}
+                    className="w-full min-h-[200px] p-3 border rounded-lg bg-muted/40 font-mono text-sm"
+                    placeholder={lang === 'zh' ? '识别结果将显示在这里...' : lang === 'kk' ? 'Танылған нәтиже осы жерде көрсетіледі...' : lang === 'ru' ? 'Результат распознавания будет показан здесь...' : 'Recognition result will appear here...'}
+                  />
+                </div>
+              )}
+
+              {/* 提示信息 */}
+              <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg text-xs text-muted-foreground">
+                <p className="font-medium mb-1">
+                  {lang === 'zh' ? '💡 提示' : lang === 'kk' ? '💡 Кеңес' : lang === 'ru' ? '💡 Совет' : '💡 Tip'}
+                </p>
+                <p>
+                  {lang === 'zh'
+                    ? '• 支持 JPG、PNG、GIF 等常见图片格式\n• 图片清晰度越高，识别准确率越高\n• 识别完成后，可以编辑文本或直接应用到练习中'
+                    : lang === 'kk'
+                    ? '• JPG, PNG, GIF сияқты жалпы сурет форматтарын қолдайды\n• Сурет анықтығы неғұрлым жоғары болса, тану дәлдігі соғұрлым жоғары\n• Танылғаннан кейін мәтінді өңдеуге немесе тікелей жаттығуға қолдануға болады'
+                    : lang === 'ru'
+                    ? '• Поддерживает распространенные форматы изображений, такие как JPG, PNG, GIF\n• Чем выше четкость изображения, тем выше точность распознавания\n• После распознавания можно редактировать текст или применить его непосредственно к упражнению'
+                    : '• Supports common image formats like JPG, PNG, GIF\n• Higher image clarity leads to better recognition accuracy\n• After recognition, you can edit the text or apply it directly to practice'}
+                </p>
+              </div>
             </div>
           </div>
         </div>
