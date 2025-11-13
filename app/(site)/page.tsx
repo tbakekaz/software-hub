@@ -36,10 +36,17 @@ export default async function HomePage() {
     <div className="relative w-full min-h-screen overflow-x-hidden font-display bg-background-light dark:bg-background-dark">
       {/* Background Gradient */}
       <div className="absolute top-0 left-0 w-full h-[800px] bg-gradient-to-br from-primary/30 via-background-light to-background-light dark:from-primary/20 dark:via-background-dark dark:to-background-dark -z-10" />
-      <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <main className="py-16 sm:py-24">
-          <Hero />
-          <ExchangeRates />
+          {/* Hero 和汇率并排布局 */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start mb-20 sm:mb-28">
+            <div className="order-2 lg:order-1">
+              <Hero />
+            </div>
+            <div className="order-1 lg:order-2">
+              <ExchangeRates />
+            </div>
+          </div>
           <ToolsSection />
           <UpdatesSection />
         </main>

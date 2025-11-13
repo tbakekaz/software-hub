@@ -19,8 +19,8 @@ export async function Hero() {
   const ctaText = lang === 'zh' ? '立即开始' : lang === 'kk' ? 'Қазір бастау' : lang === 'ru' ? 'Начать сейчас' : 'Start Now';
 
   return (
-    <section className="text-center">
-      <div className="flex flex-col gap-4 sm:gap-5 items-center animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <section className="text-center lg:text-left">
+      <div className="flex flex-col gap-4 sm:gap-5 items-center lg:items-start animate-in fade-in slide-in-from-bottom-4 duration-700">
         <h1 className="text-[#111618] dark:text-white text-2xl sm:text-3xl lg:text-4xl font-black leading-tight tracking-tighter max-w-3xl">
           {title}
         </h1>

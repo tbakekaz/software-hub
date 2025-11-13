@@ -58,8 +58,8 @@ export async function ExchangeRates() {
     const titleText = dict.rates?.title || (lang === 'zh' ? '实时汇率' : lang === 'kk' ? 'Қазақстан теңге бағамы' : lang === 'ru' ? 'Курс тенге' : 'Live Exchange Rates');
     
     return (
-      <section id="exchange-rates" className="mt-20 sm:mt-28">
-        <h2 className="text-[#111618] dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-4">
+      <section id="exchange-rates" className="lg:sticky lg:top-24">
+        <h2 className="text-[#111618] dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] pb-4">
           {titleText}
         </h2>
         <ExchangeRatesClient rates={rates} dict={dict.rates} lang={lang} />
@@ -101,8 +101,8 @@ export async function ExchangeRates() {
     const titleText = dict.rates?.title || (lang === 'zh' ? '实时汇率' : lang === 'kk' ? 'Қазақстан теңге бағамы' : lang === 'ru' ? 'Курс тенге' : 'Live Exchange Rates');
     
     return (
-      <section id="exchange-rates" className="mt-20 sm:mt-28">
-        <h2 className="text-[#111618] dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-4">
+      <section id="exchange-rates" className="lg:sticky lg:top-24">
+        <h2 className="text-[#111618] dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] pb-4">
           {titleText}
         </h2>
         <ExchangeRatesClient rates={rates} dict={dict.rates} lang={lang} />
