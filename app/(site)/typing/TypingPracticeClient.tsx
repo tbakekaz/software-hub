@@ -149,8 +149,10 @@ export function TypingPracticeClient({ dict, lang }: Props) {
     setOcrProgress(0);
     setOcrText('');
 
+    let worker: any = null;
+
     try {
-      // 如果worker已存在但语言不同，需要重新创建
+      // 清理旧的worker
       if (ocrWorkerRef.current) {
         try {
           await ocrWorkerRef.current.terminate();
@@ -160,78 +162,67 @@ export function TypingPracticeClient({ dict, lang }: Props) {
         ocrWorkerRef.current = null;
       }
 
-      // 创建新的worker
-      setOcrProgress(5);
-      ocrWorkerRef.current = await createWorker();
-      setOcrProgress(10);
-
-      const worker = ocrWorkerRef.current;
-      
-      // 使用用户选择的OCR语言
-      // 注意：Tesseract.js支持的语言代码可能不同
-      // kaz可能不支持，使用eng作为后备
+      // 确定要使用的语言代码
       let langCode = ocrLanguage;
       
-      // 验证并调整语言代码
+      // 如果选择的是哈萨克语，回退到英语（因为Tesseract.js可能不支持）
       if (langCode === 'kaz+eng') {
-        // 哈萨克语可能不支持，先尝试eng
-        try {
-          await worker.loadLanguage('eng');
-          await worker.initialize('eng');
-          langCode = 'eng';
-        } catch (e) {
-          // 如果失败，尝试其他语言
-          langCode = 'eng';
-        }
+        langCode = 'eng';
       }
 
-      setOcrProgress(20);
-      
-      // 加载语言
-      try {
-        await worker.loadLanguage(langCode);
-        setOcrProgress(40);
-        await worker.initialize(langCode);
-        setOcrProgress(60);
-      } catch (langError) {
-        console.warn('Language load failed, falling back to English:', langError);
-        // 如果语言加载失败，回退到英语
-        if (langCode !== 'eng') {
-          try {
-            await worker.loadLanguage('eng');
-            await worker.initialize('eng');
-            langCode = 'eng';
-            setOcrProgress(60);
-          } catch (engError) {
-            console.error('English language load also failed:', engError);
-            throw new Error('Failed to load OCR language data. Please check your internet connection.');
+      setOcrProgress(5);
+
+      // 使用正确的API：直接创建带语言的worker
+      // Tesseract.js v4+支持直接传入语言代码
+      worker = await createWorker(langCode, 1, {
+        logger: (m: any) => {
+          // 监听进度
+          if (m.status === 'recognizing text') {
+            const progress = m.progress || 0;
+            setOcrProgress(10 + Math.round(progress * 90));
+          } else if (m.status === 'loading language traineddata') {
+            setOcrProgress(5);
+          } else if (m.status === 'initializing tesseract') {
+            setOcrProgress(8);
+          } else if (m.status === 'loading tesseract core') {
+            setOcrProgress(3);
           }
-        } else {
-          throw langError;
-        }
-      }
+        },
+      });
+      ocrWorkerRef.current = worker;
 
-      // 监听进度
-      worker.onProgress = (progress: any) => {
-        const progressValue = Math.round(progress.progress * 100);
-        // 进度条从60%开始（因为初始化已完成）
-        setOcrProgress(60 + Math.round(progressValue * 0.4));
-      };
-
-      setOcrProgress(70);
+      setOcrProgress(60);
 
       // 执行OCR识别
-      const { data: { text } } = await worker.recognize(ocrImage);
+      const { data: { text } } = await worker.recognize(ocrImage, {
+        logger: (m: any) => {
+          if (m.status === 'recognizing text') {
+            const progress = m.progress || 0;
+            setOcrProgress(60 + Math.round(progress * 40));
+          }
+        },
+      });
+      
       setOcrProgress(100);
       
       if (text && text.trim()) {
         const recognizedText = text.trim();
         setOcrText(recognizedText);
       } else {
-        throw new Error('No text detected in image');
+        throw new Error(lang === 'zh' ? '图片中未检测到文本' : lang === 'kk' ? 'Суретте мәтін анықталмады' : lang === 'ru' ? 'Текст не обнаружен на изображении' : 'No text detected in image');
       }
     } catch (error: any) {
       console.error('OCR Error:', error);
+      
+      // 清理worker
+      if (worker) {
+        try {
+          await worker.terminate();
+        } catch (e) {
+          // 忽略
+        }
+        ocrWorkerRef.current = null;
+      }
       
       // 显示更详细的错误信息
       let errorMessage = lang === 'zh' 
@@ -242,8 +233,16 @@ export function TypingPracticeClient({ dict, lang }: Props) {
         ? 'OCR распознавание не удалось, попробуйте снова' 
         : 'OCR recognition failed, please try again';
       
+      // 添加具体错误信息
       if (error?.message) {
-        errorMessage += `\n${error.message}`;
+        const errorMsg = error.message.toLowerCase();
+        if (errorMsg.includes('network') || errorMsg.includes('fetch')) {
+          errorMessage += '\n' + (lang === 'zh' ? '网络连接失败，请检查网络后重试' : lang === 'kk' ? 'Желі байланысы сәтсіз, желіні тексеріп қайталап көріңіз' : lang === 'ru' ? 'Ошибка сетевого подключения, проверьте сеть и попробуйте снова' : 'Network connection failed, please check your connection and try again');
+        } else if (errorMsg.includes('language') || errorMsg.includes('loadlanguage')) {
+          errorMessage += '\n' + (lang === 'zh' ? '语言数据加载失败，请尝试使用英语' : lang === 'kk' ? 'Тіл деректерін жүктеу сәтсіз, ағылшыншаны байқап көріңіз' : lang === 'ru' ? 'Не удалось загрузить языковые данные, попробуйте английский' : 'Language data loading failed, please try English');
+        } else {
+          errorMessage += `\n${error.message}`;
+        }
       }
       
       alert(errorMessage);
