@@ -20,16 +20,16 @@ export async function Hero() {
 
   return (
     <section className="text-center">
-      <div className="flex flex-col gap-6 items-center animate-in fade-in slide-in-from-bottom-4 duration-700">
-        <h1 className="text-[#111618] dark:text-white text-4xl sm:text-5xl lg:text-6xl font-black leading-tight tracking-tighter max-w-3xl">
+      <div className="flex flex-col gap-4 sm:gap-5 items-center animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <h1 className="text-[#111618] dark:text-white text-2xl sm:text-3xl lg:text-4xl font-black leading-tight tracking-tighter max-w-3xl">
           {title}
         </h1>
-        <h2 className="text-[#5f7d8c] dark:text-gray-400 text-lg sm:text-xl font-normal leading-normal max-w-2xl">
+        <h2 className="text-[#5f7d8c] dark:text-gray-400 text-base sm:text-lg font-normal leading-normal max-w-2xl">
           {subtitle}
         </h2>
         <Link
           href="/languages"
-          className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:opacity-90 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
+          className="flex min-w-[84px] max-w-[320px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-11 px-5 bg-primary text-white text-sm sm:text-base font-bold leading-normal tracking-[0.015em] hover:opacity-90 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
         >
           <span className="truncate">{ctaText}</span>
         </Link>

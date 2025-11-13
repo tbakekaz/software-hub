@@ -27,7 +27,19 @@ const en = {
   section: {
     recommendedSoftware: 'Recommended Software',
     latestTutorials: 'Latest Tutorials',
-    aiFeatured: 'Featured AI'
+    aiFeatured: 'Featured AI',
+    exploreTools: 'Explore Our Smart Tools',
+    exploreToolsDesc: 'Discover our suite of tools designed to enhance your productivity and knowledge in the digital age.',
+    languageLearning: 'Language Learning Tools',
+    languageLearningDesc: 'Master regional and global languages with our interactive vocabulary builders and translation services.',
+    aiAssistants: 'AI-Powered Assistants',
+    aiAssistantsDesc: 'Leverage artificial intelligence for content generation, creative ideas, and workflow automation.',
+    codeAnalysis: 'Code & Data Analysis',
+    codeAnalysisDesc: 'Utilize powerful tools for quick data analysis, code assistance, and project development.',
+    learnMore: 'Learn More',
+    latestUpdates: 'Latest Updates & Articles',
+    latestUpdatesDesc: 'Stay informed with the latest news, product updates, and insightful articles from the KazSoft team.',
+    readMore: 'Read More',
   },
   software: {
     listTitle: 'Software List',

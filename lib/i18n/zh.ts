@@ -27,7 +27,19 @@ const zh = {
   section: {
     recommendedSoftware: '推荐软件',
     latestTutorials: '最新教程',
-    aiFeatured: 'AI 导航精选'
+    aiFeatured: 'AI 导航精选',
+    exploreTools: '探索我们的智能工具',
+    exploreToolsDesc: '发现我们旨在提升您在数字时代的生产力和知识的工具套件。',
+    languageLearning: '语言学习工具',
+    languageLearningDesc: '通过我们的交互式词汇构建器和翻译服务，掌握区域和全球语言。',
+    aiAssistants: 'AI 智能助手',
+    aiAssistantsDesc: '利用人工智能进行内容生成、创意想法和工作流自动化。',
+    codeAnalysis: '代码与数据分析',
+    codeAnalysisDesc: '使用强大的工具进行快速数据分析、代码辅助和项目开发。',
+    learnMore: '了解更多',
+    latestUpdates: '最新更新与文章',
+    latestUpdatesDesc: '了解 KazSoft 团队的最新新闻、产品更新和深度文章。',
+    readMore: '阅读更多',
   },
   software: {
     listTitle: '软件列表',

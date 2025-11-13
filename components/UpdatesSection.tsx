@@ -19,15 +19,15 @@ export async function UpdatesSection() {
   
   const tutorials = getAllTutorials().slice(0, 3);
   
-  const readMore = lang === 'zh' ? '阅读更多' : lang === 'kk' ? 'Көбірек оқу' : lang === 'ru' ? 'Читать далее' : 'Read More';
-  const sectionTitle = lang === 'zh' ? '最新更新与文章' : lang === 'kk' ? 'Соңғы жаңартулар мен мақалалар' : lang === 'ru' ? 'Последние обновления и статьи' : 'Latest Updates & Articles';
-  const sectionDesc = lang === 'zh' 
+  const readMore = dict.section?.readMore || (lang === 'zh' ? '阅读更多' : lang === 'kk' ? 'Көбірек оқу' : lang === 'ru' ? 'Читать далее' : 'Read More');
+  const sectionTitle = dict.section?.latestUpdates || (lang === 'zh' ? '最新更新与文章' : lang === 'kk' ? 'Соңғы жаңартулар мен мақалалар' : lang === 'ru' ? 'Последние обновления и статьи' : 'Latest Updates & Articles');
+  const sectionDesc = dict.section?.latestUpdatesDesc || (lang === 'zh' 
     ? '了解 KazSoft 团队的最新新闻、产品更新和深度文章。'
     : lang === 'kk'
     ? 'KazSoft командасының соңғы жаңалықтары, өнім жаңартулары және терең мақалаларымен танысыңыз.'
     : lang === 'ru'
     ? 'Будьте в курсе последних новостей, обновлений продуктов и содержательных статей от команды KazSoft.'
-    : 'Stay informed with the latest news, product updates, and insightful articles from the KazSoft team.';
+    : 'Stay informed with the latest news, product updates, and insightful articles from the KazSoft team.');
 
   // 如果没有教程，使用占位内容
   if (tutorials.length === 0) {
