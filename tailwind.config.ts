@@ -14,8 +14,14 @@ export default {
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
         background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))'
-      }
+        foreground: 'hsl(var(--foreground))',
+        primary: '#0697e0',
+        'background-light': '#f5f7f8',
+        'background-dark': '#0f1c23',
+      },
+      fontFamily: {
+        display: ['Inter', 'sans-serif'],
+      },
     }
   },
   plugins: []

@@ -62,7 +62,17 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang={lang} suppressHydrationWarning>
-      <body className="min-h-screen bg-background text-foreground">
+      <head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+          rel="stylesheet"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="min-h-screen bg-background text-foreground font-display">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <GA />
           {children}
