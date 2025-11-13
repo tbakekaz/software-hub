@@ -220,6 +220,11 @@ const kk = {
     minutes: 'минут',
     seconds: 'секунд',
     practiceMode: 'Жаттығу режимі',
+    level: {
+      beginner: 'Бастапқы',
+      intermediate: 'Орта',
+      advanced: 'Жоғары',
+    },
   },
 };
 

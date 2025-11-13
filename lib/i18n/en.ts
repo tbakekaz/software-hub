@@ -220,6 +220,11 @@ const en = {
     minutes: 'minutes',
     seconds: 'seconds',
     practiceMode: 'Practice Mode',
+    level: {
+      beginner: 'Beginner',
+      intermediate: 'Intermediate',
+      advanced: 'Advanced',
+    },
   },
 };
 

@@ -220,6 +220,11 @@ const zh = {
     minutes: '分钟',
     seconds: '秒',
     practiceMode: '练习模式',
+    level: {
+      beginner: '初级',
+      intermediate: '中级',
+      advanced: '高级',
+    },
   },
 };
 

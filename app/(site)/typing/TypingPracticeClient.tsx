@@ -432,10 +432,10 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                     }`}
                   >
                     {difficulty === 'beginner' 
-                      ? (dict?.level?.beginner || '初级')
+                      ? (dict?.level?.beginner || (lang === 'zh' ? '初级' : lang === 'kk' ? 'Бастапқы' : lang === 'ru' ? 'Начальный' : 'Beginner'))
                       : difficulty === 'intermediate'
-                      ? (dict?.level?.intermediate || '中级')
-                      : (dict?.level?.advanced || '高级')}
+                      ? (dict?.level?.intermediate || (lang === 'zh' ? '中级' : lang === 'kk' ? 'Орта' : lang === 'ru' ? 'Средний' : 'Intermediate'))
+                      : (dict?.level?.advanced || (lang === 'zh' ? '高级' : lang === 'kk' ? 'Жоғары' : lang === 'ru' ? 'Продвинутый' : 'Advanced'))}
                   </button>
                 ))}
               </div>
@@ -463,28 +463,7 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                         : 'hover:bg-muted'
                     }`}
                   >
-                    {(() => {
-                      // 如果课程标题是字符串，直接返回
-                      if (typeof course.title === 'string') {
-                        return course.title;
-                      }
-                      // 如果课程标题是多语言对象，根据课程语言优先显示对应语言
-                      // 中文课程在哈萨克语界面下显示中文
-                      if (course.language === 'chinese') {
-                        return pickLocaleString(course.title, 'zh') || course.title.zh || course.title.en || course.title.ru || course.title.kk || '';
-                      }
-                      if (course.language === 'kazakh') {
-                        return pickLocaleString(course.title, 'kk') || course.title.kk || course.title.ru || course.title.en || course.title.zh || '';
-                      }
-                      if (course.language === 'russian') {
-                        return pickLocaleString(course.title, 'ru') || course.title.ru || course.title.en || course.title.kk || course.title.zh || '';
-                      }
-                      if (course.language === 'english') {
-                        return pickLocaleString(course.title, 'en') || course.title.en || course.title.ru || course.title.kk || course.title.zh || '';
-                      }
-                      // 默认使用界面语言
-                      return pickLocaleString(course.title, lang);
-                    })()}
+                    {typeof course.title === 'string' ? course.title : pickLocaleString(course.title, lang)}
                   </button>
                 ))}
               </CardBody>

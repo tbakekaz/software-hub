@@ -220,6 +220,11 @@ const ru = {
     minutes: 'минут',
     seconds: 'секунд',
     practiceMode: 'Режим практики',
+    level: {
+      beginner: 'Начальный',
+      intermediate: 'Средний',
+      advanced: 'Продвинутый',
+    },
   },
 };
 
