@@ -619,25 +619,6 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                     : t('freePractice', { zh: '自由练习', kk: 'Еркін жаттығу', ru: 'Свободная практика', en: 'Free Practice' })}
                 </h2>
                 <div className="flex items-center gap-2">
-                  {/* 脚本切换（仅哈萨克语时显示） */}
-                  {selectedLanguage === 'kazakh' && (
-                    <div className="hidden md:flex items-center gap-1">
-                      <button
-                        onClick={() => setKazakhScript('cyrillic')}
-                        className={`px-2 py-1 text-xs rounded border ${kazakhScript === 'cyrillic' ? 'bg-primary text-primary-foreground border-primary' : 'hover:bg-muted'}`}
-                        title={lang === 'kk' ? 'Кирилл (Қазақстан)' : lang === 'ru' ? 'Кириллица (Казахстан)' : lang === 'en' ? 'Cyrillic (Kazakhstan)' : '西里尔（哈萨克斯坦）'}
-                      >
-                        {lang === 'kk' ? 'Кирилл' : lang === 'ru' ? 'Кириллица' : lang === 'en' ? 'Cyrillic' : '西里尔'}
-                      </button>
-                      <button
-                        onClick={() => setKazakhScript('arabic')}
-                        className={`px-2 py-1 text-xs rounded border ${kazakhScript === 'arabic' ? 'bg-primary text-primary-foreground border-primary' : 'hover:bg-muted'}`}
-                        title={lang === 'kk' ? 'Араб (Шыңжаң қазақ)' : lang === 'ru' ? 'Арабский (Синьцзян-Казахский)' : lang === 'en' ? 'Arabic (Xinjiang Kazakh)' : '阿拉伯（新疆哈萨克）'}
-                      >
-                        {lang === 'kk' ? 'Араб' : lang === 'ru' ? 'Арабский' : lang === 'en' ? 'Arabic' : '阿拉伯'}
-                      </button>
-                    </div>
-                  )}
                   {/* 文字转换器入口 */}
                   {selectedLanguage === 'kazakh' && (
                     <button
