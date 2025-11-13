@@ -59,7 +59,7 @@ export async function ExchangeRates() {
     
     return (
       <section id="exchange-rates" className="lg:sticky lg:top-24">
-        <h2 className="text-[#111618] dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] pb-4">
+        <h2 className="text-[#111618] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] pb-3">
           {titleText}
         </h2>
         <ExchangeRatesClient rates={rates} dict={dict.rates} lang={lang} />
@@ -102,7 +102,7 @@ export async function ExchangeRates() {
     
     return (
       <section id="exchange-rates" className="lg:sticky lg:top-24">
-        <h2 className="text-[#111618] dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] pb-4">
+        <h2 className="text-[#111618] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] pb-3">
           {titleText}
         </h2>
         <ExchangeRatesClient rates={rates} dict={dict.rates} lang={lang} />
