@@ -87,7 +87,7 @@ export function TypingPracticeClient({ dict, lang }: Props) {
   const [showOCR, setShowOCR] = useState(false);
   const [ocrImage, setOcrImage] = useState<string | null>(null);
   const [ocrText, setOcrText] = useState('');
-  const [ocrLanguage, setOcrLanguage] = useState<string>('kaz+eng');
+  const [ocrLanguage, setOcrLanguage] = useState<string>('eng');
   const [isProcessingOCR, setIsProcessingOCR] = useState(false);
   const [ocrProgress, setOcrProgress] = useState(0);
   const ocrWorkerRef = useRef<any>(null);
@@ -150,33 +150,107 @@ export function TypingPracticeClient({ dict, lang }: Props) {
     setOcrText('');
 
     try {
-      // 创建或重用worker
-      if (!ocrWorkerRef.current) {
-        ocrWorkerRef.current = await createWorker();
+      // 如果worker已存在但语言不同，需要重新创建
+      if (ocrWorkerRef.current) {
+        try {
+          await ocrWorkerRef.current.terminate();
+        } catch (e) {
+          // 忽略终止错误
+        }
+        ocrWorkerRef.current = null;
       }
+
+      // 创建新的worker
+      setOcrProgress(5);
+      ocrWorkerRef.current = await createWorker();
+      setOcrProgress(10);
 
       const worker = ocrWorkerRef.current;
       
       // 使用用户选择的OCR语言
-      const langCode = ocrLanguage;
+      // 注意：Tesseract.js支持的语言代码可能不同
+      // kaz可能不支持，使用eng作为后备
+      let langCode = ocrLanguage;
+      
+      // 验证并调整语言代码
+      if (langCode === 'kaz+eng') {
+        // 哈萨克语可能不支持，先尝试eng
+        try {
+          await worker.loadLanguage('eng');
+          await worker.initialize('eng');
+          langCode = 'eng';
+        } catch (e) {
+          // 如果失败，尝试其他语言
+          langCode = 'eng';
+        }
+      }
 
-      await worker.loadLanguage(langCode);
-      await worker.initialize(langCode);
+      setOcrProgress(20);
+      
+      // 加载语言
+      try {
+        await worker.loadLanguage(langCode);
+        setOcrProgress(40);
+        await worker.initialize(langCode);
+        setOcrProgress(60);
+      } catch (langError) {
+        console.warn('Language load failed, falling back to English:', langError);
+        // 如果语言加载失败，回退到英语
+        if (langCode !== 'eng') {
+          try {
+            await worker.loadLanguage('eng');
+            await worker.initialize('eng');
+            langCode = 'eng';
+            setOcrProgress(60);
+          } catch (engError) {
+            console.error('English language load also failed:', engError);
+            throw new Error('Failed to load OCR language data. Please check your internet connection.');
+          }
+        } else {
+          throw langError;
+        }
+      }
 
       // 监听进度
       worker.onProgress = (progress: any) => {
-        setOcrProgress(Math.round(progress.progress * 100));
+        const progressValue = Math.round(progress.progress * 100);
+        // 进度条从60%开始（因为初始化已完成）
+        setOcrProgress(60 + Math.round(progressValue * 0.4));
       };
+
+      setOcrProgress(70);
 
       // 执行OCR识别
       const { data: { text } } = await worker.recognize(ocrImage);
-      setOcrText(text.trim());
-    } catch (error) {
+      setOcrProgress(100);
+      
+      if (text && text.trim()) {
+        const recognizedText = text.trim();
+        setOcrText(recognizedText);
+      } else {
+        throw new Error('No text detected in image');
+      }
+    } catch (error: any) {
       console.error('OCR Error:', error);
-      alert(lang === 'zh' ? 'OCR识别失败，请重试' : lang === 'kk' ? 'OCR тану сәтсіз, қайталап көріңіз' : lang === 'ru' ? 'OCR распознавание не удалось, попробуйте снова' : 'OCR recognition failed, please try again');
+      
+      // 显示更详细的错误信息
+      let errorMessage = lang === 'zh' 
+        ? 'OCR识别失败，请重试' 
+        : lang === 'kk' 
+        ? 'OCR тану сәтсіз, қайталап көріңіз' 
+        : lang === 'ru' 
+        ? 'OCR распознавание не удалось, попробуйте снова' 
+        : 'OCR recognition failed, please try again';
+      
+      if (error?.message) {
+        errorMessage += `\n${error.message}`;
+      }
+      
+      alert(errorMessage);
+      setOcrText('');
+      setOcrProgress(0);
     } finally {
       setIsProcessingOCR(false);
-      setOcrProgress(0);
     }
   };
 
@@ -1017,8 +1091,8 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                   className="w-full p-2 border rounded-lg bg-background"
                   disabled={isProcessingOCR}
                 >
-                  <option value="kaz+eng">
-                    {lang === 'zh' ? '哈萨克语 + 英语' : lang === 'kk' ? 'Қазақша + Ағылшынша' : lang === 'ru' ? 'Казахский + Английский' : 'Kazakh + English'}
+                  <option value="eng">
+                    {lang === 'zh' ? '英语（推荐）' : lang === 'kk' ? 'Ағылшынша (ұсынылады)' : lang === 'ru' ? 'Английский (рекомендуется)' : 'English (Recommended)'}
                   </option>
                   <option value="chi_sim+eng">
                     {lang === 'zh' ? '简体中文 + 英语' : lang === 'kk' ? 'Қытайша (жеңілдетілген) + Ағылшынша' : lang === 'ru' ? 'Китайский (упрощенный) + Английский' : 'Chinese (Simplified) + English'}
@@ -1026,8 +1100,8 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                   <option value="rus+eng">
                     {lang === 'zh' ? '俄语 + 英语' : lang === 'kk' ? 'Орысша + Ағылшынша' : lang === 'ru' ? 'Русский + Английский' : 'Russian + English'}
                   </option>
-                  <option value="eng">
-                    {lang === 'zh' ? '英语' : lang === 'kk' ? 'Ағылшынша' : lang === 'ru' ? 'Английский' : 'English'}
+                  <option value="kaz+eng">
+                    {lang === 'zh' ? '哈萨克语 + 英语（实验性）' : lang === 'kk' ? 'Қазақша + Ағылшынша (эксперименттік)' : lang === 'ru' ? 'Казахский + Английский (экспериментальный)' : 'Kazakh + English (Experimental)'}
                   </option>
                 </select>
               </div>
