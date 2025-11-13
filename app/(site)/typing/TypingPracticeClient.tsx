@@ -91,6 +91,7 @@ export function TypingPracticeClient({ dict, lang }: Props) {
   const [isProcessingOCR, setIsProcessingOCR] = useState(false);
   const [ocrProgress, setOcrProgress] = useState(0);
   const ocrWorkerRef = useRef<any>(null);
+  const ocrTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
   const [text, setText] = useState('');
   const [userInput, setUserInput] = useState('');
@@ -123,6 +124,51 @@ export function TypingPracticeClient({ dict, lang }: Props) {
   }, [selectedLanguage]);
 
   // OCR处理函数
+  // 压缩图片以提高OCR速度
+  const compressImage = (file: File, maxWidth: number = 2000, maxHeight: number = 2000, quality: number = 0.8): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+
+          // 计算新尺寸
+          if (width > maxWidth || height > maxHeight) {
+            if (width > height) {
+              height = (height * maxWidth) / width;
+              width = maxWidth;
+            } else {
+              width = (width * maxHeight) / height;
+              height = maxHeight;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          if (!ctx) {
+            reject(new Error('Failed to get canvas context'));
+            return;
+          }
+
+          // 绘制图片
+          ctx.drawImage(img, 0, 0, width, height);
+          
+          // 转换为base64
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+          resolve(compressedDataUrl);
+        };
+        img.onerror = reject;
+        img.src = e.target?.result as string;
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  };
+
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -133,13 +179,51 @@ export function TypingPracticeClient({ dict, lang }: Props) {
       return;
     }
 
-    // 读取图片并显示预览
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const imageUrl = event.target?.result as string;
-      setOcrImage(imageUrl);
-    };
-    reader.readAsDataURL(file);
+    // 检查文件大小（超过5MB则压缩）
+    if (file.size > 5 * 1024 * 1024) {
+      try {
+        const compressedImage = await compressImage(file, 2000, 2000, 0.7);
+        setOcrImage(compressedImage);
+      } catch (error) {
+        console.error('Image compression failed:', error);
+        // 如果压缩失败，使用原始图片
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const imageUrl = event.target?.result as string;
+          setOcrImage(imageUrl);
+        };
+        reader.readAsDataURL(file);
+      }
+    } else {
+      // 小文件直接读取
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const imageUrl = event.target?.result as string;
+        setOcrImage(imageUrl);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // 取消OCR识别
+  const cancelOCR = async () => {
+    if (ocrTimeoutRef.current) {
+      clearTimeout(ocrTimeoutRef.current);
+      ocrTimeoutRef.current = null;
+    }
+    
+    if (ocrWorkerRef.current) {
+      try {
+        await ocrWorkerRef.current.terminate();
+      } catch (e) {
+        // 忽略
+      }
+      ocrWorkerRef.current = null;
+    }
+    
+    setIsProcessingOCR(false);
+    setOcrProgress(0);
+    setOcrText('');
   };
 
   const processOCR = async () => {
@@ -150,6 +234,13 @@ export function TypingPracticeClient({ dict, lang }: Props) {
     setOcrText('');
 
     let worker: any = null;
+
+    // 设置超时（60秒）
+    const timeoutPromise = new Promise((_, reject) => {
+      ocrTimeoutRef.current = setTimeout(() => {
+        reject(new Error(lang === 'zh' ? '识别超时，请尝试压缩图片或使用更小的图片' : lang === 'kk' ? 'Таныу уақыты асып кетті, суретті сығып немесе кішірек суретті пайдаланып көріңіз' : lang === 'ru' ? 'Превышено время распознавания, попробуйте сжать изображение или использовать меньшее изображение' : 'Recognition timeout, please try compressing the image or using a smaller image'));
+      }, 60000);
+    });
 
     try {
       // 清理旧的worker
@@ -173,36 +264,57 @@ export function TypingPracticeClient({ dict, lang }: Props) {
       setOcrProgress(5);
 
       // 使用正确的API：直接创建带语言的worker
-      // Tesseract.js v4+支持直接传入语言代码
-      worker = await createWorker(langCode, 1, {
+      // 使用OEM模式1（LSTM神经网络）以提高速度
+      const workerPromise = createWorker(langCode, 1, {
         logger: (m: any) => {
-          // 监听进度
+          // 监听进度，更详细的进度反馈
           if (m.status === 'recognizing text') {
             const progress = m.progress || 0;
-            setOcrProgress(10 + Math.round(progress * 90));
+            setOcrProgress(30 + Math.round(progress * 65));
           } else if (m.status === 'loading language traineddata') {
-            setOcrProgress(5);
+            setOcrProgress(10);
           } else if (m.status === 'initializing tesseract') {
-            setOcrProgress(8);
+            setOcrProgress(15);
           } else if (m.status === 'loading tesseract core') {
-            setOcrProgress(3);
+            setOcrProgress(5);
+          } else if (m.status === 'downloading language traineddata') {
+            setOcrProgress(8);
           }
         },
       });
+
+      // 等待worker创建或超时
+      worker = await Promise.race([workerPromise, timeoutPromise]) as any;
       ocrWorkerRef.current = worker;
 
-      setOcrProgress(60);
+      if (ocrTimeoutRef.current) {
+        clearTimeout(ocrTimeoutRef.current);
+        ocrTimeoutRef.current = null;
+      }
 
-      // 执行OCR识别
-      const { data: { text } } = await worker.recognize(ocrImage, {
+      setOcrProgress(30);
+
+      // 执行OCR识别，使用优化的参数
+      const recognizePromise = worker.recognize(ocrImage, {
         logger: (m: any) => {
           if (m.status === 'recognizing text') {
             const progress = m.progress || 0;
-            setOcrProgress(60 + Math.round(progress * 40));
+            setOcrProgress(30 + Math.round(progress * 65));
           }
         },
+        // 优化参数以提高速度
+        rectangle: undefined, // 识别整个图片
       });
+
+      // 等待识别完成或超时
+      const result = await Promise.race([recognizePromise, timeoutPromise]) as any;
       
+      if (ocrTimeoutRef.current) {
+        clearTimeout(ocrTimeoutRef.current);
+        ocrTimeoutRef.current = null;
+      }
+      
+      const { data: { text } } = result;
       setOcrProgress(100);
       
       if (text && text.trim()) {
@@ -214,6 +326,12 @@ export function TypingPracticeClient({ dict, lang }: Props) {
     } catch (error: any) {
       console.error('OCR Error:', error);
       
+      // 清理超时
+      if (ocrTimeoutRef.current) {
+        clearTimeout(ocrTimeoutRef.current);
+        ocrTimeoutRef.current = null;
+      }
+      
       // 清理worker
       if (worker) {
         try {
@@ -222,6 +340,11 @@ export function TypingPracticeClient({ dict, lang }: Props) {
           // 忽略
         }
         ocrWorkerRef.current = null;
+      }
+      
+      // 如果是用户取消，不显示错误
+      if (error?.message?.includes('cancel') || error?.message?.includes('abort')) {
+        return;
       }
       
       // 显示更详细的错误信息
@@ -236,7 +359,9 @@ export function TypingPracticeClient({ dict, lang }: Props) {
       // 添加具体错误信息
       if (error?.message) {
         const errorMsg = error.message.toLowerCase();
-        if (errorMsg.includes('network') || errorMsg.includes('fetch')) {
+        if (errorMsg.includes('timeout') || errorMsg.includes('超时') || errorMsg.includes('уақыты')) {
+          errorMessage = error.message;
+        } else if (errorMsg.includes('network') || errorMsg.includes('fetch')) {
           errorMessage += '\n' + (lang === 'zh' ? '网络连接失败，请检查网络后重试' : lang === 'kk' ? 'Желі байланысы сәтсіз, желіні тексеріп қайталап көріңіз' : lang === 'ru' ? 'Ошибка сетевого подключения, проверьте сеть и попробуйте снова' : 'Network connection failed, please check your connection and try again');
         } else if (errorMsg.includes('language') || errorMsg.includes('loadlanguage')) {
           errorMessage += '\n' + (lang === 'zh' ? '语言数据加载失败，请尝试使用英语' : lang === 'kk' ? 'Тіл деректерін жүктеу сәтсіз, ағылшыншаны байқап көріңіз' : lang === 'ru' ? 'Не удалось загрузить языковые данные, попробуйте английский' : 'Language data loading failed, please try English');
@@ -1162,22 +1287,37 @@ export function TypingPracticeClient({ dict, lang }: Props) {
                     <label className="block text-sm font-medium">
                       {lang === 'zh' ? '步骤 3: 提取文本' : lang === 'kk' ? 'Қадам 3: Мәтінді шығару' : lang === 'ru' ? 'Шаг 3: Извлечение текста' : 'Step 3: Extract Text'}
                     </label>
-                    <button
-                      onClick={processOCR}
-                      disabled={isProcessingOCR || !ocrImage}
-                      className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
-                    >
-                      {isProcessingOCR
-                        ? (lang === 'zh' ? `识别中... ${ocrProgress}%` : lang === 'kk' ? `Танылуда... ${ocrProgress}%` : lang === 'ru' ? `Распознавание... ${ocrProgress}%` : `Recognizing... ${ocrProgress}%`)
-                        : (lang === 'zh' ? '开始识别' : lang === 'kk' ? 'Таныуды бастау' : lang === 'ru' ? 'Начать распознавание' : 'Start Recognition')}
-                    </button>
+                    <div className="flex gap-2">
+                      {isProcessingOCR && (
+                        <button
+                          onClick={cancelOCR}
+                          className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 font-medium"
+                        >
+                          {lang === 'zh' ? '取消' : lang === 'kk' ? 'Болдырмау' : lang === 'ru' ? 'Отмена' : 'Cancel'}
+                        </button>
+                      )}
+                      <button
+                        onClick={processOCR}
+                        disabled={isProcessingOCR || !ocrImage}
+                        className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+                      >
+                        {isProcessingOCR
+                          ? (lang === 'zh' ? `识别中... ${ocrProgress}%` : lang === 'kk' ? `Танылуда... ${ocrProgress}%` : lang === 'ru' ? `Распознавание... ${ocrProgress}%` : `Recognizing... ${ocrProgress}%`)
+                          : (lang === 'zh' ? '开始识别' : lang === 'kk' ? 'Таныуды бастау' : lang === 'ru' ? 'Начать распознавание' : 'Start Recognition')}
+                      </button>
+                    </div>
                   </div>
                   {isProcessingOCR && (
-                    <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-2">
-                      <div
-                        className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full transition-all duration-300"
-                        style={{ width: `${ocrProgress}%` }}
-                      />
+                    <div className="space-y-2">
+                      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                        <div
+                          className="bg-gradient-to-r from-blue-500 to-purple-600 h-2 rounded-full transition-all duration-300"
+                          style={{ width: `${ocrProgress}%` }}
+                        />
+                      </div>
+                      <p className="text-xs text-muted-foreground text-center">
+                        {lang === 'zh' ? '识别可能需要一些时间，请耐心等待...' : lang === 'kk' ? 'Таныу біраз уақыт алуы мүмкін, күте тұрыңыз...' : lang === 'ru' ? 'Распознавание может занять некоторое время, пожалуйста, подождите...' : 'Recognition may take some time, please wait...'}
+                      </p>
                     </div>
                   )}
                 </div>
