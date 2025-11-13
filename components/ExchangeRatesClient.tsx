@@ -157,40 +157,24 @@ export function ExchangeRatesClient({ rates, dict, lang }: Props) {
             </div>
 
             {/* 货币选择 - 交换按钮在中间 */}
-            <div className="relative">
-              <div className="grid grid-cols-2 gap-2">
-                <div className="space-y-1.5">
-                  <label className="text-xs text-[#5f7d8c] dark:text-gray-400">{fromText}</label>
-                  <select
-                    value={fromCurrency}
-                    onChange={(e) => setFromCurrency(e.target.value as Currency)}
-                    className="flex h-9 w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-2.5 py-1.5 text-sm text-[#111618] dark:text-white"
-                  >
-                    {(['KZT', 'USD', 'EUR', 'CNY', 'RUB'] as Currency[]).map((curr) => (
-                      <option key={curr} value={curr}>
-                        {curr} ({getCurrencyName(curr)})
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="space-y-1.5">
-                  <label className="text-xs text-[#5f7d8c] dark:text-gray-400">{toText}</label>
-                  <select
-                    value={toCurrency}
-                    onChange={(e) => setToCurrency(e.target.value as Currency)}
-                    className="flex h-9 w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-2.5 py-1.5 text-sm text-[#111618] dark:text-white"
-                  >
-                    {(['KZT', 'USD', 'EUR', 'CNY', 'RUB'] as Currency[]).map((curr) => (
-                      <option key={curr} value={curr}>
-                        {curr} ({getCurrencyName(curr)})
-                      </option>
-                    ))}
-                  </select>
-                </div>
+            <div className="relative flex items-end gap-3">
+              <div className="space-y-1.5 flex-1 max-w-[140px]">
+                <label className="text-xs text-[#5f7d8c] dark:text-gray-400">{fromText}</label>
+                <select
+                  value={fromCurrency}
+                  onChange={(e) => setFromCurrency(e.target.value as Currency)}
+                  className="flex h-9 w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-2.5 py-1.5 text-sm text-[#111618] dark:text-white"
+                >
+                  {(['KZT', 'USD', 'EUR', 'CNY', 'RUB'] as Currency[]).map((curr) => (
+                    <option key={curr} value={curr}>
+                      {curr} ({getCurrencyName(curr)})
+                    </option>
+                  ))}
+                </select>
               </div>
-              {/* 交换按钮 - 绝对定位在两个选择框中间 */}
-              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+
+              {/* 交换按钮 - 在中间 */}
+              <div className="flex-shrink-0 pb-0.5">
                 <Button
                   variant="ghost"
                   size="sm"
@@ -201,6 +185,21 @@ export function ExchangeRatesClient({ rates, dict, lang }: Props) {
                 >
                   ⇅
                 </Button>
+              </div>
+
+              <div className="space-y-1.5 flex-1 max-w-[140px]">
+                <label className="text-xs text-[#5f7d8c] dark:text-gray-400">{toText}</label>
+                <select
+                  value={toCurrency}
+                  onChange={(e) => setToCurrency(e.target.value as Currency)}
+                  className="flex h-9 w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-2.5 py-1.5 text-sm text-[#111618] dark:text-white"
+                >
+                  {(['KZT', 'USD', 'EUR', 'CNY', 'RUB'] as Currency[]).map((curr) => (
+                    <option key={curr} value={curr}>
+                      {curr} ({getCurrencyName(curr)})
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
 
